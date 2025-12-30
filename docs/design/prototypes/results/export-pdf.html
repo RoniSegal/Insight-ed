@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ייצוא PDF - גילוי נאות</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    body { display: flex; flex-direction: column; min-height: 100vh; }
+    .page-container { flex: 1; padding: var(--space-6); background: var(--color-gray-50); }
+    .export-layout { display: grid; grid-template-columns: 350px 1fr; gap: var(--space-6); max-width: 1400px; margin: 0 auto; }
+    .options-panel { background: white; border-radius: var(--radius-lg); padding: var(--space-6); box-shadow: var(--shadow-sm); height: fit-content; position: sticky; top: var(--space-6); }
+    .preview-panel { background: white; border-radius: var(--radius-lg); padding: var(--space-6); box-shadow: var(--shadow-sm); }
+    .page-header { margin-bottom: var(--space-6); }
+    .page-header h1 { font-size: var(--font-size-2xl); margin-bottom: var(--space-2); }
+    .page-header p { color: var(--color-gray-600); margin: 0; font-size: var(--font-size-sm); }
+    .option-section { margin-bottom: var(--space-6); padding-bottom: var(--space-6); border-bottom: 1px solid var(--color-gray-200); }
+    .option-section:last-child { border-bottom: none; }
+    .option-section h3 { font-size: var(--font-size-md); margin-bottom: var(--space-4); color: var(--color-gray-900); }
+    .option-group { margin-bottom: var(--space-4); }
+    .option-group:last-child { margin-bottom: 0; }
+    .radio-option, .checkbox-option { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-3); border: 1px solid var(--color-gray-200); border-radius: var(--radius-md); margin-bottom: var(--space-2); cursor: pointer; transition: all var(--transition-normal); }
+    .radio-option:hover, .checkbox-option:hover { background: var(--color-gray-50); border-color: var(--color-primary-500); }
+    .radio-option input, .checkbox-option input { margin: 0; }
+    .radio-option label, .checkbox-option label { flex: 1; cursor: pointer; margin: 0; font-weight: var(--font-weight-normal); }
+    .radio-option .option-desc, .checkbox-option .option-desc { font-size: var(--font-size-xs); color: var(--color-gray-600); margin-top: var(--space-1); }
+    .export-actions { display: flex; flex-direction: column; gap: var(--space-3); }
+    .pdf-preview { border: 1px solid var(--color-gray-300); border-radius: var(--radius-md); padding: var(--space-8); background: #fafafa; min-height: 800px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.06); }
+    .pdf-page { background: white; padding: var(--space-8); box-shadow: var(--shadow-lg); margin: 0 auto; max-width: 650px; min-height: 800px; }
+    .pdf-header { text-align: center; padding-bottom: var(--space-6); border-bottom: 2px solid var(--color-primary-700); margin-bottom: var(--space-6); }
+    .pdf-header h1 { font-size: var(--font-size-2xl); color: var(--color-primary-700); margin-bottom: var(--space-2); }
+    .pdf-header .student-name { font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-3); }
+    .pdf-meta { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); font-size: var(--font-size-xs); color: var(--color-gray-600); }
+    .pdf-section { margin-bottom: var(--space-6); }
+    .pdf-section h2 { font-size: var(--font-size-lg); color: var(--color-primary-700); margin-bottom: var(--space-3); padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-gray-300); }
+    .pdf-section h3 { font-size: var(--font-size-md); color: var(--color-gray-900); margin-top: var(--space-4); margin-bottom: var(--space-2); }
+    .pdf-section p { font-size: var(--font-size-sm); line-height: 1.6; margin-bottom: var(--space-3); }
+    .pdf-section ul { font-size: var(--font-size-sm); margin-right: var(--space-5); }
+    .pdf-section li { margin-bottom: var(--space-1); }
+    @media (max-width: 1024px) {
+      .export-layout { grid-template-columns: 1fr; }
+      .options-panel { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="navbar-brand">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+        <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+      </svg>
+      גילוי נאות
+    </div>
+    <div class="navbar-nav">
+      <a href="../teacher-dashboard/dashboard.html" class="nav-link">לוח בקרה</a>
+      <a href="../students/roster.html" class="nav-link">תלמידים</a>
+      <button class="btn btn-ghost btn-small">שרה כהן</button>
+    </div>
+  </div>
+
+  <main class="page-container container">
+    <div class="export-layout">
+      <!-- Options Panel -->
+      <aside class="options-panel">
+        <div class="page-header">
+          <h1>אפשרויות ייצוא</h1>
+          <p>התאם אישית את דוח ה-PDF שלך</p>
+        </div>
+
+        <!-- Report Format -->
+        <div class="option-section">
+          <h3>פורמט הדוח</h3>
+          <div class="radio-option">
+            <input type="radio" id="format-full" name="format" value="full" checked onchange="updatePreview()" />
+            <label for="format-full">
+              <div>דוח מלא</div>
+              <div class="option-desc">ניתוח מלא עם כל הסעיפים</div>
+            </label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="format-summary" name="format" value="summary" onchange="updatePreview()" />
+            <label for="format-summary">
+              <div>סיכום בלבד</div>
+              <div class="option-desc">נקודות עיקריות והמלצות</div>
+            </label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="format-custom" name="format" value="custom" onchange="updatePreview()" />
+            <label for="format-custom">
+              <div>סעיפים מותאמים אישית</div>
+              <div class="option-desc">בחר מה לכלול</div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Include Sections -->
+        <div class="option-section" id="custom-sections" style="display: none;">
+          <h3>כלול סעיפים</h3>
+          <div class="checkbox-option">
+            <input type="checkbox" id="include-academic" checked onchange="updatePreview()" />
+            <label for="include-academic">ניתוח אקדמי</label>
+          </div>
+          <div class="checkbox-option">
+            <input type="checkbox" id="include-behavioral" checked onchange="updatePreview()" />
+            <label for="include-behavioral">התנהגותי וחברתי</label>
+          </div>
+          <div class="checkbox-option">
+            <input type="checkbox" id="include-engagement" checked onchange="updatePreview()" />
+            <label for="include-engagement">דפוסי מעורבות</label>
+          </div>
+          <div class="checkbox-option">
+            <input type="checkbox" id="include-recommendations" checked onchange="updatePreview()" />
+            <label for="include-recommendations">המלצות</label>
+          </div>
+          <div class="checkbox-option">
+            <input type="checkbox" id="include-notes" onchange="updatePreview()" />
+            <label for="include-notes">הערות מורה</label>
+          </div>
+        </div>
+
+        <!-- Branding Options -->
+        <div class="option-section">
+          <h3>מיתוג</h3>
+          <div class="form-field">
+            <label for="school-logo">לוגו בית ספר</label>
+            <input type="file" id="school-logo" accept="image/*" style="font-size: var(--font-size-sm);" />
+            <span class="helper-text">אופציונלי: הוסף את הלוגו של בית הספר שלך</span>
+          </div>
+          <div class="form-field">
+            <label for="header-text">טקסט כותרת</label>
+            <input type="text" id="header-text" placeholder="בית ספר לינקולן" />
+          </div>
+          <div class="form-field">
+            <label for="footer-text">טקסט תחתית</label>
+            <input type="text" id="footer-text" placeholder="סודי - לשימוש חינוכי בלבד" />
+          </div>
+        </div>
+
+        <!-- Export Actions -->
+        <div class="export-actions">
+          <button class="btn btn-primary btn-full-width" onclick="downloadPDF()">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
+            </svg>
+            הורד PDF
+          </button>
+          <button class="btn btn-secondary btn-full-width" onclick="emailPDF()">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            שלח PDF במייל
+          </button>
+          <button class="btn btn-ghost btn-full-width" onclick="window.location.href='view-analysis.html'">
+            ביטול
+          </button>
+        </div>
+      </aside>
+
+      <!-- Preview Panel -->
+      <div class="preview-panel">
+        <div class="page-header">
+          <h1>תצוגה מקדימה של PDF</h1>
+          <p>כך הדוח שלך ייראה</p>
+        </div>
+
+        <div class="pdf-preview" id="pdf-preview">
+          <div class="pdf-page">
+            <div class="pdf-header">
+              <h1>דוח ניתוח גילוי נאות</h1>
+              <div class="student-name">מרקוס ג'ונסון</div>
+              <div class="pdf-meta">
+                <div><strong>כיתה:</strong> ד'</div>
+                <div><strong>חדר:</strong> 201</div>
+                <div><strong>מורה:</strong> שרה כהן</div>
+                <div><strong>תאריך:</strong> 28 דצמבר 2025</div>
+              </div>
+            </div>
+
+            <div class="pdf-section">
+              <h2>סיכום מנהלים</h2>
+              <p>מרקוס הוא תלמיד מבריק ונלהב המפגין יכולות מיוחדות בחשיבה מתמטית ובחקר מדעי. סקרנותו ויכולות פתרון הבעיות שלו הן כישרונות בולטים. תחומי התמקדות כוללים פיתוח אסטרטגיות הבנת הנקרא ותיעול ההתלהבות שלו בהתאם במסגרות כיתתיות.</p>
+            </div>
+
+            <div class="pdf-section">
+              <h2>ביצועים אקדמיים</h2>
+              <h3>חוזקות</h3>
+              <ul>
+                <li>יכולות חשיבה מתמטית ופתרון בעיות יוצאות דופן</li>
+                <li>יכולות חשיבה ביקורתית חזקות בכל המקצועות</li>
+                <li>סקרנות טבעית מניעה מעורבות עמוקה במדעים</li>
+              </ul>
+              <h3>תחומי צמיחה</h3>
+              <ul>
+                <li>הבנת הנקרא, במיוחד עם טקסטים מורכבים</li>
+                <li>ביטוי כתוב ופירוט בעבודות כתיבה</li>
+              </ul>
+            </div>
+
+            <div class="pdf-section">
+              <h2>התנהגותי וחברתי</h2>
+              <p>בדרך כלל מתנהג היטב עם כישורים חברתיים חזקים. אימפולסיביות מזדמנת במהלך שיעורים מרתקים, לעתים קרובות משיב ללא הרמת יד. אהוד על חבריו ומפגין אמפתיה ותכונות מנהיגות. מגיב חיובית להכוונה ולמשוב.</p>
+            </div>
+
+            <div class="pdf-section">
+              <h2>המלצות עיקריות</h2>
+              <ul>
+                <li>יישום קריאה זוגית עם מפות חשיבה לתמיכה בהבנה</li>
+                <li>שימוש בתוכנת המרת דיבור לטקסט ללכידת כישורים מילוליים חזקים בכתיבה</li>
+                <li>מתן הפסקות תנועה וכלי פידג'ט לתמיכה בוויסות עצמי</li>
+                <li>מינוף סגנון למידה מעשי לפיתוח אוריינות</li>
+                <li>שקול הזדמנויות העשרה ממוקדות STEM</li>
+              </ul>
+            </div>
+
+            <div class="pdf-section">
+              <h2>צעדים הבאים</h2>
+              <p>הערכה מחדש של ההתקדמות בעוד 8-10 שבועות, תוך התמקדות בהבנת הנקרא ובפיתוח כתיבה. המשך מינוף חוזקות מתמטיות ומדעיות תוך מתן תמיכה ממוקדת באוריינות. מעקב אחר אסטרטגיות התנהגותיות ליעילות.</p>
+            </div>
+
+            <div style="margin-top: var(--space-8); padding-top: var(--space-4); border-top: 1px solid var(--color-gray-300); font-size: var(--font-size-xs); color: var(--color-gray-500); text-align: center;">
+              <p>נוצר על ידי גילוי נאות • סודי - לשימוש חינוכי בלבד</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Update preview based on options
+    function updatePreview() {
+      const format = document.querySelector('input[name="format"]:checked').value;
+      const customSections = document.getElementById('custom-sections');
+
+      if (format === 'custom') {
+        customSections.style.display = 'block';
+      } else {
+        customSections.style.display = 'none';
+      }
+
+      console.log('תצוגה מקדימה עודכנה:', format);
+    }
+
+    // Download PDF
+    function downloadPDF() {
+      const btn = event.currentTarget;
+      btn.disabled = true;
+      btn.innerHTML = `
+        <span class="spinner spinner-small"></span>
+        מייצר PDF...
+      `;
+
+      setTimeout(() => {
+        btn.innerHTML = `
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          הורד!
+        `;
+
+        setTimeout(() => {
+          alert('PDF הורד בהצלחה!\n\nקובץ: Marcus_Johnson_Analysis_2025-12-28.pdf');
+          btn.disabled = false;
+          btn.innerHTML = `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
+            </svg>
+            הורד PDF
+          `;
+        }, 1000);
+      }, 2000);
+    }
+
+    // Email PDF
+    function emailPDF() {
+      const email = prompt('הזן כתובת דוא"ל של נמען:', 'parent@example.com');
+      if (email) {
+        alert(`דוח PDF יישלח לכתובת:\n${email}\n\nבגרסת ייצור, זה ישלח את המייל בפועל.`);
+      }
+    }
+  </script>
+</body>
+</html>

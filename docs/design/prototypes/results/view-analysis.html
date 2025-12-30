@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>דוח ניתוח - מרקוס ג'ונסון - גילוי נאות</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    body { display: flex; flex-direction: column; min-height: 100vh; }
+    .page-container { flex: 1; padding: var(--space-6); background: var(--color-gray-50); }
+    .report-container { max-width: 1000px; margin: 0 auto; }
+    .report-header { background: white; border-radius: var(--radius-xl); padding: var(--space-8); margin-bottom: var(--space-6); box-shadow: var(--shadow-md); }
+    .student-info-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-6); }
+    .student-details h1 { font-size: var(--font-size-3xl); margin-bottom: var(--space-2); }
+    .student-meta { display: flex; gap: var(--space-6); font-size: var(--font-size-sm); color: var(--color-gray-600); }
+    .header-actions { display: flex; gap: var(--space-3); }
+    .tabs { display: flex; gap: var(--space-2); border-bottom: 2px solid var(--color-gray-200); margin-bottom: var(--space-6); }
+    .tab { padding: var(--space-3) var(--space-6); background: none; border: none; font-size: var(--font-size-md); font-weight: var(--font-weight-medium); color: var(--color-gray-600); cursor: pointer; border-bottom: 3px solid transparent; transition: all var(--transition-normal); }
+    .tab:hover { color: var(--color-primary-700); background: var(--color-primary-50); }
+    .tab.active { color: var(--color-primary-700); border-bottom-color: var(--color-primary-700); }
+    .section-card { background: white; border-radius: var(--radius-lg); padding: var(--space-8); margin-bottom: var(--space-6); box-shadow: var(--shadow-sm); }
+    .section-card h2 { font-size: var(--font-size-2xl); margin-bottom: var(--space-4); color: var(--color-primary-700); }
+    .section-card h3 { font-size: var(--font-size-xl); margin-top: var(--space-6); margin-bottom: var(--space-3); color: var(--color-gray-800); }
+    .section-card p { line-height: var(--line-height-relaxed); margin-bottom: var(--space-4); }
+    .section-card ul { margin: var(--space-3) 0 var(--space-4) var(--space-6); }
+    .section-card li { margin-bottom: var(--space-2); line-height: var(--line-height-relaxed); }
+    .strength-tag { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-secondary-50); color: var(--color-secondary-700); border-radius: var(--radius-md); font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); margin-left: var(--space-2); margin-bottom: var(--space-2); }
+    .improvement-tag { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-warning-50); color: var(--color-warning-700); border-radius: var(--radius-md); font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); margin-left: var(--space-2); margin-bottom: var(--space-2); }
+    .recommendation-box { background: var(--color-primary-50); border-right: 4px solid var(--color-primary-600); padding: var(--space-4); border-radius: var(--radius-md); margin-bottom: var(--space-4); }
+    .recommendation-box h4 { font-size: var(--font-size-lg); margin-bottom: var(--space-2); color: var(--color-primary-700); }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="navbar-brand">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+        <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+      </svg>
+      גילוי נאות
+    </div>
+    <div class="navbar-nav">
+      <a href="../teacher-dashboard/dashboard.html" class="nav-link">לוח בקרה</a>
+      <a href="../students/roster.html" class="nav-link">תלמידים</a>
+      <button class="btn btn-ghost btn-small">שרה כהן</button>
+    </div>
+  </div>
+
+  <main class="page-container container">
+    <div class="report-container">
+      <div class="report-header">
+        <div class="student-info-header">
+          <div class="student-details">
+            <h1>מרקוס ג'ונסון - דוח ניתוח צמיחה</h1>
+            <div class="student-meta">
+              <span><strong>כיתה:</strong> ד'</span>
+              <span><strong>חדר:</strong> 201</span>
+              <span><strong>תאריך ניתוח:</strong> 28 דצמבר 2025</span>
+              <span><strong>מורה:</strong> שרה כהן</span>
+            </div>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-ghost" onclick="window.print()">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path>
+                <rect x="6" y="14" width="12" height="8"></rect>
+              </svg>
+              הדפס
+            </button>
+            <button class="btn btn-secondary" onclick="window.location.href='export-pdf.html'">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
+              </svg>
+              ייצוא PDF
+            </button>
+            <button class="btn btn-primary">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+              שתף
+            </button>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab active" onclick="showTab('academic')">אקדמי</button>
+          <button class="tab" onclick="showTab('behavioral')">התנהגותי וחברתי</button>
+          <button class="tab" onclick="showTab('engagement')">מעורבות</button>
+          <button class="tab" onclick="showTab('recommendations')">המלצות</button>
+        </div>
+      </div>
+
+      <!-- Academic Tab -->
+      <div class="tab-content" id="academic-tab">
+        <div class="section-card">
+          <h2>ניתוח ביצועים אקדמיים</h2>
+
+          <h3>חוזקות</h3>
+          <div style="margin-bottom: var(--space-6);">
+            <span class="strength-tag">
+              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="currentColor">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              פתרון בעיות במתמטיקה
+            </span>
+            <span class="strength-tag">
+              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="currentColor">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              חשיבה ביקורתית
+            </span>
+            <span class="strength-tag">
+              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="currentColor">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              חקר מדעי
+            </span>
+          </div>
+
+          <p>מרקוס מפגין כישורי חשיבה מתמטית יוצאי דופן, במיוחד בהקשרים של פתרון בעיות. הוא מראה נטייה טבעית לפירוק בעיות מורכבות לצעדים ניתנים לניהול ויכול להסביר את תהליך החשיבה שלו בבירור. ביצועיו במדעים מרשימים באותה מידה, כאשר הסקרנות שלו מניעה מעורבות עמוקה בניסויים מעשיים ובחקר מדעי.</p>
+
+          <h3>תחומי שיפור</h3>
+          <div style="margin-bottom: var(--space-6);">
+            <span class="improvement-tag">
+              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 9v4M12 17h.01"></path>
+              </svg>
+              הבנת הנקרא
+            </span>
+            <span class="improvement-tag">
+              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 9v4M12 17h.01"></path>
+              </svg>
+              ביטוי כתוב
+            </span>
+          </div>
+
+          <p>בעוד שמרקוס מצטיין בדיונים מילוליים, ציוני הבנת הנקרא שלו מצביעים על כך שהוא עשוי להתקשות עם טקסטים מורכבים, במיוחד אלה הדורשים היסק וניתוח. עבודתו הכתובה נוטה להיות תמציתית וחסרה את הפירוט הקיים בהסבריו המילוליים. פער זה מצביע על צורך בתמיכה ממוקדת בתרגום כישוריו המילוליים החזקים לתקשורת כתובה.</p>
+
+          <h3>תצפיות מרכזיות</h3>
+          <ul>
+            <li>מצטיין בפעילויות למידה מעשיות ומפגין הבנה באמצעות בנייה ויצירה</li>
+            <li>מפגין יכולות חישוב מנטלי מתקדמות אך לעיתים ממהר בחישובים כתובים</li>
+            <li>שואל שאלות מעמיקות במהלך דיוני כיתה המפגינות חשיבה עמוקה</li>
+            <li>נהנה ממארגני מידע חזותיים ותמיכות ויזואליות בעת התמודדות עם מטלות קריאה</li>
+            <li>מתפקד טוב יותר במבחנים המאפשרים תשובות מילוליות לעומת פורמטים כתובים בלבד</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Behavioral Tab -->
+      <div class="tab-content" id="behavioral-tab" style="display: none;">
+        <div class="section-card">
+          <h2>ניתוח התנהגותי וחברתי</h2>
+
+          <h3>דפוסי התנהגות</h3>
+          <p>מרקוס בדרך כלל מתנהג היטב ופועל לפי שגרות הכיתה ביעילות. עם זאת, ההתלהבות שלו לעיתים מתבטאת כאימפולסיביות, במיוחד במהלך שיעורים מרתקים. הוא מדי פעם משיב ללא הרמת יד, במיוחד כאשר הוא נרגש לגבי הנושא. התנהגות זו נראית כנובעת ממעורבות אמיתית ולא מחוסר כבוד לכללי הכיתה.</p>
+
+          <h3>אינטראקציות חברתיות</h3>
+          <p>מרקוס אהוד על חבריו ומפגין כישורים חברתיים חזקים. הוא כולל בחברויותיו ולעיתים קרובות משמש כמגשר במהלך קונפליקטים בין עמיתים. במהלך עבודה קבוצתית, הוא מקבל תפקידי מנהיגות באופן טבעי אך לומד לאזן את הרעיונות שלו עם תשומות מאחרים. הוא מראה אמפתיה כלפי חברים לכיתה המתקשים ולעיתים קרובות מתנדב לעזור.</p>
+
+          <h3>ויסות עצמי</h3>
+          <ul>
+            <li>מתקשה לחכות לתורו במהלך דיוני כיתה מלאה</li>
+            <li>מראה שיפור בשליטה באימפולסים כאשר ניתנות לו אסטרטגיות ספציפיות (אותות יד, כלי פידג'ט)</li>
+            <li>מגיב היטב להכוונה מחדש ומקבל משוב בצורה בונה</li>
+            <li>נהנה מהפסקות תנועה במהלך תקופות ארוכות של עבודה בישיבה</li>
+            <li>מפגין חוסן חזק בעת התמודדות עם אתגרים או כשלונות</li>
+          </ul>
+
+          <h3>אזרחות בכיתה</h3>
+          <p>מרקוס לוקח אחריות ברצינות והוא אמין כאשר מוטלות עליו משימות בכיתה. הוא מראה פוטנציאל מנהיגות ולעיתים קרובות מבוקש על ידי עמיתים לעזרה. הוא מפגין כבוד לחומרים ולמרחבי למידה. היחס החיובי שלו תורם משמעותית לתרבות הכיתה.</p>
+        </div>
+      </div>
+
+      <!-- Engagement Tab -->
+      <div class="tab-content" id="engagement-tab" style="display: none;">
+        <div class="section-card">
+          <h2>ניתוח מעורבות</h2>
+
+          <h3>זמני מעורבות שיא</h3>
+          <p>מרקוס מראה מעורבות גבוהה ביותר במהלך שיעורי הבוקר, במיוחד במהלך בלוקים של מתמטיקה ומדעים. האנרגיה והמיקוד שלו חזקים במיוחד במהלך פעילויות מעשיות ופרויקטים שיתופיים. הוא משגשג כאשר השיעורים משלבים תנועה, בנייה או ניסויים.</p>
+
+          <h3>מעורבות ספציפית לנושא</h3>
+          <ul>
+            <li><strong>מתמטיקה:</strong> מעורב מאוד, מתנדב לעיתים קרובות, מראה התלהבות לאתגרים</li>
+            <li><strong>מדעים:</strong> סקרן עמוקות, שואל שאלות חודרניות, משתתף במלואו בניסויים</li>
+            <li><strong>קריאה/אומנויות שפה:</strong> מעורבות בינונית, זקוק לעידוד לשמירה על מיקוד</li>
+            <li><strong>מדעי החברה:</strong> מעורב כאשר נושאים מתחברים ליישומים בעולם האמיתי</li>
+            <li><strong>אומנות/מוזיקה:</strong> משתתף נלהב, מבטא יצירתיות בחופשיות</li>
+          </ul>
+
+          <h3>דפוסי מעורבות</h3>
+          <p>המעורבות של מרקוס קשורה חזק לאופן הלמידה. הוא מעורב מאוד במהלך פעילויות קינסתטיות ומעשיות אך מראה עניין מופחת במהלך תקופות ארוכות של קריאה או כתיבה עצמאית. הוא נהנה ממעברים תכופים בין פעילויות ומגיב היטב לאלמנטים של גיימיפיקציה בשיעורים.</p>
+
+          <h3>גורמי מוטיבציה</h3>
+          <p>מרקוס מונע באופן פנימי על ידי אתגר ותחרות. הוא מגיב חיובית להזדמנויות לפתור בעיות ולהבין דברים באופן עצמאי. אינטראקציה עם עמיתים ושיתוף פעולה מגבירים משמעותית את המעורבות שלו. הוא מראה גאווה בעבודתו כאשר היא כוללת בנייה, יצירה או הדגמת הבנה דרך פרויקטים ולא הערכות מסורתיות.</p>
+        </div>
+      </div>
+
+      <!-- Recommendations Tab -->
+      <div class="tab-content" id="recommendations-tab" style="display: none;">
+        <div class="section-card">
+          <h2>המלצות מותאמות אישית</h2>
+
+          <h3>התערבויות אקדמיות</h3>
+
+          <div class="recommendation-box">
+            <h4>תמיכה בהבנת הנקרא</h4>
+            <p><strong>אסטרטגיה:</strong> יישום קריאה זוגית עם טכנולוגיית טקסט לדיבור. מתן מארגני מידע גרפיים להבנה (מפות סיפור, תרשימי ניתוח דמויות). אפשר למרקוס להדגים הבנה באמצעות סיכומים מילוליים לפני תשובות כתובות.</p>
+            <p><strong>תוצאה צפויה:</strong> שיפור בציוני הבנה והגברת הביטחון במטלות קריאה תוך 6-8 שבועות.</p>
+          </div>
+
+          <div class="recommendation-box">
+            <h4>פיתוח כתיבה</h4>
+            <p><strong>אסטרטגיה:</strong> שימוש בתוכנת המרת דיבור לטקסט ללכידת כישוריו המילוליים החזקים של מרקוס בפורמט כתוב. הוראת אסטרטגיות עריכה מפורשות. מתן פותחות משפטים ומסגרות פסקה למשימות כתיבה מובנות.</p>
+            <p><strong>תוצאה צפויה:</strong> תגובות כתובות מפורטות יותר המשקפות טוב יותר את ההבנה המילולית שלו.</p>
+          </div>
+
+          <h3>אסטרטגיות התנהגותיות</h3>
+
+          <div class="recommendation-box">
+            <h4>פיתוח שליטה באימפולסים</h4>
+            <p><strong>אסטרטגיה:</strong> יישום מערכת "זמן מחשבה" שבה מרקוס משתמש באות יד כדי לציין שיש לו תשובה ומתרגל המתנה לפני שיתוף. מתן הזדמנויות להפסקות תנועה בין שיעורים. שקול כלי פידג'ט לתקופות מיקוד ממושכות.</p>
+            <p><strong>תוצאה צפויה:</strong> הפחתה בקריאות ושיפור בויסות עצמי במהלך דיונים.</p>
+          </div>
+
+          <h3>שיפורי מעורבות</h3>
+
+          <div class="recommendation-box">
+            <h4>מינוף חוזקות בתחומים חלשים יותר</h4>
+            <p><strong>אסטרטגיה:</strong> שילוב אלמנטים של בנייה/מעשיים במטלות קריאה וכתיבה (למשל, בניית תפאורות סיפור, יצירת ייצוגים פיזיים של אוצר מילים). שימוש בהקשרים מתמטיים לתרגול כתיבה (הסבר שלבי פתרון בעיות).</p>
+            <p><strong>תוצאה צפויה:</strong> מעורבות מוגברת באומנויות שפה דרך חיבור לסגנונות למידה מועדפים.</p>
+          </div>
+
+          <h3>המלצות לשותפות הורים</h3>
+          <ul>
+            <li>שיתוף קריאה בבית - מתחלפים בדפים לתמיכה בשטף ובהבנה</li>
+            <li>עידוד כתיבת יומן על ניסויים מדעיים או פרויקטי בנייה</li>
+            <li>מתן הזדמנויות לפעילות גופנית לתמיכה בוויסות עצמי</li>
+            <li>חגיגת מאמץ ותהליך פתרון בעיות, לא רק תשובות נכונות</li>
+            <li>שקול תוכניות קיץ ממוקדות STEM לטיפוח תחומי עניין טבעיים</li>
+          </ul>
+
+          <h3>מעקב התקדמות</h3>
+          <p><strong>המלצה למעקב:</strong> הערכה מחדש בעוד 8-10 שבועות להערכת התקדמות בהבנת הנקרא ובפיתוח כתיבה. מעקב אחר אסטרטגיות התנהגותיות ליעילות והתאמה לפי הצורך. המשך מינוף חוזקות מתמטיות ומדעיות תוך מתן תמיכה ממוקדת באוריינות.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function showTab(tabName) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.style.display = 'none';
+      });
+
+      // Remove active class from all tab buttons
+      document.querySelectorAll('.tab').forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+      // Show selected tab
+      document.getElementById(tabName + '-tab').style.display = 'block';
+
+      // Add active class to clicked tab button
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>

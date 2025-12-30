@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מנתח: מרקוס ג'ונסון - גילוי נאות</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    .analysis-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background: var(--color-gray-50);
+    }
+
+    .analysis-header {
+      background: white;
+      border-bottom: 1px solid var(--color-gray-200);
+      padding: var(--space-4) var(--space-6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      z-index: 10;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .student-info h2 {
+      font-size: var(--font-size-lg);
+      margin: 0;
+      color: var(--color-gray-900);
+    }
+
+    .student-info p {
+      font-size: var(--font-size-sm);
+      color: var(--color-gray-600);
+      margin: 0;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-3);
+    }
+
+    .progress-container {
+      background: var(--color-primary-50);
+      padding: var(--space-4) var(--space-6);
+      border-bottom: 1px solid var(--color-primary-200);
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-2);
+    }
+
+    .progress-label {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-primary-700);
+    }
+
+    .progress-time {
+      font-size: var(--font-size-xs);
+      color: var(--color-primary-600);
+    }
+
+    .progress-bar-container {
+      background: white;
+      border-radius: var(--radius-full);
+      height: 8px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+    }
+
+    .progress-bar-fill {
+      background: linear-gradient(90deg, var(--color-primary-600), var(--color-secondary-500));
+      height: 100%;
+      border-radius: var(--radius-full);
+      transition: width 0.5s ease-out;
+    }
+
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      margin-top: var(--space-3);
+      font-size: var(--font-size-xs);
+    }
+
+    .progress-step {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+      color: var(--color-gray-600);
+    }
+
+    .progress-step.active {
+      color: var(--color-primary-700);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .progress-step.completed {
+      color: var(--color-secondary-600);
+    }
+
+    .progress-step svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .conversation-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--space-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .message {
+      display: flex;
+      gap: var(--space-3);
+      max-width: 800px;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .message.ai {
+      align-self: flex-start;
+    }
+
+    .message.teacher {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .message-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .message.ai .message-avatar {
+      background: var(--color-primary-100);
+      color: var(--color-primary-700);
+    }
+
+    .message.teacher .message-avatar {
+      background: var(--color-secondary-100);
+      color: var(--color-secondary-700);
+    }
+
+    .message-content {
+      flex: 1;
+    }
+
+    .message-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-1);
+    }
+
+    .message-sender {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-gray-700);
+    }
+
+    .message-time {
+      font-size: var(--font-size-xs);
+      color: var(--color-gray-500);
+    }
+
+    .message-bubble {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .message.teacher .message-bubble {
+      background: var(--color-secondary-50);
+      border: 1px solid var(--color-secondary-200);
+    }
+
+    .message-bubble p {
+      margin: 0;
+      color: var(--color-gray-800);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .typing-indicator {
+      display: flex;
+      gap: var(--space-1);
+      padding: var(--space-3);
+    }
+
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-gray-400);
+      animation: typing 1.4s infinite;
+    }
+
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typing {
+      0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.7;
+      }
+      30% {
+        transform: translateY(-10px);
+        opacity: 1;
+      }
+    }
+
+    .input-container {
+      background: white;
+      border-top: 1px solid var(--color-gray-200);
+      padding: var(--space-4) var(--space-6);
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .input-wrapper {
+      display: flex;
+      gap: var(--space-3);
+      max-width: 800px;
+      margin: 0 auto;
+      align-items: flex-end;
+    }
+
+    .input-field {
+      flex: 1;
+      position: relative;
+    }
+
+    .input-field textarea {
+      width: 100%;
+      min-height: 80px;
+      max-height: 200px;
+      padding: var(--space-3) var(--space-4);
+      border: 1px solid var(--color-gray-300);
+      border-radius: var(--radius-lg);
+      font-family: var(--font-family-primary);
+      font-size: var(--font-size-md);
+      resize: vertical;
+      transition: all var(--transition-normal);
+    }
+
+    .input-field textarea:focus {
+      border-color: var(--color-primary-500);
+      box-shadow: var(--shadow-focus);
+    }
+
+    .input-hint {
+      font-size: var(--font-size-xs);
+      color: var(--color-gray-500);
+      margin-top: var(--space-1);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .char-count {
+      color: var(--color-gray-400);
+    }
+
+    .send-button {
+      padding: var(--space-3) var(--space-6);
+      min-width: 100px;
+    }
+
+    .suggestions {
+      background: var(--color-info-100);
+      border: 1px solid var(--color-info-200);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      margin-bottom: var(--space-4);
+    }
+
+    .suggestions h4 {
+      font-size: var(--font-size-sm);
+      color: var(--color-info-700);
+      margin-bottom: var(--space-2);
+    }
+
+    .suggestions ul {
+      margin: 0;
+      padding-left: var(--space-5);
+      color: var(--color-info-700);
+      font-size: var(--font-size-sm);
+    }
+
+    .suggestions li {
+      margin-bottom: var(--space-1);
+    }
+
+    .auto-save {
+      font-size: var(--font-size-xs);
+      color: var(--color-secondary-600);
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+      padding: var(--space-2);
+      background: var(--color-secondary-50);
+      border-radius: var(--radius-md);
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      .conversation-container {
+        padding: var(--space-4);
+      }
+
+      .input-container {
+        padding: var(--space-3) var(--space-4);
+      }
+
+      .progress-steps {
+        display: none;
+      }
+
+      .header-actions .btn-secondary {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="analysis-container">
+    <!-- Header -->
+    <div class="analysis-header">
+      <div class="header-left">
+        <button class="btn btn-ghost btn-small" onclick="window.location.href='../teacher-dashboard/dashboard.html'">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"></path>
+          </svg>
+          חזרה
+        </button>
+        <div class="student-info">
+          <h2>מנתח: מרקוס ג'ונסון</h2>
+          <p>כיתה ד' • חדר 201 • התחיל לפני 3 דקות</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-secondary btn-small" onclick="saveAndExit()">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"></path>
+            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+            <polyline points="7 3 7 8 15 8"></polyline>
+          </svg>
+          שמור והמשך מאוחר יותר
+        </button>
+        <div id="auto-save-indicator" class="auto-save" style="display: none;">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          נשמר אוטומטית
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="progress-container">
+      <div class="progress-header">
+        <span class="progress-label">קטע 2 מתוך 3: התנהגותי וחברתי</span>
+        <span class="progress-time">זמן משוער שנותר: 4 דקות</span>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="progress-bar" style="width: 60%;"></div>
+      </div>
+      <div class="progress-steps">
+        <div class="progress-step completed">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          אקדמי
+        </div>
+        <div class="progress-step active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+          </svg>
+          התנהגותי וחברתי
+        </div>
+        <div class="progress-step">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+          </svg>
+          מעורבות
+        </div>
+      </div>
+    </div>
+
+    <!-- Conversation -->
+    <div class="conversation-container" id="conversation">
+      <!-- AI Message 1 -->
+      <div class="message ai">
+        <div class="message-avatar">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+          </svg>
+        </div>
+        <div class="message-content">
+          <div class="message-header">
+            <span class="message-sender">גילוי נאות AI</span>
+            <span class="message-time">15:42</span>
+          </div>
+          <div class="message-bubble">
+            <p>מצוין! עכשיו בואו נדבר על ההתנהגות והאינטראקציות החברתיות של מרקוס.</p>
+            <p><strong>איך היית מתאר את ההתנהגות של מרקוס בכיתה?</strong> חשוב על דברים כמו ביצוע הוראות, ריכוז במשימה, וכיבוד כללי הכיתה.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suggestions Box -->
+      <div class="suggestions">
+        <h4>דוגמאות מועילות לשקול:</h4>
+        <ul>
+          <li>האם התלמיד עוקב אחר הוראות בפעם הראשונה?</li>
+          <li>כיצד התלמיד מתמודד עם מעברים בין פעילויות?</li>
+          <li>מה קורה כשהתלמיד לא מקבל את מה שהוא רוצה?</li>
+          <li>האם יש שעות ספציפיות ביום בהן ההתנהגות טובה או גרועה יותר?</li>
+        </ul>
+      </div>
+
+      <!-- Teacher Message 1 -->
+      <div class="message teacher">
+        <div class="message-avatar">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+          </svg>
+        </div>
+        <div class="message-content">
+          <div class="message-header">
+            <span class="message-sender">את/ה</span>
+            <span class="message-time">15:43</span>
+          </div>
+          <div class="message-bubble">
+            <p>מרקוס בדרך כלל מתנהג היטב אבל יכול להיות אימפולסיבי. הוא לפעמים זורק תשובות בלי להרים יד, במיוחד כשהוא מתרגש מהנושא. הוא עוקב אחרי רוב כללי הכיתה אבל מתקשה לחכות לתורו במהלך דיונים.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Message 2 -->
+      <div class="message ai">
+        <div class="message-avatar">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+          </svg>
+        </div>
+        <div class="message-content">
+          <div class="message-header">
+            <span class="message-sender">גילוי נאות AI</span>
+            <span class="message-time">15:43</span>
+          </div>
+          <div class="message-bubble">
+            <p>זה ממש מועיל. האימפולסיביות שאת/ה מתאר היא נפוצה בקרב לומדים פעילים.</p>
+            <p><strong>איך מרקוס מקיים אינטראקציה עם בני גילו?</strong> ספר לי על החברויות שלו, דינמיקת עבודה קבוצתית וכישורים חברתיים.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typing indicator (shown when AI is "thinking") -->
+      <div class="message ai" id="typing-indicator" style="display: none;">
+        <div class="message-avatar">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+          </svg>
+        </div>
+        <div class="message-content">
+          <div class="message-bubble">
+            <div class="typing-indicator">
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="input-container">
+      <div class="input-wrapper">
+        <div class="input-field">
+          <textarea
+            id="messageInput"
+            placeholder="שתף את התצפיות שלך על האינטראקציות החברתיות של מרקוס..."
+            rows="3"
+            onkeydown="handleKeyPress(event)"
+            oninput="updateCharCount()"
+          ></textarea>
+          <div class="input-hint">
+            <span>לחץ Enter לשליחה, Shift+Enter לשורה חדשה</span>
+            <span class="char-count" id="char-count">0 תווים</span>
+          </div>
+        </div>
+        <button class="btn btn-primary send-button" id="send-btn" onclick="sendMessage()">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+          שלח
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let messageCount = 2; // Tracks number of teacher messages
+
+    // Handle Enter key (Send) vs Shift+Enter (new line)
+    function handleKeyPress(event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+      }
+    }
+
+    // Update character count
+    function updateCharCount() {
+      const input = document.getElementById('messageInput');
+      const count = input.value.length;
+      document.getElementById('char-count').textContent = `${count} תווים`;
+    }
+
+    // Send message
+    function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const message = input.value.trim();
+
+      if (!message) return;
+
+      // Add teacher message
+      addTeacherMessage(message);
+
+      // Clear input
+      input.value = '';
+      updateCharCount();
+
+      // Show typing indicator
+      setTimeout(() => {
+        showTypingIndicator();
+
+        // Simulate AI response
+        setTimeout(() => {
+          hideTypingIndicator();
+          addAIMessage(getNextAIMessage());
+
+          // Update progress
+          messageCount++;
+          updateProgress();
+
+          // Show auto-save
+          showAutoSave();
+
+          // Check if conversation is complete
+          if (messageCount >= 5) {
+            setTimeout(() => {
+              if (confirm('עבודה מצוינת! סיימת את שיחת הניתוח.\n\nהאם תרצה לסקור את התוצאות שנוצרו על ידי ה-AI?')) {
+                window.location.href = '../results/view-analysis.html';
+              }
+            }, 1000);
+          }
+        }, 2000);
+      }, 300);
+    }
+
+    // Add teacher message to conversation
+    function addTeacherMessage(text) {
+      const conversation = document.getElementById('conversation');
+      const now = new Date();
+      const time = now.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit', hour12: false });
+
+      const messageHTML = `
+        <div class="message teacher">
+          <div class="message-avatar">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+          </div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="message-sender">את/ה</span>
+              <span class="message-time">${time}</span>
+            </div>
+            <div class="message-bubble">
+              <p>${text}</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      conversation.insertAdjacentHTML('beforeend', messageHTML);
+      scrollToBottom();
+    }
+
+    // Add AI message to conversation
+    function addAIMessage(text) {
+      const conversation = document.getElementById('conversation');
+      const now = new Date();
+      const time = now.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit', hour12: false });
+
+      const messageHTML = `
+        <div class="message ai">
+          <div class="message-avatar">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+            </svg>
+          </div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="message-sender">גילוי נאות AI</span>
+              <span class="message-time">${time}</span>
+            </div>
+            <div class="message-bubble">
+              <p>${text}</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      conversation.insertAdjacentHTML('beforeend', messageHTML);
+      scrollToBottom();
+    }
+
+    // Get next AI message (simulated conversation flow)
+    function getNextAIMessage() {
+      const messages = [
+        "תובנות מצוינות! נשמע שלמרקוס יש כישורים חברתיים חזקים. בואו נעבור לקטע האחרון.<br><br><strong>ספר לי על רמת המעורבות של מרקוס.</strong> מתי הוא הכי ממוקד ומוטיבציה?",
+        "זה מאוד מועיל. הבנת דפוסי המעורבות שלו תעזור לנו ליצור את האסטרטגיות הנכונות.<br><br><strong>האם יש מקצועות או פעילויות ספציפיות שבהן מרקוס מעורב או מנותק במיוחד?</strong>",
+        "מושלם! יש לי הבנה מקיפה של מרקוס עכשיו. תן לי לנתח את כל התצפיות שלך ולייצר המלצות מותאמות אישית."
+      ];
+
+      return messages[Math.min(messageCount - 2, messages.length - 1)];
+    }
+
+    // Show typing indicator
+    function showTypingIndicator() {
+      document.getElementById('typing-indicator').style.display = 'flex';
+      scrollToBottom();
+    }
+
+    // Hide typing indicator
+    function hideTypingIndicator() {
+      document.getElementById('typing-indicator').style.display = 'none';
+    }
+
+    // Scroll conversation to bottom
+    function scrollToBottom() {
+      const conversation = document.getElementById('conversation');
+      setTimeout(() => {
+        conversation.scrollTop = conversation.scrollHeight;
+      }, 100);
+    }
+
+    // Update progress bar
+    function updateProgress() {
+      const progress = Math.min(60 + (messageCount * 10), 95);
+      document.getElementById('progress-bar').style.width = progress + '%';
+    }
+
+    // Show auto-save indicator
+    function showAutoSave() {
+      const indicator = document.getElementById('auto-save-indicator');
+      indicator.style.display = 'flex';
+
+      setTimeout(() => {
+        indicator.style.display = 'none';
+      }, 3000);
+    }
+
+    // Save and exit
+    function saveAndExit() {
+      if (confirm('ההתקדמות שלך תישמר. תוכל לחזור לניתוח הזה בכל עת.\n\nלחזור ללוח הבקרה?')) {
+        // Simulate save
+        alert('הניתוח נשמר! מרקוס ג\'ונסון מסומן כעת כ"בתהליך"');
+        window.location.href = '../teacher-dashboard/dashboard.html';
+      }
+    }
+
+    // Auto-focus input on load
+    window.addEventListener('load', () => {
+      document.getElementById('messageInput').focus();
+    });
+
+    // Simulate auto-save every 30 seconds
+    setInterval(() => {
+      showAutoSave();
+    }, 30000);
+  </script>
+</body>
+</html>
