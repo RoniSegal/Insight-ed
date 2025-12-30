@@ -166,7 +166,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 4. **Video/Audio Recording:** No multimedia capture during analysis sessions; text-based only
 5. **LMS Integration:** No automated sync with Google Classroom, Canvas, Schoology, etc.; manual workflows
 6. **SIS Integration:** No automated Student Information System integration; manual CSV import/export only
-7. **Multi-Language Support:** English only for MVP; internationalization deferred
+7. **Multi-Language Support:** Hebrew is the primary and only language; UI will be right-to-left (RTL) with Hebrew text throughout
 8. **Advanced ML Predictions:** Basic trends only; no predictive analytics or early warning systems using machine learning
 9. **Custom Branding:** Single branded experience; no white-labeling or school-specific branding
 10. **Real-Time Collaboration:** No simultaneous multi-teacher editing; single-user analysis sessions
@@ -189,7 +189,6 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - Intervention tracking with before/after outcome measurement
 
 **Phase 3 Enhancements (Year 2+):**
-- Multi-language support (Spanish, Mandarin, etc.)
 - Predictive analytics and early warning systems
 - District-wide benchmarking and best practice sharing
 - Professional development recommendation engine
@@ -1158,23 +1157,19 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
    - AI-suggested professional development for teachers based on class needs
    - Natural language queries: "Show me all 6th graders struggling with math"
 
-6. **Multi-Language Support:**
-   - Spanish, Mandarin, French, etc.
-   - AI analysis in multiple languages
-
-7. **Custom Branding:**
+6. **Custom Branding:**
    - White-labeling for districts
    - School-specific logos and color schemes
 
-8. **Assessment Integration:**
+7. **Assessment Integration:**
    - Import standardized test scores to correlate with teacher observations
    - Combine quantitative (test data) + qualitative (teacher insights)
 
-9. **Video/Audio Notes:**
+8. **Video/Audio Notes:**
    - Teachers record verbal observations instead of typing
    - AI transcribes and analyzes audio
 
-10. **Gamification:**
+9. **Gamification:**
     - Teacher achievements: "Analyzed all students!", "3-month streak"
     - Leaderboards for schools (highest completion rate)
 
@@ -1420,6 +1415,53 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - Live regions for dynamic content updates (e.g., "Analysis saved" confirmation)
 - Skip links to jump to main content (bypass navigation)
 
+### Language & Localization
+
+**Primary Language: Hebrew**
+
+The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI elements, system-generated content, and user-facing materials must be in Hebrew with proper right-to-left (RTL) text direction support.
+
+**UI & Content Requirements:**
+- **All interface text in Hebrew:** Buttons, labels, navigation, form fields, error messages, tooltips
+- **System-generated content in Hebrew:** Emails (password reset, notifications), PDF reports, dashboard text, AI analysis prompts and outputs
+- **Documentation in Hebrew:** Onboarding materials, help documentation, FAQs, tooltips
+- **Right-to-left (RTL) layout:** Entire UI mirrors horizontally (navigation on right, back buttons point right, etc.)
+- **Hebrew date/time formatting:** Use Hebrew locale (he-IL) for all dates and times (e.g., "30 בדצמבר 2025")
+- **Number formatting:** Hebrew number formatting conventions
+
+**Technical Implementation:**
+- **i18n Framework:** next-intl or react-i18next with RTL support
+- **RTL CSS:** Tailwind CSS with RTL plugin using logical properties (margin-inline-start vs margin-left)
+- **Bidirectional Text Handling:** Proper rendering of mixed Hebrew/English content (e.g., student names with English, technical terms)
+- **Hebrew Typography:**
+  - Web fonts optimized for Hebrew readability (Rubik, Heebo, or Assistant)
+  - Support for Hebrew diacritics (nikud) if needed for educational content
+  - Appropriate line-height and letter-spacing for Hebrew text
+- **Hebrew Collation:** Database sorting according to Hebrew alphabetical order (aleph to tav)
+- **Unicode Normalization:** Proper storage and search of Hebrew text with combining characters
+- **Text Search:** Full-text search supporting Hebrew morphology and character variants
+
+**Content Strategy:**
+- **Translation Files:** All UI strings stored in centralized JSON/YAML files (e.g., `/locales/he/common.json`)
+- **English Technical Terms:** Preserve English for universally recognized terms (e.g., "API", "ChatGPT", "PDF") where appropriate
+- **Translation Quality:** Professional Hebrew translation (not machine-translated) for clarity and educational appropriateness
+- **Consistency:** Maintain consistent terminology across the platform (e.g., always use same Hebrew term for "analysis")
+
+**Accessibility Considerations:**
+- RTL screen reader support (test with JAWS, NVDA, VoiceOver in Hebrew mode)
+- Keyboard navigation works correctly in RTL layout (Tab order right-to-left, Arrow keys reversed)
+- Form validation messages in clear, actionable Hebrew
+
+**Future Enhancement:**
+- **English Interface:** Secondary language option for non-Hebrew speakers (administrators, technical support)
+- **Additional Languages:** Expand to Arabic, Russian, or other languages based on market demand
+- **User Language Preference:** Allow users to select preferred language (future multi-language support)
+
+**Out of Scope for MVP:**
+- Multi-language support (Hebrew only for MVP)
+- User-selectable language switching
+- Automatic language detection based on browser locale
+
 ---
 
 ## 8. Technical Constraints
@@ -1430,12 +1472,14 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - **Framework:** Next.js 14+ (React 18+)
   - App Router (React Server Components)
   - TypeScript for type safety
-- **Styling:** Tailwind CSS (utility-first CSS framework)
-- **UI Components:** shadcn/ui or Radix UI (accessible, unstyled primitives)
+- **Styling:** Tailwind CSS with RTL plugin (utility-first CSS framework with right-to-left support)
+- **Internationalization:** next-intl or react-i18next (i18n framework with RTL support for Hebrew)
+- **UI Components:** shadcn/ui or Radix UI (accessible, unstyled primitives with RTL compatibility)
 - **Data Visualization:** Recharts or Chart.js (React-compatible charting library)
 - **Forms:** React Hook Form (performant, flexible form management)
 - **State Management:** Zustand or React Context (lightweight, modern state management)
 - **HTTP Client:** Fetch API or Axios with React Query for caching and optimistic updates
+- **Fonts:** Hebrew web fonts (e.g., Rubik, Heebo, Assistant) optimized for readability
 
 **Backend:**
 - **Framework:** NestJS 10+ with TypeScript
@@ -1635,10 +1679,13 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
    - **Accessibility:** All color combinations meet WCAG AA contrast ratios
 
 2. **Typography:**
-   - **Font Family:** Sans-serif for readability (e.g., Inter, Roboto, Open Sans)
+   - **Font Family:** Hebrew web fonts for optimal readability (e.g., Rubik, Heebo, Assistant)
+     - Must support Hebrew character set with proper diacritics (nikud) support
+     - Fallback fonts for mixed Hebrew/English content
+   - **Text Direction:** Right-to-left (RTL) as default
    - **Headings:** Bold, clear hierarchy (H1, H2, H3 with distinct sizes)
    - **Body Text:** 16px minimum (readable without zooming)
-   - **Line Height:** 1.5 for body text (comfortable reading)
+   - **Line Height:** 1.5 for body text (comfortable reading in Hebrew)
 
 3. **Spacing:**
    - **Spacing Scale:** 4px base unit (4, 8, 12, 16, 24, 32, 48, 64)
@@ -1658,8 +1705,10 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
    - **Usage:** Icons paired with text labels (not icon-only buttons, for accessibility)
 
 6. **Responsive Grid:**
-   - **12-Column Grid:** Standard responsive grid system (e.g., CSS Grid or Tailwind)
+   - **12-Column Grid:** Standard responsive grid system with RTL support (CSS Grid or Tailwind)
+   - **RTL Layout:** Logical properties for margin/padding (e.g., margin-inline-start instead of margin-left)
    - **Breakpoints:** Mobile (<640px), Tablet (640-1024px), Desktop (1024px+)
+   - **Mirroring:** UI elements mirror horizontally in RTL (navigation on right, back buttons point right)
 
 **Component Library:** shadcn/ui or Radix UI (unstyled primitives customized to design system)
 

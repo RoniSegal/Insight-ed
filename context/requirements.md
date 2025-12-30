@@ -299,10 +299,12 @@ teacher: logs in->choose student name->start analysis->recive the output, princi
   - TypeScript for type safety
   - Server-side rendering (SSR) for initial page loads
   - Static generation for marketing pages
-  - Tailwind CSS for styling
+  - Tailwind CSS for styling with RTL support
+  - next-intl or react-i18next for internationalization (i18n) and RTL handling
   - Recharts or Chart.js for data visualization
   - React Hook Form for form management
   - Zustand or React Context for state management
+  - Hebrew web fonts (e.g., Rubik, Heebo, or Assistant for optimal Hebrew readability)
 
 - **Backend:** NestJS 10+ with TypeScript
   - Modular architecture with domain-driven design
@@ -386,6 +388,35 @@ teacher: logs in->choose student name->start analysis->recive the output, princi
 - Offline detection and user feedback
 - Progressive enhancement approach
 
+### Language & Localization
+
+**Primary Language: Hebrew**
+- All UI text, labels, buttons, and messages must be in Hebrew
+- All system-generated content (emails, reports, dashboards) must be in Hebrew
+- Right-to-left (RTL) text direction support throughout the application
+- Hebrew date and number formatting (e.g., Hebrew calendar support optional, but Gregorian dates in Hebrew format)
+- Error messages and validation feedback in Hebrew
+- Onboarding materials and help documentation in Hebrew
+
+**Technical Requirements:**
+- i18n (internationalization) framework supporting RTL languages (e.g., next-intl, react-i18next)
+- RTL CSS support with logical properties (e.g., `margin-inline-start` instead of `margin-left`)
+- Bidirectional text handling for mixed Hebrew/English content (e.g., student names, technical terms)
+- Hebrew font optimization (web fonts with Hebrew character sets)
+- Unicode normalization for Hebrew text storage and search
+- Hebrew collation for sorting (alphabetical order according to Hebrew alphabet)
+
+**Content Strategy:**
+- UI strings stored in centralized translation files (JSON/YAML)
+- Hebrew translations for all user-facing content
+- English technical terms preserved where appropriate (e.g., "API", "ChatGPT")
+- Date and time formatting using Hebrew locales (he-IL)
+
+**Future Enhancement:**
+- English interface as secondary language (for non-Hebrew speakers)
+- Additional language support based on market expansion
+- User-selectable language preference
+
 ## Out of Scope
 
 **Explicitly NOT included in MVP:**
@@ -395,7 +426,6 @@ teacher: logs in->choose student name->start analysis->recive the output, princi
 - Video or audio recording during analysis sessions
 - Integration with Learning Management Systems (LMS) - manual workflows only
 - Automated SIS (Student Information System) sync - manual CSV import only
-- Multi-language support (English only for MVP)
 - Advanced analytics with machine learning predictions (basic trends only)
 - Custom branding per school/district (single branded experience)
 - Real-time collaboration (multiple teachers analyzing same student simultaneously)
@@ -412,7 +442,8 @@ teacher: logs in->choose student name->start analysis->recive the output, princi
 - Mobile apps for on-the-go access
 - Parent transparency portal (view student analyses with permission)
 - LMS and SIS integrations for automated roster sync
-- Multi-language support for diverse schools
+- English language interface option (for non-Hebrew speaking users)
+- Additional language support for diverse international schools
 - Advanced predictive analytics (e.g., early warning systems for at-risk students)
 - Intervention tracking and outcome measurement
 - Professional development resources for teachers
