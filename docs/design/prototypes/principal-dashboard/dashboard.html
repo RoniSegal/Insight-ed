@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>לוח בקרה מנהל - גילוי נאות</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    body { display: flex; flex-direction: column; min-height: 100vh; }
+    .main-content { flex: 1; padding: var(--space-8) var(--space-6); }
+    .dashboard-header { margin-bottom: var(--space-8); display: flex; justify-content: space-between; align-items: flex-start; }
+    .dashboard-title { font-size: var(--font-size-4xl); margin-bottom: var(--space-2); }
+    .dashboard-subtitle { font-size: var(--font-size-lg); color: var(--color-gray-600); margin: 0; }
+    .filters-bar { background: white; border: 1px solid var(--color-gray-200); border-radius: var(--radius-lg); padding: var(--space-4); margin-bottom: var(--space-6); display: flex; gap: var(--space-3); align-items: flex-end; flex-wrap: wrap; }
+    .filter-group { flex: 1; min-width: 150px; }
+    .filter-group label { display: block; font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); color: var(--color-gray-700); margin-bottom: var(--space-1); text-transform: uppercase; letter-spacing: 0.05em; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-6); margin-bottom: var(--space-8); }
+    .metric-card { background: white; border-radius: var(--radius-lg); padding: var(--space-6); box-shadow: var(--shadow-sm); border-left: 4px solid; }
+    .metric-card.primary { border-left-color: var(--color-primary-600); }
+    .metric-card.success { border-left-color: var(--color-secondary-600); }
+    .metric-card.warning { border-left-color: var(--color-warning-600); }
+    .metric-card.attention { border-left-color: var(--color-attention-600); }
+    .metric-label { font-size: var(--font-size-sm); color: var(--color-gray-600); font-weight: var(--font-weight-semibold); text-transform: uppercase; margin-bottom: var(--space-2); }
+    .metric-value { font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); color: var(--color-gray-900); margin-bottom: var(--space-1); }
+    .metric-change { font-size: var(--font-size-sm); color: var(--color-secondary-600); }
+    .chart-card { background: white; border-radius: var(--radius-lg); padding: var(--space-6); box-shadow: var(--shadow-sm); margin-bottom: var(--space-6); }
+    .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6); padding-bottom: var(--space-4); border-bottom: 2px solid var(--color-gray-200); }
+    .chart-header h2 { font-size: var(--font-size-xl); margin: 0; }
+    .chart-placeholder { background: var(--color-gray-50); border: 2px dashed var(--color-gray-300); border-radius: var(--radius-md); height: 300px; display: flex; align-items: center; justify-content: center; color: var(--color-gray-500); font-size: var(--font-size-sm); }
+    .bar-chart { display: flex; gap: var(--space-4); align-items: flex-end; height: 250px; padding: var(--space-4); }
+    .bar { flex: 1; background: linear-gradient(to top, var(--color-primary-600), var(--color-primary-400)); border-radius: var(--radius-md) var(--radius-md) 0 0; position: relative; min-width: 40px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; transition: all var(--transition-normal); }
+    .bar:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .bar-value { position: absolute; top: -24px; font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-gray-900); }
+    .bar-label { margin-top: var(--space-2); font-size: var(--font-size-xs); color: var(--color-gray-600); text-align: center; }
+    .table-card { background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: var(--color-gray-50); }
+    th { padding: var(--space-3) var(--space-4); text-align: right; font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); color: var(--color-gray-700); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--color-gray-300); }
+    td { padding: var(--space-3) var(--space-4); font-size: var(--font-size-sm); border-bottom: 1px solid var(--color-gray-200); }
+    tbody tr:hover { background: var(--color-gray-50); }
+    .trend-line { display: flex; gap: var(--space-2); height: 200px; align-items: flex-end; padding: var(--space-4); }
+    .trend-point { flex: 1; background: var(--color-secondary-100); border-radius: var(--radius-sm); min-width: 30px; position: relative; }
+    .trend-point:hover { background: var(--color-secondary-300); }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="navbar-brand">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+        <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+      </svg>
+      גילוי נאות
+    </div>
+    <div class="navbar-nav">
+      <a href="dashboard.html" class="nav-link active">לוח בקרה</a>
+      <a href="../students/roster.html" class="nav-link">תלמידים</a>
+      <a href="../search/search-filter.html" class="nav-link">חיפוש</a>
+      <button class="btn btn-ghost btn-small">ד"ר מרטינז (מנהל/ת)</button>
+    </div>
+  </div>
+
+  <main class="main-content container">
+    <div class="dashboard-header">
+      <div>
+        <h1 class="dashboard-title">לוח בקרה ניהולי</h1>
+        <p class="dashboard-subtitle">אנליטיקה כללית עבור בית ספר לינקולן</p>
+      </div>
+      <button class="btn btn-primary">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
+        </svg>
+        ייצוא דוח
+      </button>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+      <div class="filter-group" style="flex: 2;">
+        <label for="date-range">טווח תאריכים</label>
+        <select id="date-range">
+          <option>30 הימים האחרונים</option>
+          <option selected>רבעון נוכחי</option>
+          <option>סמסטר נוכחי</option>
+          <option>שנה נוכחית</option>
+          <option>טווח מותאם אישית</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="grade-filter">רמת כיתה</label>
+        <select id="grade-filter">
+          <option value="">כל הכיתות</option>
+          <option>גן חובה</option>
+          <option>כיתה א'</option>
+          <option>כיתה ב'</option>
+          <option>כיתה ג'</option>
+          <option>כיתה ד'</option>
+          <option>כיתה ה'</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="teacher-filter">מורה</label>
+        <select id="teacher-filter">
+          <option value="">כל המורים</option>
+          <option>שרה כהן</option>
+          <option>מיכאל תומפסון</option>
+          <option>ג'ניפר לי</option>
+          <option>דוד בראון</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="metrics-grid">
+      <div class="metric-card primary">
+        <div class="metric-label">סה"כ תלמידים</div>
+        <div class="metric-value">428</div>
+        <div class="metric-change">← 12 מהשנה שעברה</div>
+      </div>
+      <div class="metric-card success">
+        <div class="metric-label">אחוז השלמה</div>
+        <div class="metric-value">87%</div>
+        <div class="metric-change">← 5% מהרבעון הקודם</div>
+      </div>
+      <div class="metric-card primary">
+        <div class="metric-label">ציון ממוצע</div>
+        <div class="metric-value">8.3</div>
+        <div class="metric-change">← 0.4 מהרבעון הקודם</div>
+      </div>
+      <div class="metric-card attention">
+        <div class="metric-label">תלמידים מסומנים</div>
+        <div class="metric-value">23</div>
+        <div class="metric-change">→ 7 מהרבעון הקודם</div>
+      </div>
+    </div>
+
+    <!-- Class Comparison -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h2>אחוז השלמה לפי כיתה</h2>
+        <button class="btn btn-ghost btn-small">צפה בפרטים</button>
+      </div>
+      <div class="bar-chart">
+        <div class="bar" style="height: 92%;">
+          <span class="bar-value">92%</span>
+          <div class="bar-label">חדר 201<br>כיתה ד'</div>
+        </div>
+        <div class="bar" style="height: 88%;">
+          <span class="bar-value">88%</span>
+          <div class="bar-label">חדר 202<br>כיתה ד'</div>
+        </div>
+        <div class="bar" style="height: 85%;">
+          <span class="bar-value">85%</span>
+          <div class="bar-label">חדר 203<br>כיתה ג'</div>
+        </div>
+        <div class="bar" style="height: 79%;">
+          <span class="bar-value">79%</span>
+          <div class="bar-label">חדר 204<br>כיתה ג'</div>
+        </div>
+        <div class="bar" style="height: 90%;">
+          <span class="bar-value">90%</span>
+          <div class="bar-label">חדר 301<br>כיתה ה'</div>
+        </div>
+        <div class="bar" style="height: 87%;">
+          <span class="bar-value">87%</span>
+          <div class="bar-label">חדר 302<br>כיתה ה'</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trends Over Time -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h2>ניתוחים שהושלמו לאורך זמן</h2>
+        <select class="btn btn-ghost btn-small" style="border: 1px solid var(--color-gray-300);">
+          <option>שבועי</option>
+          <option selected>חודשי</option>
+          <option>רבעוני</option>
+        </select>
+      </div>
+      <div class="trend-line">
+        <div class="trend-point" style="height: 45%;" title="אוגוסט: 65"></div>
+        <div class="trend-point" style="height: 52%;" title="ספטמבר: 75"></div>
+        <div class="trend-point" style="height: 68%;" title="אוקטובר: 98"></div>
+        <div class="trend-point" style="height: 72%;" title="נובמבר: 104"></div>
+        <div class="trend-point" style="height: 88%;" title="דצמבר: 127"></div>
+      </div>
+      <div style="display: flex; justify-content: space-around; padding: var(--space-2) var(--space-4); font-size: var(--font-size-xs); color: var(--color-gray-600);">
+        <span>אוגוסט</span>
+        <span>ספטמבר</span>
+        <span>אוקטובר</span>
+        <span>נובמבר</span>
+        <span>דצמבר</span>
+      </div>
+    </div>
+
+    <!-- Teacher Performance Table -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h2>סיכום ביצועי מורים</h2>
+        <button class="btn btn-ghost btn-small">ייצוא טבלה</button>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>שם המורה</th>
+              <th>כיתה</th>
+              <th>תלמידים</th>
+              <th>ניתוחים שהושלמו</th>
+              <th>אחוז השלמה</th>
+              <th>זמן ממוצע לניתוח</th>
+              <th>פעולות</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>שרה כהן</strong></td>
+              <td>ד'</td>
+              <td>28</td>
+              <td>26</td>
+              <td><span class="badge badge-success">92%</span></td>
+              <td>18 דק'</td>
+              <td><button class="btn btn-ghost btn-small">צפה בפרטים</button></td>
+            </tr>
+            <tr>
+              <td><strong>מיכאל תומפסון</strong></td>
+              <td>ג'</td>
+              <td>26</td>
+              <td>23</td>
+              <td><span class="badge badge-success">88%</span></td>
+              <td>21 דק'</td>
+              <td><button class="btn btn-ghost btn-small">צפה בפרטים</button></td>
+            </tr>
+            <tr>
+              <td><strong>ג'ניפר לי</strong></td>
+              <td>ה'</td>
+              <td>30</td>
+              <td>27</td>
+              <td><span class="badge badge-success">90%</span></td>
+              <td>17 דק'</td>
+              <td><button class="btn btn-ghost btn-small">צפה בפרטים</button></td>
+            </tr>
+            <tr>
+              <td><strong>דוד בראון</strong></td>
+              <td>ג'</td>
+              <td>24</td>
+              <td>19</td>
+              <td><span class="badge badge-warning">79%</span></td>
+              <td>23 דק'</td>
+              <td><button class="btn btn-ghost btn-small">צפה בפרטים</button></td>
+            </tr>
+            <tr>
+              <td><strong>ליסה מרטינז</strong></td>
+              <td>ד'</td>
+              <td>27</td>
+              <td>24</td>
+              <td><span class="badge badge-success">88%</span></td>
+              <td>19 דק'</td>
+              <td><button class="btn btn-ghost btn-small">צפה בפרטים</button></td>
+            </tr>
+            <tr>
+              <td><strong>רוברט קים</strong></td>
+              <td>ה'</td>
+              <td>29</td>
+              <td>25</td>
+              <td><span class="badge badge-success">86%</span></td>
+              <td>20 דק'</td>
+              <td><button class="btn btn-ghost btn-small">צפה בפרטים</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

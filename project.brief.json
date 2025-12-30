@@ -1,0 +1,13 @@
+{
+  "projectName": "growth-engine",
+  "domain": "education",
+  "summary": "We have a chagpt prompt that helps teachers to find out the strength and weakmesses points of wach student. the prompt receives a student name than ask questions, the responses are free style. thhen the chatpgt analyze the response and return a output with full anlysis and recommenstaion for the student. we need a system that will hold all student and will give option to analyze each one. the analysis will use the above mmetioned prompt",
+  "primaryUsers": "teachers, principles",
+  "coreFlows": "teacher: logs in->choose student name->start analysis->recive the output, principle: logs in -> see dashboard of all students per class, teacher and principle: dashboard of all data eligible to see with trends",
+  "stackFrontend": "next.js",
+  "stackBackend": "nest with typescript",
+  "integrations": "DB",
+  "constraints": "none",
+  "repoStructure": "packages",
+  "requiredAgents": []
+}

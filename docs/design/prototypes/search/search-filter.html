@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>חיפוש תלמידים - גילוי נאות</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    body { display: flex; flex-direction: column; min-height: 100vh; }
+    .page-container { flex: 1; padding: var(--space-6); }
+    .search-layout { display: grid; grid-template-columns: 320px 1fr; gap: var(--space-6); }
+    .page-header { margin-bottom: var(--space-6); }
+    .page-header h1 { font-size: var(--font-size-3xl); margin-bottom: var(--space-2); }
+    .page-header p { color: var(--color-gray-600); margin: 0; }
+    .search-bar { background: white; border-radius: var(--radius-lg); padding: var(--space-4); box-shadow: var(--shadow-sm); margin-bottom: var(--space-6); position: relative; }
+    .search-input-wrapper { position: relative; }
+    .search-input-wrapper svg { position: absolute; right: var(--space-4); top: 50%; transform: translateY(-50%); width: 24px; height: 24px; color: var(--color-gray-400); }
+    .search-input-wrapper input { width: 100%; padding: var(--space-4) var(--space-12) var(--space-4) var(--space-4); font-size: var(--font-size-lg); border: 2px solid var(--color-gray-300); border-radius: var(--radius-lg); }
+    .search-input-wrapper input:focus { border-color: var(--color-primary-500); box-shadow: var(--shadow-focus); }
+    .search-suggestions { position: absolute; top: 100%; right: 0; left: 0; background: white; border: 1px solid var(--color-gray-200); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); margin-top: var(--space-2); max-height: 400px; overflow-y: auto; z-index: 10; display: none; }
+    .search-suggestions.visible { display: block; }
+    .suggestion-item { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-gray-100); cursor: pointer; transition: background var(--transition-fast); }
+    .suggestion-item:hover { background: var(--color-gray-50); }
+    .suggestion-item:last-child { border-bottom: none; }
+    .suggestion-category { font-size: var(--font-size-xs); color: var(--color-gray-500); text-transform: uppercase; letter-spacing: 0.05em; font-weight: var(--font-weight-semibold); margin-bottom: var(--space-1); }
+    .filters-panel { background: white; border-radius: var(--radius-lg); padding: var(--space-6); box-shadow: var(--shadow-sm); height: fit-content; position: sticky; top: var(--space-6); }
+    .filters-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6); padding-bottom: var(--space-4); border-bottom: 2px solid var(--color-gray-200); }
+    .filters-header h2 { font-size: var(--font-size-xl); margin: 0; }
+    .filter-section { margin-bottom: var(--space-6); padding-bottom: var(--space-6); border-bottom: 1px solid var(--color-gray-200); }
+    .filter-section:last-child { border-bottom: none; }
+    .filter-section h3 { font-size: var(--font-size-sm); color: var(--color-gray-700); font-weight: var(--font-weight-semibold); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-3); }
+    .checkbox-filter { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2); padding: var(--space-2); border-radius: var(--radius-md); cursor: pointer; }
+    .checkbox-filter:hover { background: var(--color-gray-50); }
+    .checkbox-filter input { margin: 0; }
+    .checkbox-filter label { flex: 1; cursor: pointer; margin: 0; font-weight: var(--font-weight-normal); }
+    .checkbox-filter .count { font-size: var(--font-size-xs); color: var(--color-gray-500); }
+    .date-range-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
+    .date-range-inputs input { font-size: var(--font-size-sm); padding: var(--space-2) var(--space-3); }
+    .toggle-filter { display: flex; align-items: center; justify-content: space-between; padding: var(--space-3); background: var(--color-gray-50); border-radius: var(--radius-md); cursor: pointer; }
+    .toggle-filter:hover { background: var(--color-gray-100); }
+    .toggle-switch { width: 44px; height: 24px; background: var(--color-gray-300); border-radius: var(--radius-full); position: relative; transition: background var(--transition-normal); }
+    .toggle-switch.active { background: var(--color-primary-600); }
+    .toggle-switch::after { content: ''; position: absolute; width: 20px; height: 20px; background: white; border-radius: 50%; top: 2px; right: 2px; transition: right var(--transition-normal); }
+    .toggle-switch.active::after { right: 22px; }
+    .results-panel { }
+    .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6); }
+    .results-count { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); color: var(--color-gray-900); }
+    .results-actions { display: flex; gap: var(--space-2); }
+    .results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-4); }
+    .student-card { background: white; border: 1px solid var(--color-gray-200); border-radius: var(--radius-lg); padding: var(--space-5); box-shadow: var(--shadow-sm); transition: all var(--transition-normal); cursor: pointer; }
+    .student-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .student-card-header { display: flex; gap: var(--space-3); margin-bottom: var(--space-4); }
+    .student-avatar { width: 48px; height: 48px; border-radius: var(--radius-full); background: var(--color-primary-100); color: var(--color-primary-700); display: flex; align-items: center; justify-content: center; font-weight: var(--font-weight-bold); font-size: var(--font-size-lg); flex-shrink: 0; }
+    .student-info { flex: 1; }
+    .student-info h3 { font-size: var(--font-size-lg); margin-bottom: var(--space-1); }
+    .student-info p { font-size: var(--font-size-sm); color: var(--color-gray-600); margin: 0; }
+    .student-card-meta { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); margin-bottom: var(--space-4); font-size: var(--font-size-xs); }
+    .student-card-meta div { color: var(--color-gray-600); }
+    .student-card-meta strong { color: var(--color-gray-900); }
+    .student-card-actions { display: flex; gap: var(--space-2); }
+    @media (max-width: 1024px) {
+      .search-layout { grid-template-columns: 1fr; }
+      .filters-panel { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="navbar-brand">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+        <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+      </svg>
+      גילוי נאות
+    </div>
+    <div class="navbar-nav">
+      <a href="../teacher-dashboard/dashboard.html" class="nav-link">לוח בקרה</a>
+      <a href="../students/roster.html" class="nav-link">תלמידים</a>
+      <a href="search-filter.html" class="nav-link active">חיפוש</a>
+      <button class="btn btn-ghost btn-small">שרה כהן</button>
+    </div>
+  </div>
+
+  <main class="page-container container">
+    <div class="page-header">
+      <h1>חיפוש וסינון תלמידים</h1>
+      <p>מצא תלמידים באמצעות חיפוש וסינון מתקדם</p>
+    </div>
+
+    <!-- Global Search Bar -->
+    <div class="search-bar">
+      <div class="search-input-wrapper">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="M21 21l-4.35-4.35"></path>
+        </svg>
+        <input type="search" id="global-search" placeholder="חפש תלמידים, ניתוחים, מורים..." oninput="showSuggestions()" onfocus="showSuggestions()" />
+      </div>
+
+      <!-- Search Suggestions Dropdown -->
+      <div class="search-suggestions" id="suggestions">
+        <div style="padding: var(--space-3) var(--space-4);">
+          <div class="suggestion-category">תלמידים</div>
+        </div>
+        <div class="suggestion-item" onclick="selectSuggestion('מרקוס ג\'ונסון')">
+          <strong>מרקוס ג'ונסון</strong>
+          <div style="font-size: var(--font-size-xs); color: var(--color-gray-600);">כיתה ד' • חדר 201 • הושלם</div>
+        </div>
+        <div class="suggestion-item" onclick="selectSuggestion('אמה רודריגז')">
+          <strong>אמה רודריגז</strong>
+          <div style="font-size: var(--font-size-xs); color: var(--color-gray-600);">כיתה ד' • חדר 201 • הושלם</div>
+        </div>
+        <div class="suggestion-item" onclick="selectSuggestion('ליאם צ\'ן')">
+          <strong>ליאם צ'ן</strong>
+          <div style="font-size: var(--font-size-xs); color: var(--color-gray-600);">כיתה ד' • חדר 201 • מסומן</div>
+        </div>
+        <div style="padding: var(--space-3) var(--space-4); margin-top: var(--space-2);">
+          <div class="suggestion-category">חיפושים אחרונים</div>
+        </div>
+        <div class="suggestion-item" onclick="selectSuggestion('תלמידי כיתה ד\' מסומנים')">
+          <svg class="icon" style="display: inline-block; vertical-align: middle; margin-left: var(--space-2);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          תלמידי כיתה ד' מסומנים
+        </div>
+      </div>
+    </div>
+
+    <div class="search-layout">
+      <!-- Filters Panel -->
+      <aside class="filters-panel">
+        <div class="filters-header">
+          <h2>סינון</h2>
+          <button class="btn btn-ghost btn-small" onclick="clearAllFilters()">נקה הכל</button>
+        </div>
+
+        <!-- Grade Level Filter -->
+        <div class="filter-section">
+          <h3>רמת כיתה</h3>
+          <div class="checkbox-filter">
+            <input type="checkbox" id="grade-k" onchange="applyFilters()" />
+            <label for="grade-k">גן חובה</label>
+            <span class="count">42</span>
+          </div>
+          <div class="checkbox-filter">
+            <input type="checkbox" id="grade-1" onchange="applyFilters()" />
+            <label for="grade-1">כיתה א'</label>
+            <span class="count">48</span>
+          </div>
+          <div class="checkbox-filter">
+            <input type="checkbox" id="grade-2" onchange="applyFilters()" />
+            <label for="grade-2">כיתה ב'</label>
+            <span class="count">45</span>
+          </div>
+          <div class="checkbox-filter">
+            <input type="checkbox" id="grade-3" onchange="applyFilters()" />
+            <label for="grade-3">כיתה ג'</label>
+            <span class="count">50</span>
+          </div>
+          <div class="checkbox-filter">
+            <input type="checkbox" id="grade-4" checked onchange="applyFilters()" />
+            <label for="grade-4">כיתה ד'</label>
+            <span class="count">55</span>
+          </div>
+          <div class="checkbox-filter">
+            <input type="checkbox" id="grade-5" onchange="applyFilters()" />
+            <label for="grade-5">כיתה ה'</label>
+            <span class="count">52</span>
+          </div>
+        </div>
+
+        <!-- Class/Section Filter -->
+        <div class="filter-section">
+          <h3>כיתה / קבוצה</h3>
+          <select style="width: 100%; margin-bottom: var(--space-2);" onchange="applyFilters()">
+            <option value="">כל הכיתות</option>
+            <option value="room-201" selected>חדר 201</option>
+            <option value="room-202">חדר 202</option>
+            <option value="room-203">חדר 203</option>
+            <option value="room-204">חדר 204</option>
+          </select>
+        </div>
+
+        <!-- Analysis Status Filter -->
+        <div class="filter-section">
+          <h3>סטטוס ניתוח</h3>
+          <div class="checkbox-filter">
+            <input type="checkbox" id="status-complete" checked onchange="applyFilters()" />
+            <label for="status-complete">הושלם</label>
+            <span class="count">18</span>
+          </div>
+          <div class="checkbox-filter">
+            <input type="checkbox" id="status-progress" checked onchange="applyFilters()" />
+            <label for="status-progress">בתהליך</label>
+            <span class="count">4</span>
+          </div>
+          <div class="checkbox-filter">
+            <input type="checkbox" id="status-not-started" checked onchange="applyFilters()" />
+            <label for="status-not-started">לא התחיל</label>
+            <span class="count">6</span>
+          </div>
+        </div>
+
+        <!-- Date Range Filter -->
+        <div class="filter-section">
+          <h3>טווח תאריכי ניתוח</h3>
+          <div class="date-range-inputs">
+            <div>
+              <label style="font-size: var(--font-size-xs); margin-bottom: var(--space-1);">מתאריך</label>
+              <input type="date" onchange="applyFilters()" />
+            </div>
+            <div>
+              <label style="font-size: var(--font-size-xs); margin-bottom: var(--space-1);">עד תאריך</label>
+              <input type="date" onchange="applyFilters()" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Flagged Students Toggle -->
+        <div class="filter-section">
+          <h3>סינון מיוחד</h3>
+          <div class="toggle-filter" onclick="toggleFlag()">
+            <div>
+              <div style="font-weight: var(--font-weight-semibold);">מסומנים לתשומת לב</div>
+              <div style="font-size: var(--font-size-xs); color: var(--color-gray-600);">הצג רק תלמידים מסומנים</div>
+            </div>
+            <div class="toggle-switch" id="flagged-toggle"></div>
+          </div>
+        </div>
+
+        <!-- Teacher Assigned Filter -->
+        <div class="filter-section">
+          <h3>מורה מטפל/ת</h3>
+          <select style="width: 100%;" onchange="applyFilters()">
+            <option value="" selected>כל המורים</option>
+            <option value="sarah-chen">שרה כהן</option>
+            <option value="michael-thompson">מיכאל תומפסון</option>
+            <option value="jennifer-lee">ג'ניפר לי</option>
+          </select>
+        </div>
+
+        <!-- Save Search -->
+        <button class="btn btn-secondary btn-full-width" onclick="saveSearch()">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"></path>
+            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+            <polyline points="7 3 7 8 15 8"></polyline>
+          </svg>
+          שמור חיפוש
+        </button>
+      </aside>
+
+      <!-- Results Panel -->
+      <div class="results-panel">
+        <div class="results-header">
+          <div class="results-count" id="results-count">28 תלמידים נמצאו</div>
+          <div class="results-actions">
+            <select style="padding: var(--space-2) var(--space-3); font-size: var(--font-size-sm);" onchange="sortResults()">
+              <option>מיין לפי: שם</option>
+              <option selected>מיין לפי: פעילות אחרונה</option>
+              <option>מיין לפי: סטטוס</option>
+              <option>מיין לפי: כיתה</option>
+            </select>
+            <button class="btn btn-ghost btn-small">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
+              </svg>
+              ייצוא
+            </button>
+          </div>
+        </div>
+
+        <div class="results-grid" id="results-grid">
+          <!-- Student Cards -->
+          <div class="student-card" onclick="window.location.href='../results/view-analysis.html'">
+            <div class="student-card-header">
+              <div class="student-avatar">MJ</div>
+              <div class="student-info">
+                <h3>מרקוס ג'ונסון</h3>
+                <p>כיתה ד' • חדר 201</p>
+              </div>
+            </div>
+            <div class="student-card-meta">
+              <div><strong>סטטוס:</strong></div>
+              <div><span class="badge badge-success">הושלם</span></div>
+              <div><strong>ניתוח אחרון:</strong></div>
+              <div>28 דצמבר 2025</div>
+            </div>
+            <div class="student-card-actions">
+              <button class="btn btn-ghost btn-small" onclick="event.stopPropagation(); alert('צפה בפרטים')">צפה</button>
+              <button class="btn btn-primary btn-small" onclick="event.stopPropagation(); window.location.href='../analysis/conversation.html'">נתח</button>
+            </div>
+          </div>
+
+          <div class="student-card">
+            <div class="student-card-header">
+              <div class="student-avatar">ER</div>
+              <div class="student-info">
+                <h3>אמה רודריגז</h3>
+                <p>כיתה ד' • חדר 201</p>
+              </div>
+            </div>
+            <div class="student-card-meta">
+              <div><strong>סטטוס:</strong></div>
+              <div><span class="badge badge-success">הושלם</span></div>
+              <div><strong>ניתוח אחרון:</strong></div>
+              <div>27 דצמבר 2025</div>
+            </div>
+            <div class="student-card-actions">
+              <button class="btn btn-ghost btn-small">צפה</button>
+              <button class="btn btn-primary btn-small">נתח</button>
+            </div>
+          </div>
+
+          <div class="student-card">
+            <div class="student-card-header">
+              <div class="student-avatar">LC</div>
+              <div class="student-info">
+                <h3>ליאם צ'ן</h3>
+                <p>כיתה ד' • חדר 201</p>
+              </div>
+            </div>
+            <div class="student-card-meta">
+              <div><strong>סטטוס:</strong></div>
+              <div><span class="badge badge-error">מסומן</span></div>
+              <div><strong>ניתוח אחרון:</strong></div>
+              <div>26 דצמבר 2025</div>
+            </div>
+            <div class="student-card-actions">
+              <button class="btn btn-ghost btn-small">צפה</button>
+              <button class="btn btn-primary btn-small">נתח</button>
+            </div>
+          </div>
+
+          <div class="student-card">
+            <div class="student-card-header">
+              <div class="student-avatar">SP</div>
+              <div class="student-info">
+                <h3>סופיה פטל</h3>
+                <p>כיתה ד' • חדר 201</p>
+              </div>
+            </div>
+            <div class="student-card-meta">
+              <div><strong>סטטוס:</strong></div>
+              <div><span class="badge badge-success">הושלם</span></div>
+              <div><strong>ניתוח אחרון:</strong></div>
+              <div>25 דצמבר 2025</div>
+            </div>
+            <div class="student-card-actions">
+              <button class="btn btn-ghost btn-small">צפה</button>
+              <button class="btn btn-primary btn-small">נתח</button>
+            </div>
+          </div>
+
+          <div class="student-card">
+            <div class="student-card-header">
+              <div class="student-avatar">NW</div>
+              <div class="student-info">
+                <h3>נועה וויליאמס</h3>
+                <p>כיתה ד' • חדר 201</p>
+              </div>
+            </div>
+            <div class="student-card-meta">
+              <div><strong>סטטוס:</strong></div>
+              <div><span class="badge badge-warning">בתהליך</span></div>
+              <div><strong>ניתוח אחרון:</strong></div>
+              <div>24 דצמבר 2025</div>
+            </div>
+            <div class="student-card-actions">
+              <button class="btn btn-ghost btn-small">צפה</button>
+              <button class="btn btn-primary btn-small">המשך</button>
+            </div>
+          </div>
+
+          <div class="student-card">
+            <div class="student-card-header">
+              <div class="student-avatar">OM</div>
+              <div class="student-info">
+                <h3>אוליביה מרטינז</h3>
+                <p>כיתה ד' • חדר 201</p>
+              </div>
+            </div>
+            <div class="student-card-meta">
+              <div><strong>סטטוס:</strong></div>
+              <div><span class="badge badge-success">הושלם</span></div>
+              <div><strong>ניתוח אחרון:</strong></div>
+              <div>23 דצמבר 2025</div>
+            </div>
+            <div class="student-card-actions">
+              <button class="btn btn-ghost btn-small">צפה</button>
+              <button class="btn btn-primary btn-small">נתח</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function showSuggestions() {
+      const input = document.getElementById('global-search').value;
+      const suggestions = document.getElementById('suggestions');
+      if (input.length > 0) {
+        suggestions.classList.add('visible');
+      } else {
+        suggestions.classList.remove('visible');
+      }
+    }
+
+    function selectSuggestion(value) {
+      document.getElementById('global-search').value = value;
+      document.getElementById('suggestions').classList.remove('visible');
+      applyFilters();
+    }
+
+    function applyFilters() {
+      console.log('מיישם סינונים...');
+      // In production, this would filter the results
+    }
+
+    function clearAllFilters() {
+      document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+      document.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+      document.querySelectorAll('input[type="date"]').forEach(input => input.value = '');
+      document.getElementById('flagged-toggle').classList.remove('active');
+      applyFilters();
+    }
+
+    function toggleFlag() {
+      const toggle = document.getElementById('flagged-toggle');
+      toggle.classList.toggle('active');
+      applyFilters();
+    }
+
+    function sortResults() {
+      console.log('ממיין תוצאות...');
+    }
+
+    function saveSearch() {
+      const name = prompt('הזן שם עבור חיפוש זה:', 'החיפוש שלי');
+      if (name) {
+        alert(`החיפוש נשמר בשם: "${name}"\n\nניתן לגשת לחיפושים שמורים מהסרגל הצדדי.`);
+      }
+    }
+
+    // Close suggestions when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.search-bar')) {
+        document.getElementById('suggestions').classList.remove('visible');
+      }
+    });
+  </script>
+</body>
+</html>

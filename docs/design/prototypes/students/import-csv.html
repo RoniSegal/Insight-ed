@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ייבוא תלמידים - גילוי נאות</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    body { display: flex; flex-direction: column; min-height: 100vh; }
+    .page-container { flex: 1; padding: var(--space-6); }
+    .wizard-container { max-width: 900px; margin: 0 auto; }
+    .page-header { margin-bottom: var(--space-6); text-align: center; }
+    .page-header h1 { font-size: var(--font-size-3xl); margin-bottom: var(--space-2); }
+    .page-header p { color: var(--color-gray-600); margin: 0; }
+
+    .stepper { display: flex; justify-content: center; gap: var(--space-4); margin-bottom: var(--space-8); }
+    .step { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); min-width: 120px; }
+    .step-circle { width: 40px; height: 40px; border-radius: 50%; background: var(--color-gray-200); color: var(--color-gray-500); display: flex; align-items: center; justify-content: center; font-weight: var(--font-weight-bold); transition: all var(--transition-normal); }
+    .step.active .step-circle { background: var(--color-primary-700); color: white; }
+    .step.complete .step-circle { background: var(--color-secondary-600); color: white; }
+    .step-label { font-size: var(--font-size-xs); color: var(--color-gray-600); text-align: center; }
+    .step.active .step-label { color: var(--color-primary-700); font-weight: var(--font-weight-semibold); }
+
+    .wizard-card { background: white; border: 1px solid var(--color-gray-200); border-radius: var(--radius-lg); padding: var(--space-8); box-shadow: var(--shadow-sm); }
+    .wizard-step { display: none; }
+    .wizard-step.active { display: block; }
+
+    .drop-zone { border: 2px dashed var(--color-gray-300); border-radius: var(--radius-lg); padding: var(--space-16); text-align: center; transition: all var(--transition-normal); cursor: pointer; }
+    .drop-zone:hover, .drop-zone.dragover { border-color: var(--color-primary-500); background: var(--color-primary-50); }
+    .drop-zone svg { width: 64px; height: 64px; color: var(--color-gray-400); margin: 0 auto var(--space-4); }
+    .drop-zone h3 { font-size: var(--font-size-xl); margin-bottom: var(--space-2); }
+    .drop-zone p { color: var(--color-gray-600); margin-bottom: var(--space-4); }
+
+    .wizard-actions { display: flex; justify-content: space-between; padding-top: var(--space-6); margin-top: var(--space-6); border-top: 1px solid var(--color-gray-200); }
+    .table-container { max-height: 400px; overflow-y: auto; margin: var(--space-6) 0; }
+    .mapping-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--space-4); align-items: center; padding: var(--space-3); border: 1px solid var(--color-gray-200); border-radius: var(--radius-md); margin-bottom: var(--space-3); }
+    .validation-list { max-height: 300px; overflow-y: auto; }
+    .validation-item { display: flex; gap: var(--space-3); padding: var(--space-3); border: 1px solid var(--color-gray-200); border-radius: var(--radius-md); margin-bottom: var(--space-3); }
+    .validation-icon { width: 24px; height: 24px; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="navbar-brand">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+        <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+      </svg>
+      גילוי נאות
+    </div>
+    <div class="navbar-nav">
+      <a href="../teacher-dashboard/dashboard.html" class="nav-link">לוח בקרה</a>
+      <a href="roster.html" class="nav-link active">תלמידים</a>
+      <button class="btn btn-ghost btn-small">שרה כהן</button>
+    </div>
+  </div>
+
+  <main class="page-container container">
+    <div class="wizard-container">
+      <div class="page-header">
+        <h1>ייבוא תלמידים מ-CSV</h1>
+        <p>העלה קובץ CSV להוספת תלמידים מרובים בבת אחת</p>
+      </div>
+
+      <!-- Stepper -->
+      <div class="stepper">
+        <div class="step active" id="step-indicator-1">
+          <div class="step-circle">1</div>
+          <div class="step-label">העלאת קובץ</div>
+        </div>
+        <div class="step" id="step-indicator-2">
+          <div class="step-circle">2</div>
+          <div class="step-label">תצוגה מקדימה</div>
+        </div>
+        <div class="step" id="step-indicator-3">
+          <div class="step-circle">3</div>
+          <div class="step-label">מיפוי עמודות</div>
+        </div>
+        <div class="step" id="step-indicator-4">
+          <div class="step-circle">4</div>
+          <div class="step-label">אימות</div>
+        </div>
+        <div class="step" id="step-indicator-5">
+          <div class="step-circle">5</div>
+          <div class="step-label">סיום</div>
+        </div>
+      </div>
+
+      <div class="wizard-card">
+        <!-- Step 1: Upload -->
+        <div class="wizard-step active" id="step-1">
+          <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"></path>
+            </svg>
+            <h3>גרור קובץ CSV לכאן</h3>
+            <p>או לחץ לעיון</p>
+            <button class="btn btn-secondary">בחר קובץ</button>
+            <input type="file" id="file-input" accept=".csv" style="display: none;" onchange="handleFileSelect(event)" />
+          </div>
+          <div class="alert alert-info" style="margin-top: var(--space-6);">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="10"></circle>
+            </svg>
+            <div>
+              <h4>דרישות פורמט CSV</h4>
+              <p>ה-CSV שלך צריך לכלול: שם פרטי, שם משפחה, כיתה, חדר. אופציונלי: מספר תלמיד, תאריך לידה, דוא"ל הורה</p>
+            </div>
+          </div>
+          <div class="wizard-actions">
+            <button class="btn btn-secondary" onclick="window.location.href='roster.html'">ביטול</button>
+            <button class="btn btn-primary" disabled id="next-btn-1">הבא</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Preview -->
+        <div class="wizard-step" id="step-2">
+          <h2>תצוגה מקדימה של נתונים מיובאים</h2>
+          <p class="mb-4">סקור את הנתונים מקובץ ה-CSV שלך (מציג 10 שורות ראשונות)</p>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr><th>שם פרטי</th><th>שם משפחה</th><th>כיתה</th><th>חדר</th></tr>
+              </thead>
+              <tbody id="preview-tbody">
+                <tr><td>מרקוס</td><td>ג'ונסון</td><td>4</td><td>חדר 201</td></tr>
+                <tr><td>אמה</td><td>רודריגז</td><td>4</td><td>חדר 201</td></tr>
+                <tr><td>ליאם</td><td>צ'ן</td><td>4</td><td>חדר 201</td></tr>
+                <tr><td>סופיה</td><td>פטל</td><td>4</td><td>חדר 201</td></tr>
+                <tr><td>נואה</td><td>ויליאמס</td><td>4</td><td>חדר 201</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="alert alert-success">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <div><p>נמצאו <strong>25 תלמידים</strong> בקובץ שלך</p></div>
+          </div>
+          <div class="wizard-actions">
+            <button class="btn btn-secondary" onclick="goToStep(1)">חזרה</button>
+            <button class="btn btn-primary" onclick="goToStep(3)">הבא</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Map Columns -->
+        <div class="wizard-step" id="step-3">
+          <h2>מיפוי עמודות CSV</h2>
+          <p class="mb-6">התאם את עמודות ה-CSV שלך לשדות גילוי נאות</p>
+          <div class="mapping-row">
+            <div><strong>שם פרטי</strong><br><span style="font-size: var(--font-size-sm); color: var(--color-gray-600);">עמודת CSV</span></div>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+            <select class="form-control"><option>שם פרטי (נדרש)</option></select>
+          </div>
+          <div class="mapping-row">
+            <div><strong>שם משפחה</strong><br><span style="font-size: var(--font-size-sm); color: var(--color-gray-600);">עמודת CSV</span></div>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+            <select><option>שם משפחה (נדרש)</option></select>
+          </div>
+          <div class="mapping-row">
+            <div><strong>כיתה</strong><br><span style="font-size: var(--font-size-sm); color: var(--color-gray-600);">עמודת CSV</span></div>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+            <select><option>כיתה (נדרש)</option></select>
+          </div>
+          <div class="mapping-row">
+            <div><strong>חדר</strong><br><span style="font-size: var(--font-size-sm); color: var(--color-gray-600);">עמודת CSV</span></div>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+            <select><option>חדר (נדרש)</option></select>
+          </div>
+          <div class="wizard-actions">
+            <button class="btn btn-secondary" onclick="goToStep(2)">חזרה</button>
+            <button class="btn btn-primary" onclick="goToStep(4)">הבא</button>
+          </div>
+        </div>
+
+        <!-- Step 4: Validate -->
+        <div class="wizard-step" id="step-4">
+          <h2>תוצאות אימות</h2>
+          <p class="mb-4">סקור בעיות כלשהן לפני הייבוא</p>
+          <div class="alert alert-success mb-6">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <div><p><strong>23 תלמידים</strong> מוכנים לייבוא</p></div>
+          </div>
+          <div class="alert alert-warning mb-4">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path></svg>
+            <div><p><strong>2 אזהרות</strong> - תלמידים אלה עשויים להיות כפולים</p></div>
+          </div>
+          <div class="validation-list">
+            <div class="validation-item" style="border-left: 4px solid var(--color-warning-600);">
+              <svg class="validation-icon" viewBox="0 0 24 24" fill="var(--color-warning-600)"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path></svg>
+              <div style="flex: 1;"><strong>שורה 15: מרקוס ג'ונסון</strong><br><span style="font-size: var(--font-size-sm); color: var(--color-gray-600);">תלמיד דומה כבר קיים. לדלג או לייבא בכל זאת?</span></div>
+              <div style="display: flex; gap: var(--space-2);"><button class="btn btn-ghost btn-small">דלג</button><button class="btn btn-secondary btn-small">ייבא</button></div>
+            </div>
+            <div class="validation-item" style="border-left: 4px solid var(--color-warning-600);">
+              <svg class="validation-icon" viewBox="0 0 24 24" fill="var(--color-warning-600)"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path></svg>
+              <div style="flex: 1;"><strong>שורה 22: אמה רודריגז</strong><br><span style="font-size: var(--font-size-sm); color: var(--color-gray-600);">תלמיד דומה כבר קיים. לדלג או לייבא בכל זאת?</span></div>
+              <div style="display: flex; gap: var(--space-2);"><button class="btn btn-ghost btn-small">דלג</button><button class="btn btn-secondary btn-small">ייבא</button></div>
+            </div>
+          </div>
+          <div class="wizard-actions">
+            <button class="btn btn-secondary" onclick="goToStep(3)">חזרה</button>
+            <button class="btn btn-primary" onclick="goToStep(5)">ייבא תלמידים</button>
+          </div>
+        </div>
+
+        <!-- Step 5: Complete -->
+        <div class="wizard-step" id="step-5">
+          <div style="text-align: center; padding: var(--space-8) 0;">
+            <svg style="width: 80px; height: 80px; color: var(--color-secondary-600); margin: 0 auto var(--space-6);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <h2 style="margin-bottom: var(--space-4);">הייבוא הושלם!</h2>
+            <p style="font-size: var(--font-size-lg); color: var(--color-gray-600); margin-bottom: var(--space-8);">יובאו בהצלחה <strong>23 תלמידים</strong> לרשימה שלך</p>
+            <div style="display: flex; gap: var(--space-3); justify-content: center;">
+              <button class="btn btn-secondary" onclick="resetWizard()">ייבא עוד</button>
+              <button class="btn btn-primary" onclick="window.location.href='roster.html'">הצג רשימה</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let currentStep = 1;
+    function goToStep(step) {
+      document.getElementById(`step-${currentStep}`).classList.remove('active');
+      document.getElementById(`step-indicator-${currentStep}`).classList.remove('active');
+      if (step < currentStep) document.getElementById(`step-indicator-${currentStep}`).classList.remove('complete');
+      if (step > currentStep) document.getElementById(`step-indicator-${currentStep}`).classList.add('complete');
+      currentStep = step;
+      document.getElementById(`step-${step}`).classList.add('active');
+      document.getElementById(`step-indicator-${step}`).classList.add('active');
+    }
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (file) {
+        document.getElementById('next-btn-1').disabled = false;
+        setTimeout(() => goToStep(2), 500);
+      }
+    }
+    function resetWizard() { goToStep(1); document.getElementById('file-input').value = ''; document.getElementById('next-btn-1').disabled = true; }
+    const dropZone = document.getElementById('drop-zone');
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, preventDefaults, false);
+    });
+    function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
+    });
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
+    });
+    dropZone.addEventListener('drop', (e) => {
+      const files = e.dataTransfer.files;
+      if (files.length > 0) { document.getElementById('file-input').files = files; handleFileSelect({ target: { files } }); }
+    }, false);
+  </script>
+</body>
+</html>

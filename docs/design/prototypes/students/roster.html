@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>רשימת תלמידים - גילוי נאות</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .page-container {
+      flex: 1;
+      padding: var(--space-6);
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--space-6);
+      gap: var(--space-4);
+    }
+
+    .page-title h1 {
+      font-size: var(--font-size-3xl);
+      margin-bottom: var(--space-2);
+    }
+
+    .page-title p {
+      color: var(--color-gray-600);
+      margin: 0;
+    }
+
+    .page-actions {
+      display: flex;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+
+    .filters-bar {
+      background: white;
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      margin-bottom: var(--space-6);
+      display: flex;
+      gap: var(--space-3);
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .filter-group {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .filter-group label {
+      display: block;
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-gray-700);
+      margin-bottom: var(--space-1);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .search-input {
+      position: relative;
+    }
+
+    .search-input svg {
+      position: absolute;
+      left: var(--space-3);
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      color: var(--color-gray-400);
+    }
+
+    .search-input input {
+      padding-left: var(--space-10);
+    }
+
+    .bulk-actions {
+      background: var(--color-primary-50);
+      border: 1px solid var(--color-primary-200);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      margin-bottom: var(--space-4);
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .bulk-actions.visible {
+      display: flex;
+    }
+
+    .bulk-actions-left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .bulk-actions-count {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-primary-700);
+    }
+
+    .bulk-actions-buttons {
+      display: flex;
+      gap: var(--space-2);
+    }
+
+    .table-card {
+      background: white;
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: var(--color-gray-50);
+      border-bottom: 2px solid var(--color-gray-300);
+    }
+
+    th {
+      padding: var(--space-3) var(--space-4);
+      text-align: left;
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-gray-700);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    th:hover {
+      background: var(--color-gray-100);
+    }
+
+    th .sort-icon {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      margin-left: var(--space-1);
+      opacity: 0.3;
+    }
+
+    th.sorted .sort-icon {
+      opacity: 1;
+    }
+
+    td {
+      padding: var(--space-3) var(--space-4);
+      font-size: var(--font-size-sm);
+      border-bottom: 1px solid var(--color-gray-200);
+    }
+
+    tbody tr:hover {
+      background: var(--color-gray-50);
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .student-name {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .student-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      background: var(--color-primary-100);
+      color: var(--color-primary-700);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--font-weight-semibold);
+      font-size: var(--font-size-sm);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: var(--space-2);
+    }
+
+    .action-buttons button {
+      padding: var(--space-1) var(--space-2);
+      font-size: var(--font-size-xs);
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-4);
+      border-top: 1px solid var(--color-gray-200);
+      background: var(--color-gray-50);
+    }
+
+    .pagination-info {
+      font-size: var(--font-size-sm);
+      color: var(--color-gray-600);
+    }
+
+    .pagination-buttons {
+      display: flex;
+      gap: var(--space-2);
+    }
+
+    @media (max-width: 768px) {
+      .filters-bar {
+        flex-direction: column;
+      }
+
+      .filter-group {
+        width: 100%;
+      }
+
+      .page-actions {
+        width: 100%;
+      }
+
+      .page-actions button {
+        flex: 1;
+      }
+
+      .table-card {
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 800px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="navbar-brand">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+        <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+      </svg>
+      גילוי נאות
+    </div>
+    <div class="navbar-nav">
+      <a href="../teacher-dashboard/dashboard.html" class="nav-link">לוח בקרה</a>
+      <a href="roster.html" class="nav-link active">תלמידים</a>
+      <a href="../search/search-filter.html" class="nav-link">חיפוש</a>
+      <button class="btn btn-ghost btn-small">שרה כהן</button>
+    </div>
+  </div>
+
+  <main class="page-container container">
+    <div class="page-header">
+      <div class="page-title">
+        <h1>רשימת תלמידים</h1>
+        <p>נהל את תלמידי כיתה ד'</p>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-secondary" onclick="window.location.href='import-csv.html'">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"></path>
+          </svg>
+          ייבוא CSV
+        </button>
+        <button class="btn btn-primary" onclick="window.location.href='add-student.html'">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 5v14M5 12h14"></path>
+          </svg>
+          הוסף תלמיד
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+      <div class="filter-group" style="flex: 2;">
+        <label for="search">חיפוש תלמידים</label>
+        <div class="search-input">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="M21 21l-4.35-4.35"></path>
+          </svg>
+          <input type="search" id="search" placeholder="חפש לפי שם או מספר..." oninput="filterTable()" />
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label for="gradeFilter">כיתה</label>
+        <select id="gradeFilter" onchange="filterTable()">
+          <option value="">כל הכיתות</option>
+          <option value="ג'">כיתה ג'</option>
+          <option value="ד'" selected>כיתה ד'</option>
+          <option value="ה'">כיתה ה'</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="classFilter">חדר</label>
+        <select id="classFilter" onchange="filterTable()">
+          <option value="">כל החדרים</option>
+          <option value="חדר 201" selected>חדר 201</option>
+          <option value="חדר 202">חדר 202</option>
+          <option value="חדר 203">חדר 203</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="statusFilter">סטטוס</label>
+        <select id="statusFilter" onchange="filterTable()">
+          <option value="">כל הסטטוסים</option>
+          <option value="הושלם">הושלם</option>
+          <option value="בתהליך">בתהליך</option>
+          <option value="לא התחיל">לא התחיל</option>
+          <option value="מסומן">מסומן</option>
+        </select>
+      </div>
+
+      <button class="btn btn-ghost btn-small" onclick="clearFilters()" style="margin-top: 20px;">
+        נקה מסננים
+      </button>
+    </div>
+
+    <!-- Bulk Actions Bar -->
+    <div class="bulk-actions" id="bulk-actions">
+      <div class="bulk-actions-left">
+        <span class="bulk-actions-count" id="selected-count">3 תלמידים נבחרו</span>
+        <button class="btn btn-ghost btn-small" onclick="clearSelection()">נקה בחירה</button>
+      </div>
+      <div class="bulk-actions-buttons">
+        <button class="btn btn-secondary btn-small">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
+          </svg>
+          ייצא נבחרים
+        </button>
+        <button class="btn btn-primary btn-small">
+          התחל ניתוח כמותי
+        </button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+      <table id="student-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">
+              <input type="checkbox" id="select-all" onchange="toggleSelectAll()" />
+            </th>
+            <th onclick="sortTable('name')">
+              שם
+              <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M19 12l-7 7-7-7"></path>
+              </svg>
+            </th>
+            <th onclick="sortTable('grade')">
+              כיתה
+              <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M19 12l-7 7-7-7"></path>
+              </svg>
+            </th>
+            <th onclick="sortTable('class')">
+              חדר
+              <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M19 12l-7 7-7-7"></path>
+              </svg>
+            </th>
+            <th onclick="sortTable('lastAnalysis')">
+              ניתוח אחרון
+              <svg class="sort-icon sorted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M19 12l-7 7-7-7"></path>
+              </svg>
+            </th>
+            <th onclick="sortTable('status')">
+              סטטוס
+              <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M19 12l-7 7-7-7"></path>
+              </svg>
+            </th>
+            <th style="width: 200px;">פעולות</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <!-- Student rows will be generated by JavaScript -->
+        </tbody>
+      </table>
+
+      <div class="pagination">
+        <div class="pagination-info" id="pagination-info">
+          מציג 1-25 מתוך 28 תלמידים
+        </div>
+        <div class="pagination-buttons">
+          <button class="btn btn-secondary btn-small" disabled>הקודם</button>
+          <button class="btn btn-secondary btn-small">הבא</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Sample student data
+    const students = [
+      { id: 1, name: 'מרקוס ג\'ונסון', initials: 'MJ', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-28', status: 'הושלם' },
+      { id: 2, name: 'אמה רודריגז', initials: 'ER', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-27', status: 'הושלם' },
+      { id: 3, name: 'ליאם צ\'ן', initials: 'LC', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-26', status: 'מסומן' },
+      { id: 4, name: 'סופיה פטל', initials: 'SP', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-25', status: 'הושלם' },
+      { id: 5, name: 'נואה ויליאמס', initials: 'NW', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-24', status: 'בתהליך' },
+      { id: 6, name: 'אוליביה מרטינז', initials: 'OM', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-23', status: 'הושלם' },
+      { id: 7, name: 'איתן בראון', initials: 'EB', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-22', status: 'הושלם' },
+      { id: 8, name: 'אווה דייוויס', initials: 'AD', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-21', status: 'לא התחיל' },
+      { id: 9, name: 'מייסון גרסיה', initials: 'MG', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-20', status: 'הושלם' },
+      { id: 10, name: 'איזבלה ווילסון', initials: 'IW', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-19', status: 'הושלם' },
+      { id: 11, name: 'ג\'יימס אנדרסון', initials: 'JA', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-18', status: 'מסומן' },
+      { id: 12, name: 'מיה תומס', initials: 'MT', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-17', status: 'הושלם' },
+      { id: 13, name: 'בנג\'מין טיילור', initials: 'BT', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-16', status: 'בתהליך' },
+      { id: 14, name: 'שרלוט מור', initials: 'CM', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-15', status: 'הושלם' },
+      { id: 15, name: 'לוקס ג\'קסון', initials: 'LJ', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-14', status: 'לא התחיל' },
+      { id: 16, name: 'אמליה מרטין', initials: 'AM', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-13', status: 'הושלם' },
+      { id: 17, name: 'הנרי לי', initials: 'HL', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-12', status: 'הושלם' },
+      { id: 18, name: 'הרפר וויט', initials: 'HW', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-11', status: 'הושלם' },
+      { id: 19, name: 'אלכסנדר האריס', initials: 'AH', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-10', status: 'הושלם' },
+      { id: 20, name: 'אוולין קלארק', initials: 'EC', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-09', status: 'לא התחיל' },
+      { id: 21, name: 'סבסטיאן לואיס', initials: 'SL', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-08', status: 'הושלם' },
+      { id: 22, name: 'אביגיל רובינסון', initials: 'AR', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-07', status: 'מסומן' },
+      { id: 23, name: 'דניאל ווקר', initials: 'DW', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-06', status: 'הושלם' },
+      { id: 24, name: 'אמילי הול', initials: 'EH', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-05', status: 'הושלם' },
+      { id: 25, name: 'מייקל אלן', initials: 'MA', grade: 'ד\'', class: 'חדר 201', lastAnalysis: '2025-12-04', status: 'הושלם' },
+      { id: 26, name: 'סופיה יאנג', initials: 'SY', grade: 'ד\'', class: 'חדר 201', lastAnalysis: 'אף פעם', status: 'לא התחיל' },
+      { id: 27, name: 'מתיו קינג', initials: 'MK', grade: 'ד\'', class: 'חדר 201', lastAnalysis: 'אף פעם', status: 'לא התחיל' },
+      { id: 28, name: 'לילי רייט', initials: 'LW', grade: 'ד\'', class: 'חדר 201', lastAnalysis: 'אף פעם', status: 'לא התחיל' }
+    ];
+
+    // Get badge class for status
+    function getStatusBadge(status) {
+      const badges = {
+        'הושלם': 'badge-success',
+        'בתהליך': 'badge-warning',
+        'לא התחיל': 'badge-neutral',
+        'מסומן': 'badge-error'
+      };
+      return badges[status] || 'badge-neutral';
+    }
+
+    // Format date
+    function formatDate(dateStr) {
+      if (dateStr === 'אף פעם') return 'אף פעם';
+      const date = new Date(dateStr);
+      const now = new Date();
+      const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+
+      if (diffDays === 0) return 'היום';
+      if (diffDays === 1) return 'אתמול';
+      if (diffDays < 7) return `לפני ${diffDays} ימים`;
+      return date.toLocaleDateString('he-IL', { month: 'short', day: 'numeric' });
+    }
+
+    // Render table
+    function renderTable() {
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = students.map(student => `
+        <tr>
+          <td>
+            <input type="checkbox" class="student-checkbox" data-id="${student.id}" onchange="updateBulkActions()" />
+          </td>
+          <td>
+            <div class="student-name">
+              <div class="student-avatar">${student.initials}</div>
+              <strong>${student.name}</strong>
+            </div>
+          </td>
+          <td>${student.grade}</td>
+          <td>${student.class}</td>
+          <td>${formatDate(student.lastAnalysis)}</td>
+          <td>
+            <span class="badge ${getStatusBadge(student.status)}">${student.status}</span>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn btn-ghost btn-small" onclick="viewStudent(${student.id})">הצג</button>
+              <button class="btn btn-primary btn-small" onclick="startAnalysis(${student.id})">נתח</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Filter table
+    function filterTable() {
+      // In a real app, this would filter the data
+      console.log('Filtering table...');
+    }
+
+    // Clear filters
+    function clearFilters() {
+      document.getElementById('search').value = '';
+      document.getElementById('gradeFilter').value = 'ד\'';
+      document.getElementById('classFilter').value = 'חדר 201';
+      document.getElementById('statusFilter').value = '';
+      filterTable();
+    }
+
+    // Sort table
+    function sortTable(column) {
+      console.log('Sorting by:', column);
+      // In a real app, this would sort the data
+    }
+
+    // Toggle select all
+    function toggleSelectAll() {
+      const selectAll = document.getElementById('select-all');
+      const checkboxes = document.querySelectorAll('.student-checkbox');
+      checkboxes.forEach(cb => cb.checked = selectAll.checked);
+      updateBulkActions();
+    }
+
+    // Update bulk actions bar
+    function updateBulkActions() {
+      const checkboxes = document.querySelectorAll('.student-checkbox:checked');
+      const bulkActions = document.getElementById('bulk-actions');
+      const count = document.getElementById('selected-count');
+
+      if (checkboxes.length > 0) {
+        bulkActions.classList.add('visible');
+        count.textContent = `${checkboxes.length} תלמידים נבחרו`;
+      } else {
+        bulkActions.classList.remove('visible');
+      }
+    }
+
+    // Clear selection
+    function clearSelection() {
+      document.getElementById('select-all').checked = false;
+      document.querySelectorAll('.student-checkbox').forEach(cb => cb.checked = false);
+      updateBulkActions();
+    }
+
+    // View student
+    function viewStudent(id) {
+      const student = students.find(s => s.id === id);
+      alert(`הצג פרטים עבור ${student.name}\n\nבסביבת הייצור, זה יפתח את פרופיל התלמיד.`);
+    }
+
+    // Start analysis
+    function startAnalysis(id) {
+      const student = students.find(s => s.id === id);
+      if (confirm(`התחל ניתוח AI עבור ${student.name}?`)) {
+        window.location.href = '../analysis/conversation.html';
+      }
+    }
+
+    // Initialize
+    window.addEventListener('load', () => {
+      renderTable();
+    });
+  </script>
+</body>
+</html>
