@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 
-import { validateCredentials, generateToken, getTeacherAccount } from '@/app/api/lib/auth';
+const BACKEND_URL = process.env.BACKEND_API_URL || 'http://localhost:4000/api/v1';
 
 /**
  * POST /api/auth/login
  *
- * Authenticates user with hardcoded credentials and returns JWT token
+ * Proxies authentication request to backend API
  *
  * Request body:
  * {
@@ -16,11 +16,13 @@ import { validateCredentials, generateToken, getTeacherAccount } from '@/app/api
  * Response:
  * {
  *   accessToken: string;
+ *   refreshToken: string;
  *   user: {
  *     id: string;
  *     email: string;
  *     role: string;
- *     name: string;
+ *     firstName: string;
+ *     lastName: string;
  *   };
  * }
  */
@@ -34,25 +36,25 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Email and password required' }, { status: 400 });
     }
 
-    // Validate credentials against hardcoded account
-    if (!validateCredentials(email, password)) {
-      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+    // Forward request to backend API
+    const response = await fetch(`${BACKEND_URL}/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ error: 'Authentication failed' }));
+      return NextResponse.json(
+        { error: errorData.message || errorData.error || 'Authentication failed' },
+        { status: response.status }
+      );
     }
 
-    // Get user info and generate token
-    const user = getTeacherAccount();
-    const accessToken = generateToken(user.id, user.email, user.role);
-
-    return NextResponse.json({
-      accessToken,
-      user: {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-        firstName: user.name.split(' ')[0],
-        lastName: user.name.split(' ')[1] || '',
-      },
-    });
+    const data = await response.json();
+    return NextResponse.json(data);
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
