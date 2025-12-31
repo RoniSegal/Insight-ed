@@ -398,14 +398,28 @@ export class AuthService {
   /**
    * Log authentication event to audit log
    */
-  private async logAuthEvent(userId: string | null, action: any, details: any): Promise<void> {
+  private async logAuthEvent(userId: string | null, action: string, details: any): Promise<void> {
+    // Map auth actions to AuditAction enum values
+    const actionMap: Record<string, string> = {
+      USER_REGISTERED: 'CREATE',
+      USER_REGISTERED_SSO: 'CREATE',
+      USER_LOGIN: 'LOGIN',
+      USER_LOGIN_SSO: 'LOGIN',
+      USER_LOGOUT: 'LOGOUT',
+      FAILED_LOGIN_ATTEMPT: 'READ',
+      PASSWORD_RESET_REQUESTED: 'UPDATE',
+      PASSWORD_RESET_COMPLETED: 'UPDATE',
+    };
+
+    const auditAction = actionMap[action] || 'READ';
+
     await this.prisma.auditLog.create({
       data: {
         userId,
-        action,
+        action: auditAction as any,
         resource: 'User',
         resourceId: userId,
-        metadata: details,
+        metadata: { ...details, originalAction: action },
       },
     });
   }
