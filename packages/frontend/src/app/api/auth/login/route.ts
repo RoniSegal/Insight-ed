@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+
 import { validateCredentials, generateToken, getTeacherAccount } from '@/app/api/lib/auth';
 
 /**

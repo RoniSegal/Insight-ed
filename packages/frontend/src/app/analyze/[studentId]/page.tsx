@@ -1,15 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useChatStore } from '@/lib/store/chatStore';
+import { useEffect, useState } from 'react';
+
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
-import { MessageList } from '@/components/chat/MessageList';
-import { ChatInput } from '@/components/chat/ChatInput';
 import { AnalysisResult } from '@/components/chat/AnalysisResult';
-import { Button } from '@/components/ui/Button';
+import { ChatInput } from '@/components/chat/ChatInput';
+import { MessageList } from '@/components/chat/MessageList';
 import { Alert } from '@/components/ui/Alert';
+import { Button } from '@/components/ui/Button';
 import { ApiClient } from '@/lib/api-client';
+import { useChatStore } from '@/lib/store/chatStore';
 
 interface Student {
   id: string;

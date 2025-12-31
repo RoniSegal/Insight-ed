@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+
 import { verifyToken } from '@/app/api/lib/auth';
 import { setConversation, type ConversationState } from '@/app/api/lib/conversationStore';
 import { loadSystemPrompt } from '@/app/api/lib/openai';

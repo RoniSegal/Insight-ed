@@ -2,13 +2,14 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
-import { ApiClient } from '@/lib/api-client';
-import { ResultsHeader } from '@/components/results/ResultsHeader';
 import { ResultsContent } from '@/components/results/ResultsContent';
+import { ResultsHeader } from '@/components/results/ResultsHeader';
+import { Alert } from '@/components/ui/Alert';
 import { Button } from '@/components/ui/Button';
 import { LoadingPage } from '@/components/ui/Spinner';
-import { Alert } from '@/components/ui/Alert';
+import { ApiClient } from '@/lib/api-client';
 
 interface AnalysisResult {
   id: string;

@@ -1,7 +1,8 @@
+import type { User } from '@growth-engine/shared';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+
 import { ApiClient } from '../api-client';
-import type { User } from '@growth-engine/shared';
 
 interface AuthState {
   user: User | null;

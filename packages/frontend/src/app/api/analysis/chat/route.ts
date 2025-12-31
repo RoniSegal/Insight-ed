@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+
 import { verifyToken } from '@/app/api/lib/auth';
 import { getConversation, setConversation } from '@/app/api/lib/conversationStore';
-import { chat, isOpenAIConfigured, truncateConversationHistory, type ChatMessage } from '@/app/api/lib/openai';
+import { chat, isOpenAIConfigured, truncateConversationHistory } from '@/app/api/lib/openai';
 
 // Rate limiting (simple in-memory implementation for MVP)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
@@ -86,7 +87,7 @@ export async function POST(request: NextRequest) {
         const truncatedMessages = truncateConversationHistory(conversation.messages, 15);
 
         const response = await chat({
-          messages: truncatedMessages as ChatMessage[],
+          messages: truncatedMessages,
         });
 
         aiResponse = response.message;

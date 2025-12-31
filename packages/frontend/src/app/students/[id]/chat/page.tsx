@@ -1,15 +1,17 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import type { Student } from '@growth-engine/shared';
 import { useParams, useRouter } from 'next/navigation';
+import { useState, useEffect, useRef } from 'react';
+
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { ChatHeader } from '@/components/chat/ChatHeader';
-import { ChatMessage, type Message } from '@/components/chat/ChatMessage';
 import { ChatInput } from '@/components/chat/ChatInput';
-import { ApiClient } from '@/lib/api-client';
+import { ChatMessage, type Message } from '@/components/chat/ChatMessage';
 import { Alert } from '@/components/ui/Alert';
 import { LoadingContent } from '@/components/ui/Spinner';
-import type { Student } from '@growth-engine/shared';
+import { ApiClient } from '@/lib/api-client';
+
 
 export default function ChatPage() {
   return (
@@ -49,7 +51,7 @@ function ChatPageContent() {
       setError(null);
 
       // Fetch student info
-      const student = await ApiClient.get(`/students/${studentId}`) as Student;
+      const student = await ApiClient.get(`/students/${studentId}`);
       setStudentName(student.name);
 
       // Start conversation - get first AI message

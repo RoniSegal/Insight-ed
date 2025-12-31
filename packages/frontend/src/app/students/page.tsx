@@ -1,17 +1,19 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
-import { LogoutButton } from '@/components/auth/LogoutButton';
-import { useAuthStore } from '@/lib/auth/auth-store';
-import { ApiClient } from '@/lib/api-client';
-import { Card, CardHeader, CardContent } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Alert } from '@/components/ui/Alert';
-import { LoadingContent } from '@/components/ui/Spinner';
 import type { Student } from '@growth-engine/shared';
+import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+
+import { LogoutButton } from '@/components/auth/LogoutButton';
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
+import { Alert } from '@/components/ui/Alert';
+import { Button } from '@/components/ui/Button';
+import { Card, CardHeader, CardContent } from '@/components/ui/Card';
+import { Input } from '@/components/ui/Input';
+import { LoadingContent } from '@/components/ui/Spinner';
+import { ApiClient } from '@/lib/api-client';
+import { useAuthStore } from '@/lib/auth/auth-store';
+
 
 export default function StudentsPage() {
   return (

@@ -1,6 +1,7 @@
-import OpenAI from 'openai';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+
+import OpenAI from 'openai';
 
 // Initialize OpenAI client
 const openai = new OpenAI({

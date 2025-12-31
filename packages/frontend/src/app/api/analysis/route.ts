@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
-import { verifyToken } from '@/app/api/lib/auth';
+
 import { analysisStore } from '@/app/api/lib/analysisStore';
+import { verifyToken } from '@/app/api/lib/auth';
 
 /**
  * POST /api/analysis

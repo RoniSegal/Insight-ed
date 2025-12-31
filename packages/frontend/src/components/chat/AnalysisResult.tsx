@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Card, CardHeader, CardContent } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
+
 import { Alert } from '@/components/ui/Alert';
+import { Button } from '@/components/ui/Button';
+import { Card, CardHeader, CardContent } from '@/components/ui/Card';
 
 interface AnalysisResultProps {
   analysis: string;

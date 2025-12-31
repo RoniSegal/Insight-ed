@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, Suspense } from 'react';
+
 import { useAuthStore } from '@/lib/auth/auth-store';
 
 function OAuthCallbackContent() {

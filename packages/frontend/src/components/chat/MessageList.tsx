@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from 'react';
+
 import { MessageBubble } from './MessageBubble';
-import type { Message } from '@/lib/store/chatStore';
+
 import { Spinner } from '@/components/ui/Spinner';
+import type { Message } from '@/lib/store/chatStore';
 
 interface MessageListProps {
   messages: Message[];

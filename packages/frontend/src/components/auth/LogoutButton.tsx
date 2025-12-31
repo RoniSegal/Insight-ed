@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+
 import { useAuthStore } from '@/lib/auth/auth-store';
 
 export function LogoutButton() {

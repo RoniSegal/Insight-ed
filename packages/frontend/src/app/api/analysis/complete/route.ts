@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/app/api/lib/auth';
+
 import { analysisStore } from '@/app/api/lib/analysisStore';
+import { verifyToken } from '@/app/api/lib/auth';
 import { getConversation } from '@/app/api/lib/conversationStore';
 
 export async function POST(request: NextRequest) {

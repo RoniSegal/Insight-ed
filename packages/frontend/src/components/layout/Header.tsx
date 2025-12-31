@@ -1,7 +1,8 @@
-import React from 'react';
 import Link from 'next/link';
-import { useAuthStore } from '@/lib/auth/auth-store';
+import React from 'react';
+
 import { Button } from '@/components/ui';
+import { useAuthStore } from '@/lib/auth/auth-store';
 
 export const Header: React.FC = () => {
   const { user, logout } = useAuthStore();
