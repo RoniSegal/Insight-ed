@@ -130,12 +130,12 @@ jobs:
 
       - name: Build frontend
         env:
-          NEXT_PUBLIC_API_URL: http://localhost:4000
+          NEXT_PUBLIC_API_URL: http://localhost:4000/api/v1
         run: npm run build --workspace=@growth-engine/frontend
 
       - name: Start frontend server
         env:
-          NEXT_PUBLIC_API_URL: http://localhost:4000
+          NEXT_PUBLIC_API_URL: http://localhost:4000/api/v1
           PORT: 3000
         run: |
           cd packages/frontend
