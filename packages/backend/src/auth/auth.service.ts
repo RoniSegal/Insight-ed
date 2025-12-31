@@ -406,7 +406,7 @@ export class AuthService {
    * Remove sensitive fields from user object
    */
   private sanitizeUser(user: User): Partial<User> {
-    const { passwordHash, providerId, ...safeUser } = user;
+    const { passwordHash: _passwordHash, providerId: _providerId, ...safeUser } = user;
     return safeUser;
   }
 }
