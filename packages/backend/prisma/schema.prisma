@@ -1,0 +1,296 @@
+// This is your Prisma schema file for Growth Engine MVP
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums
+enum UserRole {
+  TEACHER
+  PRINCIPAL
+  ADMIN
+}
+
+enum AuthProvider {
+  EMAIL
+  GOOGLE
+  MICROSOFT
+}
+
+enum AnalysisStatus {
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+
+enum ConversationRole {
+  SYSTEM
+  ASSISTANT
+  USER
+}
+
+enum AuditAction {
+  CREATE
+  READ
+  UPDATE
+  DELETE
+  LOGIN
+  LOGOUT
+  EXPORT
+}
+
+// Models
+model District {
+  id       String   @id @default(uuid())
+  name     String
+  code     String   @unique
+  state    String?
+  country  String   @default("IL")
+  settings Json?
+  
+  schools  School[]
+  
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  
+  @@index([code])
+  @@index([deletedAt])
+}
+
+model School {
+  id         String    @id @default(uuid())
+  name       String
+  code       String    @unique
+  districtId String?
+  
+  address    String?
+  phone      String?
+  email      String?
+  principal  String?
+  settings   Json?
+  
+  district   District? @relation(fields: [districtId], references: [id])
+  users      User[]
+  students   Student[]
+  classes    Class[]
+  
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+  
+  @@index([districtId])
+  @@index([code])
+  @@index([deletedAt])
+}
+
+model User {
+  id            String       @id @default(uuid())
+  email         String       @unique
+  passwordHash  String?
+  role          UserRole
+  authProvider  AuthProvider @default(EMAIL)
+  providerId    String?
+  
+  firstName     String
+  lastName      String
+  phone         String?
+  avatar        String?
+  
+  schoolId      String
+  school        School       @relation(fields: [schoolId], references: [id])
+  
+  lastLoginAt   DateTime?
+  emailVerified Boolean      @default(false)
+  isActive      Boolean      @default(true)
+  settings      Json?
+  
+  classes              Class[]
+  analyses             Analysis[]
+  passwordResetTokens  PasswordResetToken[]
+
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  deletedAt     DateTime?
+  
+  @@index([email])
+  @@index([schoolId])
+  @@index([role])
+  @@index([deletedAt])
+}
+
+model Student {
+  id             String    @id @default(uuid())
+  firstName      String
+  lastName       String
+  studentId      String?
+  gradeLevel     String
+  
+  schoolId       String
+  school         School    @relation(fields: [schoolId], references: [id])
+  
+  dateOfBirth    DateTime?
+  gender         String?
+  notes          String?
+  
+  enrollmentDate DateTime?
+  isActive       Boolean   @default(true)
+  
+  enrollments    ClassEnrollment[]
+  analyses       Analysis[]
+  
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deletedAt      DateTime?
+  
+  @@unique([schoolId, studentId])
+  @@index([schoolId])
+  @@index([gradeLevel])
+  @@index([lastName, firstName])
+  @@index([deletedAt])
+}
+
+model Class {
+  id           String   @id @default(uuid())
+  name         String
+  subject      String?
+  gradeLevel   String?
+  section      String?
+  
+  teacherId    String
+  teacher      User     @relation(fields: [teacherId], references: [id])
+  
+  schoolId     String
+  school       School   @relation(fields: [schoolId], references: [id])
+  
+  academicYear String?
+  isActive     Boolean  @default(true)
+  
+  enrollments  ClassEnrollment[]
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  deletedAt    DateTime?
+  
+  @@index([teacherId])
+  @@index([schoolId])
+  @@index([gradeLevel])
+  @@index([academicYear])
+  @@index([deletedAt])
+}
+
+model ClassEnrollment {
+  id         String    @id @default(uuid())
+  studentId  String
+  student    Student   @relation(fields: [studentId], references: [id])
+  
+  classId    String
+  class      Class     @relation(fields: [classId], references: [id])
+  
+  enrolledAt DateTime  @default(now())
+  droppedAt  DateTime?
+  
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  
+  @@unique([studentId, classId])
+  @@index([studentId])
+  @@index([classId])
+  @@index([enrolledAt])
+}
+
+model Analysis {
+  id               String            @id @default(uuid())
+  studentId        String
+  student          Student           @relation(fields: [studentId], references: [id])
+  
+  teacherId        String
+  teacher          User              @relation(fields: [teacherId], references: [id])
+  
+  status           AnalysisStatus    @default(IN_PROGRESS)
+  
+  results          Json?
+  teacherEdits     Json?
+  privateNotes     String?
+  
+  sessionDuration  Int?
+  totalTokens      Int?
+  estimatedCost    Float?
+  flaggedForReview Boolean           @default(false)
+  
+  conversations    AnalysisConversation[]
+  
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  deletedAt        DateTime?
+  
+  @@index([studentId])
+  @@index([teacherId])
+  @@index([status])
+  @@index([flaggedForReview])
+  @@index([createdAt])
+  @@index([deletedAt])
+}
+
+model AnalysisConversation {
+  id             String           @id @default(uuid())
+  analysisId     String
+  analysis       Analysis         @relation(fields: [analysisId], references: [id], onDelete: Cascade)
+  
+  role           ConversationRole
+  content        String           @db.Text
+  tokens         Int?
+  
+  sequenceNumber Int
+  
+  createdAt      DateTime         @default(now())
+  
+  @@unique([analysisId, sequenceNumber])
+  @@index([analysisId])
+  @@index([sequenceNumber])
+}
+
+model AuditLog {
+  id         String      @id @default(uuid())
+  
+  userId     String?
+  userEmail  String?
+  userRole   String?
+  
+  action     AuditAction
+  resource   String
+  resourceId String?
+  
+  ipAddress  String?
+  userAgent  String?
+  metadata   Json?
+  
+  createdAt  DateTime    @default(now())
+  
+  @@index([userId])
+  @@index([resourceId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  tokenHash String    @unique // SHA-256 hash of the reset token
+  expiresAt DateTime
+  usedAt    DateTime? // Null if not used yet
+  
+  createdAt DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([tokenHash])
+  @@index([expiresAt])
+}
