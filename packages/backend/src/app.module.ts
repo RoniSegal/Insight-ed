@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '../../.env',
+      ignoreEnvFile: process.env.NODE_ENV === 'test', // In CI/test, use environment variables directly
     }),
     AuthModule,
   ],
