@@ -1,0 +1,126 @@
+name: Deploy to Production
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  deploy-production:
+    name: Deploy to Production Environment
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://app.growthengine.app
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Build all packages
+        run: npm run build
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY_PRODUCTION }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Build and push backend Docker image
+        working-directory: packages/backend
+        run: |
+          gcloud builds submit \
+            --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/backend:${{ github.sha }} \
+            --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/backend:production \
+            --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/backend:latest
+
+      - name: Build and push frontend Docker image
+        working-directory: packages/frontend
+        run: |
+          gcloud builds submit \
+            --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/frontend:${{ github.sha }} \
+            --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/frontend:production \
+            --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/frontend:latest
+
+      - name: Deploy backend to Cloud Run (with traffic migration)
+        run: |
+          gcloud run deploy growth-engine-backend-production \
+            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/backend:${{ github.sha }} \
+            --platform managed \
+            --region us-central1 \
+            --allow-unauthenticated \
+            --set-env-vars DATABASE_URL=${{ secrets.DATABASE_URL_PRODUCTION }} \
+            --set-env-vars REDIS_URL=${{ secrets.REDIS_URL_PRODUCTION }} \
+            --set-env-vars JWT_SECRET=${{ secrets.JWT_SECRET_PRODUCTION }} \
+            --set-env-vars OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
+            --min-instances 2 \
+            --max-instances 50 \
+            --no-traffic
+
+      - name: Deploy frontend to Cloud Run (with traffic migration)
+        run: |
+          gcloud run deploy growth-engine-frontend-production \
+            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/frontend:${{ github.sha }} \
+            --platform managed \
+            --region us-central1 \
+            --allow-unauthenticated \
+            --set-env-vars NEXT_PUBLIC_API_URL=${{ secrets.BACKEND_URL_PRODUCTION }} \
+            --min-instances 2 \
+            --max-instances 50 \
+            --no-traffic
+
+      - name: Run database migrations
+        run: |
+          gcloud run jobs execute growth-engine-migrate-production \
+            --region us-central1 \
+            --wait
+
+      - name: Run smoke tests against new revision
+        run: |
+          NEW_BACKEND_URL=$(gcloud run services describe growth-engine-backend-production \
+            --region us-central1 --format 'value(status.url)')
+          curl -f $NEW_BACKEND_URL/api/v1/health || exit 1
+
+      - name: Migrate traffic to new revision
+        run: |
+          gcloud run services update-traffic growth-engine-backend-production \
+            --to-latest --region us-central1
+          gcloud run services update-traffic growth-engine-frontend-production \
+            --to-latest --region us-central1
+
+      - name: Final health check
+        run: |
+          sleep 30  # Wait for traffic migration
+          curl -f ${{ secrets.BACKEND_URL_PRODUCTION }}/api/v1/health || exit 1
+          curl -f https://app.growthengine.app || exit 1
+
+      - name: Create deployment record
+        run: |
+          echo "✅ Production deployment successful!"
+          echo "Version: ${{ github.sha }}"
+          echo "Release: ${{ github.event.release.tag_name }}"
+          echo "Timestamp: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+
+      - name: Rollback on failure
+        if: failure()
+        run: |
+          echo "❌ Deployment failed! Rolling back..."
+          gcloud run services update-traffic growth-engine-backend-production \
+            --to-revisions=PREVIOUS=100 --region us-central1
+          gcloud run services update-traffic growth-engine-frontend-production \
+            --to-revisions=PREVIOUS=100 --region us-central1
+          exit 1
