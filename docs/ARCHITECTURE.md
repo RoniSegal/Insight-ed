@@ -2540,6 +2540,526 @@ Request: POST /api/v1/analyses/:id/complete
 
 ---
 
+### Internationalization & Localization
+
+#### Primary Language: Hebrew
+
+**Context:**
+Growth Engine is designed primarily for the Israeli education market. All user-facing content, system messages, and documentation must be in Hebrew with full right-to-left (RTL) text direction support.
+
+**Why Hebrew First:**
+- **Target Market:** Israeli K-12 schools (Ministry of Education requirements)
+- **User Base:** Teachers and principals primarily Hebrew-speaking
+- **Compliance:** Educational materials must be in local language
+- **Adoption:** Higher adoption rates when users can work in their native language
+- **Accessibility:** Reduces cognitive load for non-English-speaking educators
+
+---
+
+#### Frontend Internationalization
+
+**Framework:** next-intl (Next.js-native i18n library)
+
+**Why next-intl:**
+- Native Next.js App Router support (React Server Components compatible)
+- Built-in RTL handling
+- Type-safe translations (TypeScript integration)
+- Server-side and client-side rendering support
+- Automatic locale routing
+- Lightweight and performant
+
+**Alternative Considered:** react-i18next
+- Rejected due to larger bundle size and less optimal Next.js integration
+
+**Implementation Details:**
+
+1. **Directory Structure:**
+```
+/messages
+  /he-IL.json          # Hebrew translations (primary)
+  /en-US.json          # English translations (future)
+```
+
+2. **Translation File Format (JSON):**
+```json
+{
+  "auth": {
+    "login": "התחברות",
+    "logout": "התנתקות",
+    "email": "דוא\"ל",
+    "password": "סיסמה",
+    "forgotPassword": "שכחתי סיסמה",
+    "invalidCredentials": "דוא\"ל או סיסמה שגויים"
+  },
+  "students": {
+    "title": "תלמידים",
+    "addStudent": "הוסף תלמיד",
+    "firstName": "שם פרטי",
+    "lastName": "שם משפחה",
+    "gradeLevel": "כיתה",
+    "noStudentsFound": "לא נמצאו תלמידים"
+  },
+  "analysis": {
+    "startAnalysis": "התחל ניתוח",
+    "strengths": "חוזקות",
+    "weaknesses": "נקודות לשיפור",
+    "recommendations": "המלצות",
+    "inProgress": "ניתוח בתהליך",
+    "completed": "ניתוח הושלם"
+  }
+}
+```
+
+3. **Next.js Configuration:**
+```typescript
+// next.config.js
+const createNextIntlPlugin = require('next-intl/plugin');
+const withNextIntl = createNextIntlPlugin('./i18n.ts');
+
+module.exports = withNextIntl({
+  i18n: {
+    locales: ['he-IL'],
+    defaultLocale: 'he-IL',
+  },
+});
+```
+
+4. **Usage in Components:**
+```typescript
+import { useTranslations } from 'next-intl';
+
+export default function LoginPage() {
+  const t = useTranslations('auth');
+
+  return (
+    <form>
+      <label>{t('email')}</label>
+      <input type="email" placeholder={t('email')} />
+
+      <label>{t('password')}</label>
+      <input type="password" placeholder={t('password')} />
+
+      <button>{t('login')}</button>
+    </form>
+  );
+}
+```
+
+5. **RTL Support (CSS):**
+```css
+/* globals.css */
+html[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Use logical properties for RTL compatibility */
+.button {
+  margin-inline-start: 1rem;  /* Instead of margin-left */
+  padding-inline: 1rem;       /* Instead of padding-left/right */
+}
+
+/* Tailwind CSS RTL plugin */
+/* tailwind.config.js */
+module.exports = {
+  plugins: [
+    require('tailwindcss-rtl'),
+  ],
+};
+```
+
+6. **Hebrew Typography:**
+```css
+/* Use Hebrew-optimized fonts */
+body {
+  font-family: 'Rubik', 'Heebo', 'Assistant', system-ui, sans-serif;
+}
+
+/* Load Hebrew fonts */
+@font-face {
+  font-family: 'Rubik';
+  src: url('/fonts/Rubik-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+0590-05FF; /* Hebrew block */
+}
+```
+
+**Recommended Hebrew Fonts:**
+- **Rubik:** Modern, clean, excellent screen readability
+- **Heebo:** Open-source, designed for Hebrew UI
+- **Assistant:** Friendly, readable, pairs well with English
+
+**Date & Number Formatting:**
+```typescript
+// Use Intl API for locale-aware formatting
+const date = new Date();
+const hebrewDate = new Intl.DateTimeFormat('he-IL', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(date);
+// Output: "30 בדצמבר 2025"
+
+const number = 1234.56;
+const hebrewNumber = new Intl.NumberFormat('he-IL').format(number);
+// Output: "1,234.56" (Hebrew uses same decimal notation)
+```
+
+**Bidirectional Text Handling:**
+```typescript
+// For mixed Hebrew/English content (e.g., student names)
+<p dir="auto">{studentName}</p>  // Auto-detects text direction
+
+// For user-generated content with mixed languages
+<div className="whitespace-pre-wrap" dir="auto">
+  {userInput}
+</div>
+```
+
+---
+
+#### Backend Internationalization
+
+**Database Unicode Support:**
+
+1. **PostgreSQL Configuration:**
+```sql
+-- Ensure database uses UTF-8 encoding
+CREATE DATABASE growth_engine
+  WITH ENCODING 'UTF8'
+  LC_COLLATE = 'he_IL.UTF-8'
+  LC_CTYPE = 'he_IL.UTF-8';
+
+-- Hebrew text search configuration (future enhancement)
+CREATE TEXT SEARCH CONFIGURATION hebrew (COPY = simple);
+```
+
+2. **Prisma Schema:**
+```prisma
+// All text fields support Unicode by default
+model Student {
+  id        String @id @default(uuid())
+  firstName String  // Full Unicode support (Hebrew, English, etc.)
+  lastName  String  // Full Unicode support
+
+  // Prisma automatically handles UTF-8 encoding
+  @@index([lastName, firstName])  // Hebrew alphabetical sorting
+}
+```
+
+**Unicode Normalization:**
+- **Issue:** Hebrew can be represented in multiple Unicode forms (e.g., with/without diacritics)
+- **Solution:** Normalize to NFC (Canonical Composition) on input
+```typescript
+// NestJS validation pipe
+import { PipeTransform, Injectable } from '@nestjs/common';
+
+@Injectable()
+export class UnicodeNormalizationPipe implements PipeTransform {
+  transform(value: any) {
+    if (typeof value === 'string') {
+      return value.normalize('NFC');  // Canonical composition
+    }
+    return value;
+  }
+}
+
+// Apply to all text inputs
+@Post('students')
+async createStudent(@Body(UnicodeNormalizationPipe) dto: CreateStudentDto) {
+  // ...
+}
+```
+
+**API Validation with Hebrew:**
+
+1. **Name Validation (Hebrew characters):**
+```typescript
+import { IsString, Matches, Length } from 'class-validator';
+
+export class CreateStudentDto {
+  @IsString()
+  @Length(2, 50)
+  @Matches(/^[\u0590-\u05FFa-zA-Z\s'-]+$/, {
+    message: 'שם חייב להכיל רק אותיות עבריות או אנגליות',  // Hebrew error message
+  })
+  firstName: string;
+
+  @IsString()
+  @Length(2, 50)
+  @Matches(/^[\u0590-\u05FFa-zA-Z\s'-]+$/, {
+    message: 'שם משפחה חייב להכיל רק אותיות עבריות או אנגליות',
+  })
+  lastName: string;
+}
+```
+
+**Unicode Range Reference:**
+- `\u0590-\u05FF`: Hebrew block (letters, vowels, punctuation)
+- `\u0020-\u007F`: Basic Latin (English letters, numbers)
+
+2. **Error Messages in Hebrew:**
+```typescript
+// Custom exception filter for Hebrew error messages
+import { ExceptionFilter, Catch, HttpException } from '@nestjs/common';
+
+@Catch(HttpException)
+export class HebrewExceptionFilter implements ExceptionFilter {
+  catch(exception: HttpException, host: ArgumentsHost) {
+    const ctx = host.switchToHttp();
+    const response = ctx.getResponse();
+    const status = exception.getStatus();
+
+    const errorMessages = {
+      400: 'בקשה שגויה',
+      401: 'נדרשת הזדהות',
+      403: 'אין הרשאה',
+      404: 'לא נמצא',
+      409: 'כבר קיים',
+      500: 'שגיאת שרת',
+    };
+
+    response.status(status).json({
+      success: false,
+      error: {
+        code: exception.name,
+        message: errorMessages[status] || 'שגיאה לא ידועה',
+        details: exception.message,
+      },
+    });
+  }
+}
+```
+
+3. **Validation Error Translation:**
+```typescript
+// Translate class-validator errors to Hebrew
+export const hebrewValidationMessages = {
+  isNotEmpty: 'שדה חובה',
+  isEmail: 'כתובת דוא"ל לא תקינה',
+  minLength: 'אורך מינימלי: {constraint1} תווים',
+  maxLength: 'אורך מקסימלי: {constraint1} תווים',
+  isString: 'חייב להיות טקסט',
+  isNumber: 'חייב להיות מספר',
+  isDate: 'תאריך לא תקין',
+};
+```
+
+**Hebrew Collation for Sorting:**
+```typescript
+// Use PostgreSQL Hebrew collation for alphabetical sorting
+const students = await prisma.$queryRaw`
+  SELECT * FROM students
+  ORDER BY last_name COLLATE "he_IL.UTF-8", first_name COLLATE "he_IL.UTF-8"
+`;
+
+// Alternative: Use Prisma with locale-aware sorting
+const students = await prisma.student.findMany({
+  orderBy: [
+    { lastName: 'asc' },
+    { firstName: 'asc' },
+  ],
+});
+// Note: Prisma uses database collation settings
+```
+
+**Email Notifications in Hebrew:**
+```typescript
+// Email templates in Hebrew
+const passwordResetEmail = {
+  subject: 'איפוס סיסמה - Growth Engine',
+  body: `
+    שלום {firstName},
+
+    קיבלנו בקשה לאיפוס הסיסמה שלך.
+
+    לחץ על הקישור הבא לאיפוס הסיסמה:
+    {resetLink}
+
+    הקישור תקף ל-24 שעות.
+
+    אם לא ביקשת לאפס את הסיסמה, התעלם מהודעה זו.
+
+    בברכה,
+    צוות Growth Engine
+  `,
+};
+```
+
+---
+
+#### Text Search & Analysis
+
+**Hebrew Full-Text Search (Future Enhancement):**
+```sql
+-- PostgreSQL Hebrew text search (requires hebrew dictionary)
+ALTER TEXT SEARCH CONFIGURATION hebrew
+  ADD MAPPING FOR word WITH hebrew_stem;
+
+-- Create GIN index for fast Hebrew text search
+CREATE INDEX idx_students_hebrew_search
+ON students
+USING GIN(to_tsvector('hebrew', first_name || ' ' || last_name));
+
+-- Search query
+SELECT * FROM students
+WHERE to_tsvector('hebrew', first_name || ' ' || last_name)
+  @@ to_tsquery('hebrew', 'דוד');
+```
+
+**OpenAI API with Hebrew:**
+- **Issue:** ChatGPT supports Hebrew but may default to English responses
+- **Solution:** Explicitly specify Hebrew in system prompt
+```typescript
+const systemPrompt = `
+אתה מומחה לניתוח חינוכי של תלמידים.
+תפקידך לנתח את התצפיות של המורה על התלמיד ולספק המלצות מעשיות.
+
+כל השאלות והתשובות שלך יהיו בעברית.
+השתמש בשפה מקצועית אך מובנת.
+
+התלמיד: {studentName}
+המורה: {teacherName}
+`;
+
+const conversation = await openai.chat.completions.create({
+  model: 'gpt-4',
+  messages: [
+    { role: 'system', content: systemPrompt },
+    { role: 'assistant', content: 'ספר לי על הביצועים האקדמיים של התלמיד.' },
+  ],
+});
+```
+
+---
+
+#### Future Enhancements
+
+**Multi-Language Support (Post-MVP):**
+
+1. **Language Selection:**
+```typescript
+// User settings model
+model User {
+  id       String @id
+  email    String
+  language String @default("he-IL")  // User-selected language
+  settings Json?  // { "language": "he-IL", "timezone": "Asia/Jerusalem" }
+}
+```
+
+2. **Dynamic Locale Switching:**
+```typescript
+// Next.js middleware for locale detection
+import { NextRequest, NextResponse } from 'next/server';
+
+export function middleware(request: NextRequest) {
+  const locale = request.cookies.get('NEXT_LOCALE')?.value || 'he-IL';
+  const response = NextResponse.next();
+  response.headers.set('x-locale', locale);
+  return response;
+}
+```
+
+3. **Additional Languages:**
+- English (en-US): For international schools in Israel
+- Arabic (ar-IL): For Arabic-speaking schools in Israel
+- Russian (ru-IL): For Russian-speaking communities
+
+**Hebrew Calendar Support (Future):**
+```typescript
+// Dual calendar display (Gregorian + Hebrew)
+import { HebrewCalendar } from '@hebcal/core';
+
+const hebrewDate = new HebrewCalendar(new Date());
+const formatted = hebrewDate.toString('h');  // e.g., "ז' טבת תשפ\"ו"
+```
+
+---
+
+#### Technical Specifications Summary
+
+| Component | Requirement | Implementation |
+|-----------|-------------|----------------|
+| **Frontend Framework** | RTL-aware i18n | next-intl with RTL plugin |
+| **Translation Storage** | JSON files | /messages/he-IL.json |
+| **Fonts** | Hebrew-optimized | Rubik, Heebo, or Assistant |
+| **CSS Framework** | RTL support | Tailwind CSS with tailwindcss-rtl plugin |
+| **Date Formatting** | Hebrew locale | Intl.DateTimeFormat('he-IL') |
+| **Number Formatting** | Hebrew locale | Intl.NumberFormat('he-IL') |
+| **Database Encoding** | UTF-8 | PostgreSQL UTF-8 with he_IL collation |
+| **Text Normalization** | Unicode NFC | String.normalize('NFC') on input |
+| **Name Validation** | Hebrew + English | Regex: /^[\u0590-\u05FFa-zA-Z\s'-]+$/ |
+| **Error Messages** | Hebrew | Custom exception filter with Hebrew messages |
+| **Email Templates** | Hebrew | HTML emails with RTL direction |
+| **AI Prompts** | Hebrew | System prompts in Hebrew for OpenAI API |
+| **Search** | Hebrew collation | PostgreSQL he_IL.UTF-8 collation |
+
+---
+
+#### Testing & Quality Assurance
+
+**RTL Visual Testing:**
+- Verify all UI components render correctly in RTL mode
+- Check alignment: text, icons, buttons, forms, tables
+- Test bidirectional content (mixed Hebrew/English)
+- Verify date/number formatting displays correctly
+
+**Unicode Testing:**
+- Test Hebrew diacritics (nikud) input and storage
+- Test special Hebrew characters (geresh, gershayim)
+- Test mixed Hebrew/English/numbers in names
+- Verify normalization prevents duplicate entries
+
+**E2E Tests with Hebrew:**
+```typescript
+test('should create student with Hebrew name', async ({ page }) => {
+  await page.goto('/students/new');
+  await page.fill('input[name="firstName"]', 'דוד');
+  await page.fill('input[name="lastName"]', 'כהן');
+  await page.click('button[type="submit"]');
+  await expect(page.locator('text=דוד כהן')).toBeVisible();
+});
+```
+
+**Accessibility Testing (Hebrew):**
+- Screen reader compatibility with Hebrew content (NVDA, JAWS)
+- Keyboard navigation in RTL layout
+- Focus indicators visible in RTL mode
+
+---
+
+#### Performance Considerations
+
+**Font Loading:**
+```typescript
+// Preload critical Hebrew fonts
+// app/layout.tsx
+import { Rubik } from 'next/font/google';
+
+const rubik = Rubik({
+  subsets: ['hebrew', 'latin'],
+  display: 'swap',
+  preload: true,
+});
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="he" dir="rtl" className={rubik.className}>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+**Translation Bundle Size:**
+- Hebrew translation file: ~10-15KB (gzipped)
+- Lazy load non-critical translations
+- Use code splitting per route to reduce initial bundle
+
+---
+
 ## 8. Deployment Architecture
 
 ### Infrastructure
