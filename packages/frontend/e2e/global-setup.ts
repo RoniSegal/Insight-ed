@@ -23,6 +23,13 @@ let backendProcess: any = null;
 async function globalSetup() {
   console.log('\n🚀 Starting E2E Test Environment Setup...\n');
 
+  // Skip setup in CI - environment is already configured by workflow
+  if (process.env.CI) {
+    console.log('⏭️  Running in CI - skipping setup (using workflow environment)\n');
+    console.log('🎉 E2E Test Environment Ready!\n');
+    return;
+  }
+
   try {
     // Step 1: Start Docker containers
     console.log('📦 Starting Docker containers...');
