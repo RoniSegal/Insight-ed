@@ -8,6 +8,7 @@ interface AuthState {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  _hasHydrated: boolean;
 
   // Actions
   login: (email: string, password: string) => Promise<void>;
@@ -20,6 +21,7 @@ interface AuthState {
   fetchCurrentUser: () => Promise<void>;
   setUser: (user: User | null) => void;
   handleOAuthCallback: (accessToken: string, refreshToken: string) => Promise<void>;
+  setHasHydrated: (state: boolean) => void;
 }
 
 interface RegisterData {
@@ -37,6 +39,11 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       isLoading: false,
       isAuthenticated: false,
+      _hasHydrated: false,
+
+      setHasHydrated: (state: boolean) => {
+        set({ _hasHydrated: state });
+      },
 
       login: async (email: string, password: string) => {
         set({ isLoading: true });
@@ -152,6 +159,9 @@ export const useAuthStore = create<AuthState>()(
         user: state.user,
         isAuthenticated: state.isAuthenticated,
       }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );
