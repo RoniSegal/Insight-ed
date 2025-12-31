@@ -40,17 +40,21 @@ export const TEST_USERS = {
  * @param user User credentials to login with
  */
 export async function login(page: Page, user: TestUser): Promise<void> {
-  await page.goto('/login');
+  // Navigate and wait for page to be fully loaded to ensure form handlers are attached
+  await page.goto('/login', { waitUntil: 'networkidle' });
+
+  // Wait for login form to be ready
+  await page.locator('#email').waitFor({ state: 'visible', timeout: 5000 });
 
   // Fill in login form using IDs for reliable selection
   await page.locator('#email').fill(user.email);
   await page.locator('#password').fill(user.password);
 
-  // Submit form
-  await page.getByRole('button', { name: /sign in|התחבר/i }).click();
-
-  // Wait for navigation to complete
-  await page.waitForURL(/\/(students|dashboard|home)/);
+  // Submit form and wait for navigation
+  await Promise.all([
+    page.waitForURL(/\/(students|dashboard|home)/, { timeout: 15000 }),
+    page.getByRole('button', { name: /sign in|התחבר/i }).click(),
+  ]);
 
   // Verify login was successful by checking for logout button
   await page.getByRole('button', { name: /logout|log out|התנתק/i }).waitFor({ state: 'visible', timeout: 5000 });
@@ -82,11 +86,13 @@ export async function loginAsAdmin(page: Page): Promise<void> {
  * @param page Playwright page instance
  */
 export async function logout(page: Page): Promise<void> {
-  // Click logout button directly (no need to open menu in current implementation)
-  await page.getByRole('button', { name: /logout|log out|התנתק/i }).click();
-
-  // Wait for redirect to login page
-  await page.waitForURL(/\/login/);
+  // Click logout button and wait for navigation
+  // The logout triggers an immediate window.location.href redirect, which removes the button from DOM
+  // So we need to wait for navigation to start before the click completes
+  await Promise.all([
+    page.waitForURL(/\/login/, { timeout: 10000 }),
+    page.getByRole('button', { name: /logout|log out|התנתק/i }).click(),
+  ]);
 }
 
 /**
@@ -117,11 +123,12 @@ export async function setAuthToken(page: Page, token: string): Promise<void> {
  */
 export async function clearAuthState(page: Page): Promise<void> {
   // Navigate to home page first to ensure context is available
-  await page.goto('/');
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-  //Clear localStorage
+  // Clear localStorage (use the actual storage keys)
   await page.evaluate(() => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('auth-storage');
   });
 }

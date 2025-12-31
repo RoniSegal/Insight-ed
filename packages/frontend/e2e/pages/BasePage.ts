@@ -16,7 +16,9 @@ export abstract class BasePage {
    * @param path Relative path from base URL
    */
   async goto(path: string): Promise<void> {
-    await this.page.goto(path);
+    // Use domcontentloaded instead of load to avoid navigation interruption issues
+    // This is more lenient and works better with SPAs that have client-side routing
+    await this.page.goto(path, { waitUntil: 'domcontentloaded' });
   }
 
   /**

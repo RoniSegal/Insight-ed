@@ -47,9 +47,12 @@ export class DashboardPage extends BasePage {
    * Click logout
    */
   async logout(): Promise<void> {
-    // Click logout button directly (no need to open menu in current implementation)
-    await this.logoutButton.click();
-    await this.waitForNavigation(/\/login/);
+    // Click logout button and wait for navigation
+    // The logout triggers an immediate window.location.href redirect
+    await Promise.all([
+      this.page.waitForURL(/\/login/, { timeout: 10000 }),
+      this.logoutButton.click(),
+    ]);
   }
 
   /**
