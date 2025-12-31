@@ -1,6 +1,5 @@
 'use client';
 
-import type { Student } from '@growth-engine/shared';
 import { useParams, useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 
