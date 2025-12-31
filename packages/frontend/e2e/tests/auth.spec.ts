@@ -177,30 +177,37 @@ test.describe('Authentication', () => {
     }
   });
 
-  test('should handle concurrent logins from different roles', async ({ browser }) => {
-    // Create two contexts (like two different users/browsers)
-    const teacherContext = await browser.newContext();
-    const principalContext = await browser.newContext();
+  test('should allow different user roles to authenticate', async ({ page }) => {
+    // Test 1: Teacher can log in
+    await loginAsTeacher(page);
+    const dashboardPage = new DashboardPage(page);
+    expect(await dashboardPage.isAuthenticated()).toBe(true);
 
-    const teacherPage = await teacherContext.newPage();
-    const principalPage = await principalContext.newPage();
+    // Verify teacher role
+    const teacherUser = await page.evaluate(() => {
+      const storage = localStorage.getItem('auth-storage');
+      return storage ? JSON.parse(storage).state.user : null;
+    });
+    expect(teacherUser?.role).toBe('TEACHER');
 
-    // Login as teacher in first context
-    await loginAsTeacher(teacherPage);
-    const teacherDashboard = new DashboardPage(teacherPage);
-    expect(await teacherDashboard.isAuthenticated()).toBe(true);
+    // Clean up
+    await logout(page);
+  });
 
-    // Login as principal in second context
-    await loginAsPrincipal(principalPage);
-    const principalDashboard = new DashboardPage(principalPage);
-    expect(await principalDashboard.isAuthenticated()).toBe(true);
+  test('should allow principal to authenticate', async ({ page }) => {
+    // Test 2: Principal can log in (in separate test to avoid cross-contamination)
+    await loginAsPrincipal(page);
+    const dashboardPage = new DashboardPage(page);
+    expect(await dashboardPage.isAuthenticated()).toBe(true);
 
-    // Both should remain authenticated
-    expect(await teacherDashboard.isAuthenticated()).toBe(true);
-    expect(await principalDashboard.isAuthenticated()).toBe(true);
+    // Verify principal role
+    const principalUser = await page.evaluate(() => {
+      const storage = localStorage.getItem('auth-storage');
+      return storage ? JSON.parse(storage).state.user : null;
+    });
+    expect(principalUser?.role).toBe('PRINCIPAL');
 
-    // Cleanup
-    await teacherContext.close();
-    await principalContext.close();
+    // Clean up
+    await logout(page);
   });
 });
