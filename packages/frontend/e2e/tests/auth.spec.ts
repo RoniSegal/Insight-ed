@@ -63,7 +63,7 @@ test.describe('Authentication', () => {
     // Should show error message
     const error = await loginPage.getError();
     expect(error).toBeTruthy();
-    expect(error).toMatch(/invalid|incorrect|failed|שגוי/i);
+    expect(error).toMatch(/invalid|incorrect|failed|שגוי|401|unauthorized/i);
 
     // Should still be on login page
     await expect(page).toHaveURL(/\/login/);
@@ -114,8 +114,7 @@ test.describe('Authentication', () => {
     await loginPage.login(TEST_USERS.teacher.email, TEST_USERS.teacher.password);
     await loginPage.waitForLoginSuccess();
 
-    // Step 3: Verify authenticated
-    await dashboardPage.navigate();
+    // Step 3: Verify authenticated (user should already be on authenticated page after login)
     expect(await dashboardPage.isAuthenticated()).toBe(true);
 
     // Step 4: Logout

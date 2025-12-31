@@ -47,9 +47,9 @@ export class DashboardPage extends BasePage {
    * Click logout
    */
   async logout(): Promise<void> {
-    await this.openUserMenu();
+    // Click logout button directly (no need to open menu in current implementation)
     await this.logoutButton.click();
-    await this.waitForNavigation(/\/auth\/login/);
+    await this.waitForNavigation(/\/login/);
   }
 
   /**

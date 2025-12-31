@@ -50,10 +50,10 @@ export async function login(page: Page, user: TestUser): Promise<void> {
   await page.getByRole('button', { name: /sign in|התחבר/i }).click();
 
   // Wait for navigation to complete
-  await page.waitForURL(/\/(dashboard|home)/);
+  await page.waitForURL(/\/(students|dashboard|home)/);
 
-  // Verify login was successful
-  await page.waitForSelector('[data-testid="user-menu"]', { timeout: 5000 });
+  // Verify login was successful by checking for logout button
+  await page.getByRole('button', { name: /logout|log out|התנתק/i }).waitFor({ state: 'visible', timeout: 5000 });
 }
 
 /**
@@ -82,11 +82,8 @@ export async function loginAsAdmin(page: Page): Promise<void> {
  * @param page Playwright page instance
  */
 export async function logout(page: Page): Promise<void> {
-  // Open user menu
-  await page.click('[data-testid="user-menu"]');
-
-  // Click logout button
-  await page.getByRole('button', { name: /log out|התנתק/i }).click();
+  // Click logout button directly (no need to open menu in current implementation)
+  await page.getByRole('button', { name: /logout|log out|התנתק/i }).click();
 
   // Wait for redirect to login page
   await page.waitForURL(/\/login/);
