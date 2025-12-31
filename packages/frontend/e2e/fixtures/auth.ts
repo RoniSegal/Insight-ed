@@ -57,7 +57,9 @@ export async function login(page: Page, user: TestUser): Promise<void> {
   ]);
 
   // Verify login was successful by checking for logout button
-  await page.getByRole('button', { name: /logout|log out|התנתק/i }).waitFor({ state: 'visible', timeout: 5000 });
+  await page
+    .getByRole('button', { name: /logout|log out|התנתק/i })
+    .waitFor({ state: 'visible', timeout: 5000 });
 }
 
 /**

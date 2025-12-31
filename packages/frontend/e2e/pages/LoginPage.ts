@@ -105,7 +105,9 @@ export class LoginPage extends BasePage {
    * Wait for redirect after successful login
    * @param expectedPath Expected path after login (default: students, dashboard, or home)
    */
-  async waitForLoginSuccess(expectedPath: string | RegExp = /\/(students|dashboard|home)/): Promise<void> {
+  async waitForLoginSuccess(
+    expectedPath: string | RegExp = /\/(students|dashboard|home)/
+  ): Promise<void> {
     await this.waitForNavigation(expectedPath);
   }
 }
