@@ -1,5 +1,5 @@
-import { IsEmail, IsString, MinLength, Matches, IsOptional, IsEnum } from 'class-validator';
 import { UserRole } from '@growth-engine/shared';
+import { IsEmail, IsString, MinLength, Matches, IsOptional, IsEnum } from 'class-validator';
 
 export class RegisterDto {
   @IsEmail({}, { message: 'Please provide a valid email address' })
