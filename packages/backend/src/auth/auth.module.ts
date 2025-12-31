@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, Provider } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { PrismaClient } from '@prisma/client';
@@ -9,7 +9,7 @@ import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 // import { MicrosoftStrategy } from './strategies/microsoft.strategy';
 
-const providers = [AuthService, JwtStrategy, PrismaClient];
+const providers: Provider[] = [AuthService, JwtStrategy, PrismaClient];
 
 // Only register OAuth strategies if credentials are provided
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
