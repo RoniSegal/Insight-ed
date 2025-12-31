@@ -6,7 +6,9 @@ import { UserRole } from '@growth-engine/shared';
  * Provides utilities to create and clean up test data with isolation
  */
 
-const DATABASE_URL = process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5434/growth_engine?schema=public';
+const DATABASE_URL =
+  process.env.DATABASE_URL ||
+  'postgresql://postgres:postgres@localhost:5434/growth_engine?schema=public';
 
 // Singleton Prisma client for tests
 let prismaClient: PrismaClient | null = null;
@@ -168,11 +170,7 @@ export async function createTestUser(data: {
 /**
  * Create a test school (will be tracked for cleanup)
  */
-export async function createTestSchool(data: {
-  name: string;
-  code: string;
-  principal?: string;
-}) {
+export async function createTestSchool(data: { name: string; code: string; principal?: string }) {
   const prisma = getPrismaClient();
 
   const school = await prisma.school.create({

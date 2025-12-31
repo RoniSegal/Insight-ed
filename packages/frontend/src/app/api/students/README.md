@@ -5,16 +5,19 @@ This is a temporary in-memory implementation for the 3-day MVP demo. Data is sto
 ## API Endpoints
 
 All endpoints require authentication via JWT token in the Authorization header:
+
 ```
 Authorization: Bearer <token>
 ```
 
 ### List All Students
+
 ```bash
 GET /api/students
 ```
 
 **Response:**
+
 ```json
 {
   "students": [
@@ -30,11 +33,13 @@ GET /api/students
 ```
 
 ### Get Single Student
+
 ```bash
 GET /api/students/:id
 ```
 
 **Response:**
+
 ```json
 {
   "student": {
@@ -48,6 +53,7 @@ GET /api/students/:id
 ```
 
 **Error Response (404):**
+
 ```json
 {
   "error": "Student not found"
@@ -55,6 +61,7 @@ GET /api/students/:id
 ```
 
 ### Create Student
+
 ```bash
 POST /api/students
 Content-Type: application/json
@@ -67,6 +74,7 @@ Content-Type: application/json
 ```
 
 **Response (201):**
+
 ```json
 {
   "student": {
@@ -80,11 +88,13 @@ Content-Type: application/json
 ```
 
 **Validation Errors (400):**
+
 ```json
 {
   "error": "Name is required"
 }
 ```
+
 ```json
 {
   "error": "Grade is required"
@@ -92,6 +102,7 @@ Content-Type: application/json
 ```
 
 ### Update Student
+
 ```bash
 PUT /api/students/:id
 Content-Type: application/json
@@ -102,6 +113,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "student": {
@@ -115,11 +127,13 @@ Content-Type: application/json
 ```
 
 ### Delete Student
+
 ```bash
 DELETE /api/students/:id
 ```
 
 **Response:**
+
 ```json
 {
   "success": true
@@ -127,6 +141,7 @@ DELETE /api/students/:id
 ```
 
 **Error Response (404):**
+
 ```json
 {
   "error": "Student not found"
@@ -147,6 +162,7 @@ curl -X POST http://localhost:3000/api/auth/login \
 ```
 
 **Response:**
+
 ```json
 {
   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -163,12 +179,15 @@ curl -X POST http://localhost:3000/api/auth/login \
 ## Error Responses
 
 ### 401 Unauthorized
+
 Missing or invalid authentication token:
+
 ```json
 {
   "error": "Unauthorized - Missing or invalid authorization header"
 }
 ```
+
 ```json
 {
   "error": "Invalid or expired token"
@@ -176,7 +195,9 @@ Missing or invalid authentication token:
 ```
 
 ### 400 Bad Request
+
 Invalid input data:
+
 ```json
 {
   "error": "Name is required"
@@ -184,7 +205,9 @@ Invalid input data:
 ```
 
 ### 404 Not Found
+
 Student not found:
+
 ```json
 {
   "error": "Student not found"
@@ -192,7 +215,9 @@ Student not found:
 ```
 
 ### 500 Internal Server Error
+
 Server error:
+
 ```json
 {
   "error": "Internal server error"
@@ -202,6 +227,7 @@ Server error:
 ## Seed Data
 
 The system initializes with 5 students:
+
 1. שרה כהן - כיתה ג׳ - גב׳ לוי
 2. מיכאל דוד - כיתה ג׳ - גב׳ לוי
 3. נועה אברהם - כיתה ד׳ - מר רוזנברג
@@ -211,11 +237,13 @@ The system initializes with 5 students:
 ## Testing
 
 Run the test script to verify all endpoints:
+
 ```bash
 ./packages/frontend/scripts/test-students-api.sh
 ```
 
 Or test manually with curl:
+
 ```bash
 # Get token
 TOKEN=$(curl -s -X POST http://localhost:3000/api/auth/login \
@@ -270,6 +298,7 @@ curl -X DELETE http://localhost:3000/api/students/6 \
 ## Production Considerations
 
 This implementation is NOT suitable for production. For production:
+
 1. Replace in-memory storage with a real database (PostgreSQL recommended)
 2. Add data isolation (teachers should only see their students)
 3. Add pagination for large datasets

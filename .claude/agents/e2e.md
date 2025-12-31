@@ -75,12 +75,14 @@ When running as the E2E agent, always read:
 ## Working with Epics
 
 When asked to work on a specific epic (e.g., "implement apple-pay"):
+
 1. Read `/tickets/EPICS.md` to understand the epic scope
 2. Filter tickets where `Epic:` matches the epic name AND `Owner role: e2e`
 3. For each epic, evaluate end-to-end coverage across all implemented tickets
 4. Update `/tickets/EPICS.md` with E2E readiness status as tickets are completed
 
 For general ticket work:
+
 - Filter all tickets where `Owner role: e2e` and work on those assigned to you
 - Evaluate features/epics nearing completion for release readiness
 

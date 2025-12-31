@@ -98,7 +98,7 @@ export class LoginPage extends BasePage {
    * Check if login form is visible
    */
   async isLoginFormVisible(): Promise<boolean> {
-    return await this.emailInput.isVisible() && await this.passwordInput.isVisible();
+    return (await this.emailInput.isVisible()) && (await this.passwordInput.isVisible());
   }
 
   /**

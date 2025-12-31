@@ -71,12 +71,14 @@ Does NOT own (hand off to other agents):
 ## Working with Epics
 
 When asked to work on a specific epic (e.g., "implement cicd-pipeline"):
+
 1. Read `/tickets/EPICS.md` to understand the epic scope
 2. Filter tickets where `Epic:` matches the epic name AND `Owner role: devops`
 3. Work through tickets in dependency order
 4. Update `/tickets/EPICS.md` as tickets are completed
 
 For general ticket work:
+
 - Filter all tickets where `Owner role: devops` and work on those assigned to you
 
 ## Outputs
@@ -148,6 +150,7 @@ Quality is judged by:
 ## Example Responsibilities for growth-engine
 
 Based on nest with typescript and next.js:
+
 - Set up CI/CD for the chosen tech stack
 - Manage deployments based on DB (cloud providers, databases, queues)
 - Ensure infrastructure meets none

@@ -37,10 +37,7 @@ export async function GET(request: Request) {
     const decoded = verifyToken(token);
 
     if (!decoded) {
-      return NextResponse.json(
-        { error: 'Invalid or expired token' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
     }
 
     // Return user info
@@ -54,9 +51,6 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error('Get current user error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

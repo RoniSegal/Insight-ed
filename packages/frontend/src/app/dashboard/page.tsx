@@ -25,9 +25,7 @@ export default function DashboardPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-gray-900">
-                מערכת Growth Engine
-              </h1>
+              <h1 className="text-2xl font-bold text-gray-900">מערכת Growth Engine</h1>
             </div>
             <div className="flex items-center">
               <div data-testid="user-menu" className="flex items-center gap-4">
@@ -52,16 +50,10 @@ export default function DashboardPage() {
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
           <div className="border-4 border-dashed border-gray-200 rounded-lg p-8">
-            <h2 className="text-xl font-semibold mb-4">
-              שלום, {user?.firstName}!
-            </h2>
-            <p className="text-gray-600">
-              ברוך הבא למערכת ניתוח התלמידים
-            </p>
+            <h2 className="text-xl font-semibold mb-4">שלום, {user?.firstName}!</h2>
+            <p className="text-gray-600">ברוך הבא למערכת ניתוח התלמידים</p>
             <div className="mt-6">
-              <p className="text-sm text-gray-500">
-                תפקיד: {user?.role}
-              </p>
+              <p className="text-sm text-gray-500">תפקיד: {user?.role}</p>
             </div>
           </div>
         </div>

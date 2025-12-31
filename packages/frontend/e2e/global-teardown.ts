@@ -7,7 +7,9 @@ import { PrismaClient } from '@prisma/client';
  * - Optionally stops Docker containers
  */
 
-const DATABASE_URL = process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5434/growth_engine?schema=public';
+const DATABASE_URL =
+  process.env.DATABASE_URL ||
+  'postgresql://postgres:postgres@localhost:5434/growth_engine?schema=public';
 
 async function globalTeardown() {
   console.log('\n🧹 Starting E2E Test Environment Cleanup...\n');

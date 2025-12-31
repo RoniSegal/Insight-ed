@@ -8,12 +8,9 @@ const inputVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          'border border-neutral-300 focus:border-primary-500 focus:ring-primary-500',
-        error:
-          'border border-error-500 focus:border-error-500 focus:ring-error-500',
-        success:
-          'border border-success-500 focus:border-success-500 focus:ring-success-500',
+        default: 'border border-neutral-300 focus:border-primary-500 focus:ring-primary-500',
+        error: 'border border-error-500 focus:border-error-500 focus:ring-error-500',
+        success: 'border border-success-500 focus:border-success-500 focus:ring-success-500',
       },
       size: {
         sm: 'px-3 py-1.5 text-sm',
@@ -29,7 +26,8 @@ const inputVariants = cva(
 );
 
 export interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
+  extends
+    Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
     VariantProps<typeof inputVariants> {
   label?: string;
   error?: string;
@@ -50,18 +48,7 @@ export interface InputProps
  */
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
-    {
-      className,
-      variant,
-      size,
-      label,
-      error,
-      helperText,
-      leftIcon,
-      rightIcon,
-      id,
-      ...props
-    },
+    { className, variant, size, label, error, helperText, leftIcon, rightIcon, id, ...props },
     ref
   ) => {
     const inputId = id || `input-${Math.random().toString(36).slice(2, 9)}`;
@@ -70,10 +57,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label
-            htmlFor={inputId}
-            className="block text-sm font-medium text-neutral-700 mb-1"
-          >
+          <label htmlFor={inputId} className="block text-sm font-medium text-neutral-700 mb-1">
             {label}
           </label>
         )}
@@ -105,9 +89,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {error}
           </p>
         )}
-        {helperText && !error && (
-          <p className="mt-1 text-sm text-neutral-500">{helperText}</p>
-        )}
+        {helperText && !error && <p className="mt-1 text-sm text-neutral-500">{helperText}</p>}
       </div>
     );
   }

@@ -15,10 +15,7 @@ export interface ResultsContentProps {
  * Content component for displaying analysis results
  * Renders Hebrew markdown analysis with proper RTL formatting
  */
-export const ResultsContent: React.FC<ResultsContentProps> = ({
-  analysis,
-  className,
-}) => {
+export const ResultsContent: React.FC<ResultsContentProps> = ({ analysis, className }) => {
   return (
     <Card variant="elevated" padding="spacious" className={className}>
       <CardContent>

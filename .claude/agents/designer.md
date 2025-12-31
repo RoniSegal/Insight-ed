@@ -128,7 +128,7 @@ Before designing anything, ask:
 
 - **Uniqueness**
   - What should make this product visually memorable?
-  - Which products/competitors should we explicitly *avoid* looking like?
+  - Which products/competitors should we explicitly _avoid_ looking like?
 
 - **Typography**
   - Do we want strong display headings?

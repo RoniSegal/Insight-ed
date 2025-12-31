@@ -40,25 +40,26 @@
 
 ### Base URLs
 
-| Environment | Base URL |
-|-------------|----------|
-| Local Dev   | `http://localhost:4000/api/v1` |
+| Environment | Base URL                                      |
+| ----------- | --------------------------------------------- |
+| Local Dev   | `http://localhost:4000/api/v1`                |
 | Staging     | `https://staging-api.growthengine.app/api/v1` |
-| Production  | `https://api.growthengine.app/api/v1` |
+| Production  | `https://api.growthengine.app/api/v1`         |
 
 ### HTTP Methods
 
-| Method | Usage | Idempotent |
-|--------|-------|------------|
-| GET | Retrieve resources | Yes |
-| POST | Create new resources | No |
-| PUT | Update entire resource | Yes |
-| PATCH | Update partial resource | Yes |
-| DELETE | Delete resources | Yes |
+| Method | Usage                   | Idempotent |
+| ------ | ----------------------- | ---------- |
+| GET    | Retrieve resources      | Yes        |
+| POST   | Create new resources    | No         |
+| PUT    | Update entire resource  | Yes        |
+| PATCH  | Update partial resource | Yes        |
+| DELETE | Delete resources        | Yes        |
 
 ### Standard Response Format
 
 **Success Response:**
+
 ```json
 {
   "success": true,
@@ -75,6 +76,7 @@
 ```
 
 **Error Response:**
+
 ```json
 {
   "success": false,
@@ -107,6 +109,7 @@
 5. If access token expires, frontend calls `/api/v1/auth/refresh` automatically
 
 **Token Payload:**
+
 ```json
 {
   "sub": "user-uuid",
@@ -132,6 +135,7 @@ Content-Type: application/json
 All endpoints except `/auth/*` and `/health` require authentication.
 
 **Authorization Middleware:**
+
 - Validates JWT signature
 - Checks token expiration
 - Extracts user context (ID, role, school)
@@ -143,37 +147,38 @@ All endpoints except `/auth/*` and `/health` require authentication.
 
 ### HTTP Status Codes
 
-| Status Code | Meaning | Usage |
-|-------------|---------|-------|
-| 200 OK | Success | GET, PATCH, DELETE successful |
-| 201 Created | Resource created | POST successful |
-| 204 No Content | Success, no body | DELETE successful (alternative) |
-| 400 Bad Request | Invalid input | Validation errors |
-| 401 Unauthorized | Not authenticated | Missing/invalid token |
-| 403 Forbidden | Not authorized | Insufficient permissions |
-| 404 Not Found | Resource not found | Invalid ID or deleted resource |
-| 409 Conflict | Duplicate resource | Unique constraint violation |
-| 422 Unprocessable Entity | Validation failed | Business logic validation errors |
-| 429 Too Many Requests | Rate limit exceeded | Too many API calls |
-| 500 Internal Server Error | Server error | Unexpected errors |
-| 503 Service Unavailable | Service down | Maintenance or OpenAI API failure |
+| Status Code               | Meaning             | Usage                             |
+| ------------------------- | ------------------- | --------------------------------- |
+| 200 OK                    | Success             | GET, PATCH, DELETE successful     |
+| 201 Created               | Resource created    | POST successful                   |
+| 204 No Content            | Success, no body    | DELETE successful (alternative)   |
+| 400 Bad Request           | Invalid input       | Validation errors                 |
+| 401 Unauthorized          | Not authenticated   | Missing/invalid token             |
+| 403 Forbidden             | Not authorized      | Insufficient permissions          |
+| 404 Not Found             | Resource not found  | Invalid ID or deleted resource    |
+| 409 Conflict              | Duplicate resource  | Unique constraint violation       |
+| 422 Unprocessable Entity  | Validation failed   | Business logic validation errors  |
+| 429 Too Many Requests     | Rate limit exceeded | Too many API calls                |
+| 500 Internal Server Error | Server error        | Unexpected errors                 |
+| 503 Service Unavailable   | Service down        | Maintenance or OpenAI API failure |
 
 ### Error Codes
 
-| Error Code | HTTP Status | Description |
-|------------|-------------|-------------|
-| `VALIDATION_ERROR` | 400 | Input validation failed |
-| `UNAUTHORIZED` | 401 | Not authenticated |
-| `FORBIDDEN` | 403 | Insufficient permissions |
-| `NOT_FOUND` | 404 | Resource not found |
-| `DUPLICATE_RESOURCE` | 409 | Resource already exists |
-| `RATE_LIMIT_EXCEEDED` | 429 | Too many requests |
-| `OPENAI_API_ERROR` | 503 | OpenAI API unavailable |
-| `INTERNAL_ERROR` | 500 | Unexpected server error |
+| Error Code            | HTTP Status | Description              |
+| --------------------- | ----------- | ------------------------ |
+| `VALIDATION_ERROR`    | 400         | Input validation failed  |
+| `UNAUTHORIZED`        | 401         | Not authenticated        |
+| `FORBIDDEN`           | 403         | Insufficient permissions |
+| `NOT_FOUND`           | 404         | Resource not found       |
+| `DUPLICATE_RESOURCE`  | 409         | Resource already exists  |
+| `RATE_LIMIT_EXCEEDED` | 429         | Too many requests        |
+| `OPENAI_API_ERROR`    | 503         | OpenAI API unavailable   |
+| `INTERNAL_ERROR`      | 500         | Unexpected server error  |
 
 ### Validation Error Example
 
 **Request:**
+
 ```http
 POST /api/v1/auth/register
 Content-Type: application/json
@@ -187,6 +192,7 @@ Content-Type: application/json
 ```
 
 **Response (400 Bad Request):**
+
 ```json
 {
   "success": false,
@@ -229,60 +235,61 @@ All user-facing error messages are in Hebrew. Below is a comprehensive mapping o
 
 **HTTP Status Code Errors:**
 
-| HTTP Status | English | Hebrew (עברית) |
-|-------------|---------|----------------|
-| 400 Bad Request | Bad Request | בקשה שגויה |
-| 401 Unauthorized | Unauthorized | נדרשת הזדהות |
-| 403 Forbidden | Forbidden | אין הרשאה |
-| 404 Not Found | Not Found | לא נמצא |
-| 409 Conflict | Already Exists | כבר קיים |
-| 422 Unprocessable Entity | Validation Failed | אימות נכשל |
-| 429 Too Many Requests | Too Many Requests | יותר מדי בקשות |
-| 500 Internal Server Error | Internal Server Error | שגיאת שרת |
-| 503 Service Unavailable | Service Unavailable | השירות אינו זמין |
+| HTTP Status               | English               | Hebrew (עברית)   |
+| ------------------------- | --------------------- | ---------------- |
+| 400 Bad Request           | Bad Request           | בקשה שגויה       |
+| 401 Unauthorized          | Unauthorized          | נדרשת הזדהות     |
+| 403 Forbidden             | Forbidden             | אין הרשאה        |
+| 404 Not Found             | Not Found             | לא נמצא          |
+| 409 Conflict              | Already Exists        | כבר קיים         |
+| 422 Unprocessable Entity  | Validation Failed     | אימות נכשל       |
+| 429 Too Many Requests     | Too Many Requests     | יותר מדי בקשות   |
+| 500 Internal Server Error | Internal Server Error | שגיאת שרת        |
+| 503 Service Unavailable   | Service Unavailable   | השירות אינו זמין |
 
 **Validation Error Messages:**
 
-| Field | Validation | Hebrew Message |
-|-------|-----------|----------------|
-| email | Invalid format | כתובת דוא"ל לא תקינה |
-| email | Required | דוא"ל הוא שדה חובה |
-| password | Too short | הסיסמה חייבת להכיל לפחות 8 תווים |
-| password | Missing uppercase | הסיסמה חייבת להכיל לפחות אות גדולה אחת |
-| password | Missing lowercase | הסיסמה חייבת להכיל לפחות אות קטנה אחת |
-| password | Missing number | הסיסמה חייבת להכיל לפחות ספרה אחת |
-| firstName | Required | שם פרטי הוא שדה חובה |
-| firstName | Invalid characters | שם פרטי חייב להכיל רק אותיות עבריות או אנגליות |
-| lastName | Required | שם משפחה הוא שדה חובה |
-| lastName | Invalid characters | שם משפחה חייב להכיל רק אותיות עבריות או אנגליות |
-| gradeLevel | Required | כיתה היא שדה חובה |
-| gradeLevel | Invalid value | כיתה לא תקינה |
-| studentId | Duplicate | מספר תלמיד כבר קיים במערכת |
-| role | Invalid | תפקיד לא תקין |
+| Field      | Validation         | Hebrew Message                                  |
+| ---------- | ------------------ | ----------------------------------------------- |
+| email      | Invalid format     | כתובת דוא"ל לא תקינה                            |
+| email      | Required           | דוא"ל הוא שדה חובה                              |
+| password   | Too short          | הסיסמה חייבת להכיל לפחות 8 תווים                |
+| password   | Missing uppercase  | הסיסמה חייבת להכיל לפחות אות גדולה אחת          |
+| password   | Missing lowercase  | הסיסמה חייבת להכיל לפחות אות קטנה אחת           |
+| password   | Missing number     | הסיסמה חייבת להכיל לפחות ספרה אחת               |
+| firstName  | Required           | שם פרטי הוא שדה חובה                            |
+| firstName  | Invalid characters | שם פרטי חייב להכיל רק אותיות עבריות או אנגליות  |
+| lastName   | Required           | שם משפחה הוא שדה חובה                           |
+| lastName   | Invalid characters | שם משפחה חייב להכיל רק אותיות עבריות או אנגליות |
+| gradeLevel | Required           | כיתה היא שדה חובה                               |
+| gradeLevel | Invalid value      | כיתה לא תקינה                                   |
+| studentId  | Duplicate          | מספר תלמיד כבר קיים במערכת                      |
+| role       | Invalid            | תפקיד לא תקין                                   |
 
 **Authentication Error Messages:**
 
-| Scenario | Hebrew Message |
-|----------|----------------|
-| Invalid credentials | דוא"ל או סיסמה שגויים |
-| Account locked | החשבון נחסם. נסה שוב בעוד 15 דקות |
-| Session expired | ההפעלה פגה. נא להתחבר מחדש |
-| Email not verified | נא לאמת את כתובת הדוא"ל |
-| MFA required | נדרשת אימות דו-שלבי |
-| Invalid MFA code | קוד אימות שגוי |
+| Scenario            | Hebrew Message                    |
+| ------------------- | --------------------------------- |
+| Invalid credentials | דוא"ל או סיסמה שגויים             |
+| Account locked      | החשבון נחסם. נסה שוב בעוד 15 דקות |
+| Session expired     | ההפעלה פגה. נא להתחבר מחדש        |
+| Email not verified  | נא לאמת את כתובת הדוא"ל           |
+| MFA required        | נדרשת אימות דו-שלבי               |
+| Invalid MFA code    | קוד אימות שגוי                    |
 
 **Business Logic Error Messages:**
 
-| Scenario | Hebrew Message |
-|----------|----------------|
-| Student not found | תלמיד לא נמצא |
-| Student already analyzed | התלמיד כבר נותח היום |
-| Analysis in progress | ניתוח בתהליך. נא להמתין |
-| Insufficient permissions | אין לך הרשאה לבצע פעולה זו |
-| School quota exceeded | מכסת בית הספר מלאה |
-| OpenAI API error | שירות הניתוח אינו זמין כרגע. נסה שוב מאוחר יותר |
+| Scenario                 | Hebrew Message                                  |
+| ------------------------ | ----------------------------------------------- |
+| Student not found        | תלמיד לא נמצא                                   |
+| Student already analyzed | התלמיד כבר נותח היום                            |
+| Analysis in progress     | ניתוח בתהליך. נא להמתין                         |
+| Insufficient permissions | אין לך הרשאה לבצע פעולה זו                      |
+| School quota exceeded    | מכסת בית הספר מלאה                              |
+| OpenAI API error         | שירות הניתוח אינו זמין כרגע. נסה שוב מאוחר יותר |
 
 **Example Complete Error Response (Hebrew):**
+
 ```json
 {
   "success": false,
@@ -319,17 +326,20 @@ All user-facing error messages are in Hebrew. Below is a comprehensive mapping o
 ### Pagination Parameters
 
 **Query Parameters:**
+
 - `page`: Page number (default: 1)
 - `limit`: Items per page (default: 20, max: 100)
 - `sortBy`: Field to sort by (default: `createdAt`)
 - `sortOrder`: `asc` or `desc` (default: `desc`)
 
 **Example:**
+
 ```http
 GET /api/v1/students?page=2&limit=50&sortBy=lastName&sortOrder=asc
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -348,12 +358,14 @@ GET /api/v1/students?page=2&limit=50&sortBy=lastName&sortOrder=asc
 ### Filtering
 
 **Query Parameters:**
+
 - Exact match: `?gradeLevel=10`
 - Search: `?search=John`
 - Multiple values: `?gradeLevel=10,11,12`
 - Date range: `?createdAfter=2025-01-01&createdBefore=2025-12-31`
 
 **Example:**
+
 ```http
 GET /api/v1/students?gradeLevel=10&search=Smith&isActive=true
 ```
@@ -369,6 +381,7 @@ GET /api/v1/students?gradeLevel=10&search=Smith&isActive=true
 Register a new user account.
 
 **Request:**
+
 ```json
 {
   "email": "teacher@school.com",
@@ -381,6 +394,7 @@ Register a new user account.
 ```
 
 **Response (201 Created):**
+
 ```json
 {
   "success": true,
@@ -401,6 +415,7 @@ Register a new user account.
 ```
 
 **Validation:**
+
 - Email must be valid and unique
 - Password must be ≥8 chars, contain upper/lower/number
 - Role must be valid enum value
@@ -413,6 +428,7 @@ Register a new user account.
 Login with email and password.
 
 **Request:**
+
 ```json
 {
   "email": "teacher@school.com",
@@ -421,6 +437,7 @@ Login with email and password.
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -440,6 +457,7 @@ Login with email and password.
 ```
 
 **Error (401 Unauthorized):**
+
 ```json
 {
   "success": false,
@@ -467,6 +485,7 @@ Logout and invalidate refresh token.
 Refresh access token using refresh token.
 
 **Request:**
+
 ```json
 {
   "refreshToken": "jwt-refresh-token"
@@ -474,6 +493,7 @@ Refresh access token using refresh token.
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -498,6 +518,7 @@ Initiate Google OAuth flow.
 Google OAuth callback endpoint.
 
 **Query Parameters:**
+
 - `code`: Authorization code from Google
 - `state`: CSRF protection token
 
@@ -526,6 +547,7 @@ Microsoft OAuth callback endpoint.
 Request password reset email.
 
 **Request:**
+
 ```json
 {
   "email": "teacher@school.com"
@@ -533,6 +555,7 @@ Request password reset email.
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -549,6 +572,7 @@ Request password reset email.
 Reset password using reset token.
 
 **Request:**
+
 ```json
 {
   "token": "reset-token-from-email",
@@ -557,6 +581,7 @@ Reset password using reset token.
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -575,6 +600,7 @@ Reset password using reset token.
 Get current authenticated user profile.
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -602,6 +628,7 @@ Get current authenticated user profile.
 Update current user profile.
 
 **Request:**
+
 ```json
 {
   "firstName": "Jane",
@@ -614,6 +641,7 @@ Update current user profile.
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -637,12 +665,14 @@ Update current user profile.
 List all users (Admins only).
 
 **Query Parameters:**
+
 - `page`, `limit`, `sortBy`, `sortOrder`
 - `role`: Filter by role
 - `schoolId`: Filter by school
 - `search`: Search by name or email
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -676,6 +706,7 @@ List all users (Admins only).
 Create a new user (Admins only).
 
 **Request:**
+
 ```json
 {
   "email": "newteacher@school.com",
@@ -688,6 +719,7 @@ Create a new user (Admins only).
 ```
 
 **Response (201 Created):**
+
 ```json
 {
   "success": true,
@@ -714,6 +746,7 @@ Create a new user (Admins only).
 List students (filtered by user role).
 
 **Query Parameters:**
+
 - `page`, `limit`, `sortBy`, `sortOrder`
 - `gradeLevel`: Filter by grade
 - `classId`: Filter by class
@@ -721,6 +754,7 @@ List students (filtered by user role).
 - `isActive`: Filter active/inactive
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -754,6 +788,7 @@ List students (filtered by user role).
 ```
 
 **Authorization:**
+
 - TEACHER: Only students in their classes
 - PRINCIPAL: All students in their school
 - ADMIN: All students
@@ -765,6 +800,7 @@ List students (filtered by user role).
 Get single student details.
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -807,6 +843,7 @@ Get single student details.
 ```
 
 **Error (404 Not Found):**
+
 ```json
 {
   "success": false,
@@ -824,6 +861,7 @@ Get single student details.
 Create a new student.
 
 **Request (Hebrew Name Example):**
+
 ```json
 {
   "firstName": "דוד",
@@ -837,6 +875,7 @@ Create a new student.
 ```
 
 **Response (201 Created):**
+
 ```json
 {
   "success": true,
@@ -854,6 +893,7 @@ Create a new student.
 ```
 
 **Request (Mixed Hebrew/English Name Example):**
+
 ```json
 {
   "firstName": "David",
@@ -865,12 +905,14 @@ Create a new student.
 ```
 
 **Validation Rules:**
+
 - `firstName`, `lastName`: 2-50 characters
 - Allowed characters: Hebrew (א-ת), English (A-Z, a-z), spaces, hyphens, apostrophes
 - Unicode normalization (NFC) applied automatically
 - Regex pattern: `/^[\u0590-\u05FFa-zA-Z\s'-]+$/`
 
 **Validation Error Example (Invalid Hebrew Name):**
+
 ```json
 {
   "success": false,
@@ -897,6 +939,7 @@ Create a new student.
 Update student information.
 
 **Request:**
+
 ```json
 {
   "gradeLevel": "11",
@@ -905,6 +948,7 @@ Update student information.
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -934,6 +978,7 @@ Soft delete a student.
 Bulk import students from CSV.
 
 **Request (multipart/form-data):**
+
 ```
 POST /api/v1/students/import
 Content-Type: multipart/form-data
@@ -942,6 +987,7 @@ file: students.csv
 ```
 
 **CSV Format:**
+
 ```csv
 firstName,lastName,studentId,gradeLevel,dateOfBirth,gender
 David,Cohen,S12345,10,2010-05-15,male
@@ -949,6 +995,7 @@ Sarah,Levi,S12346,10,2010-06-20,female
 ```
 
 **Response (202 Accepted):**
+
 ```json
 {
   "success": true,
@@ -967,6 +1014,7 @@ Sarah,Levi,S12346,10,2010-06-20,female
 Check CSV import job status.
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -1000,12 +1048,14 @@ Check CSV import job status.
 List classes (filtered by user role).
 
 **Query Parameters:**
+
 - `page`, `limit`, `sortBy`, `sortOrder`
 - `teacherId`: Filter by teacher
 - `gradeLevel`: Filter by grade
 - `academicYear`: Filter by academic year
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -1044,6 +1094,7 @@ List classes (filtered by user role).
 Create a new class.
 
 **Request:**
+
 ```json
 {
   "name": "Math Period 3",
@@ -1057,6 +1108,7 @@ Create a new class.
 ```
 
 **Response (201 Created):**
+
 ```json
 {
   "success": true,
@@ -1080,17 +1132,15 @@ Create a new class.
 Enroll students in a class.
 
 **Request:**
+
 ```json
 {
-  "studentIds": [
-    "student-uuid-1",
-    "student-uuid-2",
-    "student-uuid-3"
-  ]
+  "studentIds": ["student-uuid-1", "student-uuid-2", "student-uuid-3"]
 }
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -1111,6 +1161,7 @@ Enroll students in a class.
 Start a new student analysis session.
 
 **Request:**
+
 ```json
 {
   "studentId": "student-uuid"
@@ -1118,6 +1169,7 @@ Start a new student analysis session.
 ```
 
 **Response (201 Created):**
+
 ```json
 {
   "success": true,
@@ -1147,6 +1199,7 @@ Start a new student analysis session.
 Continue analysis conversation (teacher responds).
 
 **Request:**
+
 ```json
 {
   "message": "David is a strong student in math. He consistently scores above 90% on tests and shows excellent problem-solving skills."
@@ -1154,6 +1207,7 @@ Continue analysis conversation (teacher responds).
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -1178,6 +1232,7 @@ Continue analysis conversation (teacher responds).
 ```
 
 **When Analysis Complete:**
+
 ```json
 {
   "success": true,
@@ -1211,6 +1266,7 @@ Continue analysis conversation (teacher responds).
 Get analysis details.
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -1270,6 +1326,7 @@ Get analysis details.
 Update analysis (edit results, add notes).
 
 **Request:**
+
 ```json
 {
   "teacherEdits": {
@@ -1285,6 +1342,7 @@ Update analysis (edit results, add notes).
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -1307,6 +1365,7 @@ Export analysis as PDF.
 **Response:** PDF file download
 
 **Headers:**
+
 ```
 Content-Type: application/pdf
 Content-Disposition: attachment; filename="analysis-david-cohen-2025-12-30.pdf"
@@ -1319,6 +1378,7 @@ Content-Disposition: attachment; filename="analysis-david-cohen-2025-12-30.pdf"
 List analyses (filtered by user role).
 
 **Query Parameters:**
+
 - `page`, `limit`, `sortBy`, `sortOrder`
 - `studentId`: Filter by student
 - `teacherId`: Filter by teacher
@@ -1327,6 +1387,7 @@ List analyses (filtered by user role).
 - `createdAfter`, `createdBefore`: Date range
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -1362,6 +1423,7 @@ List analyses (filtered by user role).
 Teacher dashboard data.
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -1416,6 +1478,7 @@ Teacher dashboard data.
 Principal dashboard data.
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -1439,7 +1502,7 @@ Principal dashboard data.
         "gradeLevel": "10",
         "totalStudents": 215,
         "analyzedStudents": 172,
-        "completionRate": 0.80
+        "completionRate": 0.8
       }
     ],
     "teacherActivity": [
@@ -1485,6 +1548,7 @@ Principal dashboard data.
 Trends analysis over time.
 
 **Query Parameters:**
+
 - `startDate`: Start date (ISO 8601)
 - `endDate`: End date (ISO 8601)
 - `gradeLevel`: Filter by grade
@@ -1492,6 +1556,7 @@ Trends analysis over time.
 - `groupBy`: `day`, `week`, `month` (default: `week`)
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true,
@@ -1533,6 +1598,7 @@ Trends analysis over time.
 Export analytics report as CSV.
 
 **Query Parameters:**
+
 - `type`: `student-summary`, `teacher-activity`, `school-trends`
 - `startDate`, `endDate`: Date range
 
@@ -1544,12 +1610,12 @@ Export analytics report as CSV.
 
 ### Rate Limits
 
-| Endpoint Pattern | Limit | Window |
-|-----------------|-------|--------|
-| `/api/v1/auth/login` | 5 requests | 1 minute |
-| `/api/v1/auth/register` | 3 requests | 1 hour |
-| `/api/v1/analyses` (POST) | 10 requests | 1 hour |
-| All other endpoints | 100 requests | 1 minute |
+| Endpoint Pattern          | Limit        | Window   |
+| ------------------------- | ------------ | -------- |
+| `/api/v1/auth/login`      | 5 requests   | 1 minute |
+| `/api/v1/auth/register`   | 3 requests   | 1 hour   |
+| `/api/v1/analyses` (POST) | 10 requests  | 1 hour   |
+| All other endpoints       | 100 requests | 1 minute |
 
 ### Rate Limit Headers
 
@@ -1562,6 +1628,7 @@ X-RateLimit-Reset: 1735567800
 ### Rate Limit Exceeded Response
 
 **Response (429 Too Many Requests):**
+
 ```json
 {
   "success": false,
@@ -1580,12 +1647,14 @@ X-RateLimit-Reset: 1735567800
 ### Future Enhancement
 
 Webhooks for real-time notifications (post-MVP):
+
 - Analysis completed
 - Student flagged for review
 - CSV import completed
 - Daily/weekly digest
 
 **Webhook Payload Example:**
+
 ```json
 {
   "event": "analysis.completed",
@@ -1608,6 +1677,7 @@ Webhooks for real-time notifications (post-MVP):
 **Current Version:** v1 (`/api/v1/...`)
 
 **Versioning Approach:**
+
 - Major version in URL path (`/api/v1`, `/api/v2`)
 - Breaking changes require new version
 - Non-breaking changes added to current version
@@ -1621,6 +1691,7 @@ Webhooks for real-time notifications (post-MVP):
 4. **Remove after notice period**
 
 **Deprecated Endpoint Header:**
+
 ```http
 X-API-Deprecated: true
 X-API-Deprecation-Date: 2026-06-30
@@ -1636,6 +1707,7 @@ X-API-Alternative: /api/v2/students
 Auto-generated from NestJS decorators using `@nestjs/swagger`.
 
 **Example Decorator:**
+
 ```typescript
 @ApiTags('students')
 @ApiOperation({ summary: 'Create a new student' })

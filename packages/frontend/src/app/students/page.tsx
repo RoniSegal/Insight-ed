@@ -14,7 +14,6 @@ import { LoadingContent } from '@/components/ui/Spinner';
 import { ApiClient } from '@/lib/api-client';
 import { useAuthStore } from '@/lib/auth/auth-store';
 
-
 export default function StudentsPage() {
   return (
     <ProtectedRoute>
@@ -108,9 +107,7 @@ function StudentsPageContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-primary-700">
-                מנוע צמיחה
-              </h1>
+              <h1 className="text-2xl font-bold text-primary-700">מנוע צמיחה</h1>
             </div>
             <div className="flex items-center gap-4">
               <span className="text-sm text-neutral-700">
@@ -129,15 +126,9 @@ function StudentsPageContent() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <div>
               <h2 className="text-3xl font-bold text-neutral-900">התלמידים שלי</h2>
-              <p className="text-neutral-600 mt-1">
-                נהל את התלמידים שלך והתחל ניתוח למידה
-              </p>
+              <p className="text-neutral-600 mt-1">נהל את התלמידים שלך והתחל ניתוח למידה</p>
             </div>
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={() => setShowAddForm(!showAddForm)}
-            >
+            <Button variant="primary" size="lg" onClick={() => setShowAddForm(!showAddForm)}>
               {showAddForm ? 'ביטול' : '+ הוסף תלמיד'}
             </Button>
           </div>
@@ -209,12 +200,8 @@ function StudentsPageContent() {
                   d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
                 />
               </svg>
-              <h3 className="mt-4 text-lg font-medium text-neutral-900">
-                אין תלמידים עדיין
-              </h3>
-              <p className="mt-2 text-neutral-500">
-                התחל על ידי הוספת התלמיד הראשון שלך
-              </p>
+              <h3 className="mt-4 text-lg font-medium text-neutral-900">אין תלמידים עדיין</h3>
+              <p className="mt-2 text-neutral-500">התחל על ידי הוספת התלמיד הראשון שלך</p>
               <div className="mt-6">
                 <Button variant="primary" onClick={() => setShowAddForm(true)}>
                   הוסף תלמיד ראשון
@@ -228,14 +215,8 @@ function StudentsPageContent() {
         {!loading && !error && students.length > 0 && filteredStudents.length === 0 && (
           <Card variant="bordered" padding="spacious">
             <div className="text-center py-12">
-              <p className="text-neutral-600">
-                לא נמצאו תלמידים התואמים את החיפוש "{searchQuery}"
-              </p>
-              <Button
-                variant="ghost"
-                onClick={() => setSearchQuery('')}
-                className="mt-4"
-              >
+              <p className="text-neutral-600">לא נמצאו תלמידים התואמים את החיפוש "{searchQuery}"</p>
+              <Button variant="ghost" onClick={() => setSearchQuery('')} className="mt-4">
                 נקה חיפוש
               </Button>
             </div>
@@ -299,8 +280,8 @@ function StudentsPageContent() {
 
             {/* Results summary */}
             <div className="mt-4 text-center text-sm text-neutral-600">
-              מציג {indexOfFirstStudent + 1}-{Math.min(indexOfLastStudent, filteredStudents.length)} מתוך{' '}
-              {filteredStudents.length} תלמידים
+              מציג {indexOfFirstStudent + 1}-{Math.min(indexOfLastStudent, filteredStudents.length)}{' '}
+              מתוך {filteredStudents.length} תלמידים
             </div>
           </>
         )}
@@ -317,7 +298,11 @@ interface StudentCardProps {
 
 function StudentCard({ student, onDelete, onAnalyze }: StudentCardProps) {
   return (
-    <Card variant="insight" padding="default" className="transition-all duration-200 hover:shadow-lg hover:scale-[1.02]">
+    <Card
+      variant="insight"
+      padding="default"
+      className="transition-all duration-200 hover:shadow-lg hover:scale-[1.02]"
+    >
       <CardHeader>
         <div className="flex items-start justify-between w-full gap-4">
           <div className="flex-1 min-w-0">
@@ -479,13 +464,7 @@ function AddStudentForm({ onSuccess }: AddStudentFormProps) {
           )}
 
           <div className="mt-8 flex gap-3">
-            <Button
-              type="submit"
-              variant="primary"
-              loading={loading}
-              disabled={loading}
-              fullWidth
-            >
+            <Button type="submit" variant="primary" loading={loading} disabled={loading} fullWidth>
               {loading ? 'מוסיף...' : 'הוסף תלמיד'}
             </Button>
           </div>

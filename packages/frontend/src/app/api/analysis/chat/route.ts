@@ -7,7 +7,11 @@ import { chat, isOpenAIConfigured, truncateConversationHistory } from '@/app/api
 // Rate limiting (simple in-memory implementation for MVP)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 
-function checkRateLimit(userId: string, maxRequests: number = 20, windowMs: number = 60000): boolean {
+function checkRateLimit(
+  userId: string,
+  maxRequests: number = 20,
+  windowMs: number = 60000
+): boolean {
   const now = Date.now();
   const userLimit = rateLimitMap.get(userId);
 
@@ -54,17 +58,11 @@ export async function POST(request: NextRequest) {
 
     // Validate input
     if (!conversationId) {
-      return NextResponse.json(
-        { error: 'Conversation ID required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Conversation ID required' }, { status: 400 });
     }
 
     if (!message || typeof message !== 'string' || message.trim().length === 0) {
-      return NextResponse.json(
-        { error: 'Message required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Message required' }, { status: 400 });
     }
 
     // Get conversation from store

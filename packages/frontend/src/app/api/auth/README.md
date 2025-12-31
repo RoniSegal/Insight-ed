@@ -9,6 +9,7 @@ Simple JWT-based authentication system for the 3-day MVP demo.
 Authenticate user and receive JWT token.
 
 **Request:**
+
 ```json
 {
   "email": "teacher@example.com",
@@ -17,6 +18,7 @@ Authenticate user and receive JWT token.
 ```
 
 **Response (200):**
+
 ```json
 {
   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -31,6 +33,7 @@ Authenticate user and receive JWT token.
 ```
 
 **Error Responses:**
+
 - 400: Missing email or password
 - 401: Invalid credentials
 - 500: Internal server error
@@ -42,11 +45,13 @@ Authenticate user and receive JWT token.
 Get current authenticated user information.
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 ```
 
 **Response (200):**
+
 ```json
 {
   "id": "1",
@@ -58,6 +63,7 @@ Authorization: Bearer <token>
 ```
 
 **Error Responses:**
+
 - 401: Missing or invalid token
 - 500: Internal server error
 
@@ -68,6 +74,7 @@ Authorization: Bearer <token>
 Logout current user (client-side token removal).
 
 **Response (200):**
+
 ```json
 {
   "success": true,

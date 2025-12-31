@@ -18,8 +18,7 @@ const alertVariants = cva('rounded-lg p-4 border-s-4 shadow-sm', {
 });
 
 export interface AlertProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof alertVariants> {
+  extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof alertVariants> {
   title?: string;
   dismissible?: boolean;
   onDismiss?: () => void;
@@ -120,12 +119,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
     const Icon = icon || variantIcons[variant];
 
     return (
-      <div
-        ref={ref}
-        className={cn(alertVariants({ variant }), className)}
-        role="alert"
-        {...props}
-      >
+      <div ref={ref} className={cn(alertVariants({ variant }), className)} role="alert" {...props}>
         <div className="flex items-start gap-3">
           <div className="flex-shrink-0">{Icon && <Icon />}</div>
           <div className="flex-1 min-w-0">

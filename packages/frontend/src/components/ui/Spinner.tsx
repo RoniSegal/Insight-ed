@@ -24,8 +24,7 @@ const spinnerVariants = cva('animate-spin', {
 });
 
 export interface SpinnerProps
-  extends React.SVGAttributes<SVGSVGElement>,
-    VariantProps<typeof spinnerVariants> {
+  extends React.SVGAttributes<SVGSVGElement>, VariantProps<typeof spinnerVariants> {
   label?: string;
 }
 
@@ -76,9 +75,7 @@ export const Spinner = React.forwardRef<SVGSVGElement, SpinnerProps>(
 Spinner.displayName = 'Spinner';
 
 // Full page loading spinner
-export const LoadingPage: React.FC<{ message?: string }> = ({
-  message = 'טוען...',
-}) => {
+export const LoadingPage: React.FC<{ message?: string }> = ({ message = 'טוען...' }) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-neutral-50">
       <div className="text-center animate-fadeIn">
@@ -90,9 +87,7 @@ export const LoadingPage: React.FC<{ message?: string }> = ({
 };
 
 // Inline loading spinner for content areas
-export const LoadingContent: React.FC<{ message?: string }> = ({
-  message = 'טוען...',
-}) => {
+export const LoadingContent: React.FC<{ message?: string }> = ({ message = 'טוען...' }) => {
   return (
     <div className="flex items-center justify-center py-12 animate-fadeIn">
       <div className="text-center">

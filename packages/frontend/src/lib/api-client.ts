@@ -26,10 +26,7 @@ export class ApiClient {
     localStorage.removeItem('refreshToken');
   }
 
-  static async request<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<T> {
+  static async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const url = `${API_BASE_URL}${endpoint}`;
     const accessToken = this.getAccessToken();
 

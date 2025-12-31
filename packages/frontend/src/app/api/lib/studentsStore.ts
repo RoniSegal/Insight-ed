@@ -81,27 +81,27 @@ class StudentsStore {
       this.create({
         name: 'שרה כהן',
         grade: 'כיתה ג׳',
-        class: 'גב׳ לוי'
+        class: 'גב׳ לוי',
       });
       this.create({
         name: 'מיכאל דוד',
         grade: 'כיתה ג׳',
-        class: 'גב׳ לוי'
+        class: 'גב׳ לוי',
       });
       this.create({
         name: 'נועה אברהם',
         grade: 'כיתה ד׳',
-        class: 'מר רוזנברג'
+        class: 'מר רוזנברג',
       });
       this.create({
         name: 'דניאל יוסף',
         grade: 'כיתה ה׳',
-        class: 'גב׳ שפירא'
+        class: 'גב׳ שפירא',
       });
       this.create({
         name: 'תמר לוי',
         grade: 'כיתה ד׳',
-        class: 'מר רוזנברג'
+        class: 'מר רוזנברג',
       });
     }
   }

@@ -6,11 +6,7 @@ export const metadata: Metadata = {
   description: 'AI-powered student assessment platform',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="he" dir="rtl">
       <body>{children}</body>

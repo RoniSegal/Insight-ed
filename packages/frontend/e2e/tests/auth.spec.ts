@@ -1,6 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage, DashboardPage } from '../pages';
-import { TEST_USERS, loginAsTeacher, loginAsPrincipal, logout, clearAuthState } from '../fixtures/auth';
+import {
+  TEST_USERS,
+  loginAsTeacher,
+  loginAsPrincipal,
+  logout,
+  clearAuthState,
+} from '../fixtures/auth';
 
 /**
  * Authentication Flow Tests
@@ -70,8 +76,12 @@ test.describe('Authentication', () => {
     await loginPage.clickSignIn(); // Submit without filling fields
 
     // Should show validation errors (either browser validation or custom)
-    const emailValid = await loginPage.emailInput.evaluate((el: HTMLInputElement) => el.validity.valid);
-    const passwordValid = await loginPage.passwordInput.evaluate((el: HTMLInputElement) => el.validity.valid);
+    const emailValid = await loginPage.emailInput.evaluate(
+      (el: HTMLInputElement) => el.validity.valid
+    );
+    const passwordValid = await loginPage.passwordInput.evaluate(
+      (el: HTMLInputElement) => el.validity.valid
+    );
 
     expect(emailValid || passwordValid).toBe(false);
   });

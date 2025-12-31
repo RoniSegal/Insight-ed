@@ -71,7 +71,10 @@ test.describe('Smoke Tests', () => {
 
     // Should show 404 page or redirect to home/login
     const url = page.url();
-    const has404 = await page.locator('text=/404|not found/i').isVisible().catch(() => false);
+    const has404 = await page
+      .locator('text=/404|not found/i')
+      .isVisible()
+      .catch(() => false);
     const isRedirected = url.includes('/login') || url.includes('/home');
 
     expect(has404 || isRedirected).toBe(true);

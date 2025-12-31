@@ -1,9 +1,11 @@
 # Student Names Bug Fix - Data Model Alignment
 
 ## Problem
+
 Student names were showing as "undefined undefined" in the UI due to a data model mismatch between frontend and backend.
 
 ## Root Cause
+
 - **Backend API** uses: `{ name, grade, class }` (single full name field)
 - **Frontend & Shared Types** were using: `{ firstName, lastName, gradeLevel, studentId }` (split name fields)
 
@@ -12,7 +14,9 @@ This mismatch caused the frontend to look for `student.firstName` and `student.l
 ## Files Changed
 
 ### 1. `/packages/shared/src/types/index.ts`
+
 **Before:**
+
 ```typescript
 export interface Student {
   id: string;
@@ -28,6 +32,7 @@ export interface Student {
 ```
 
 **After:**
+
 ```typescript
 export interface Student {
   id: string;
@@ -41,23 +46,28 @@ export interface Student {
 ### 2. `/packages/frontend/src/app/students/page.tsx`
 
 #### Search Filter (lines 48-54)
+
 **Before:**
+
 ```typescript
 student.firstName.toLowerCase().includes(query) ||
-student.lastName.toLowerCase().includes(query) ||
-student.gradeLevel.toLowerCase().includes(query) ||
-(student.studentId && student.studentId.toLowerCase().includes(query))
+  student.lastName.toLowerCase().includes(query) ||
+  student.gradeLevel.toLowerCase().includes(query) ||
+  (student.studentId && student.studentId.toLowerCase().includes(query));
 ```
 
 **After:**
+
 ```typescript
 student.name.toLowerCase().includes(query) ||
-student.grade.toLowerCase().includes(query) ||
-(student.class && student.class.toLowerCase().includes(query))
+  student.grade.toLowerCase().includes(query) ||
+  (student.class && student.class.toLowerCase().includes(query));
 ```
 
 #### StudentCard Component (line 309-323)
+
 **Before:**
+
 ```typescript
 const fullName = `${student.firstName} ${student.lastName}`;
 // ...
@@ -67,6 +77,7 @@ const fullName = `${student.firstName} ${student.lastName}`;
 ```
 
 **After:**
+
 ```typescript
 <h3>{student.name}</h3>
 <p>כיתה: {student.grade}</p>
@@ -74,7 +85,9 @@ const fullName = `${student.firstName} ${student.lastName}`;
 ```
 
 #### AddStudentForm Component (lines 389-455)
+
 **Before:**
+
 ```typescript
 const [firstName, setFirstName] = useState('');
 const [lastName, setLastName] = useState('');
@@ -92,6 +105,7 @@ await ApiClient.post('/students', {
 ```
 
 **After:**
+
 ```typescript
 const [name, setName] = useState('');
 const [grade, setGrade] = useState('');
@@ -109,6 +123,7 @@ await ApiClient.post('/students', {
 ### 3. `/packages/frontend/src/app/students/[id]/chat/page.tsx`
 
 **Before:**
+
 ```typescript
 const student = await ApiClient.get(`/students/${studentId}`);
 const fullName = `${student.firstName} ${student.lastName}`;
@@ -116,6 +131,7 @@ setStudentName(fullName);
 ```
 
 **After:**
+
 ```typescript
 const student = await ApiClient.get(`/students/${studentId}`);
 setStudentName(student.name);
@@ -128,16 +144,17 @@ The backend was already using the correct structure:
 ```typescript
 interface Student {
   id: string;
-  name: string;        // Full name (e.g., "שרה כהן")
-  grade: string;       // Grade level (e.g., "כיתה ג׳")
-  class?: string;      // Teacher/class (e.g., "גב׳ לוי")
-  createdAt: string;   // ISO timestamp
+  name: string; // Full name (e.g., "שרה כהן")
+  grade: string; // Grade level (e.g., "כיתה ג׳")
+  class?: string; // Teacher/class (e.g., "גב׳ לוי")
+  createdAt: string; // ISO timestamp
 }
 ```
 
 ## Test Results
 
 All API tests pass with Hebrew names displaying correctly:
+
 - GET /api/students - Returns students with `name`, `grade`, `class` fields
 - POST /api/students - Creates students with single name field
 - Search and filtering work with Hebrew text
@@ -146,6 +163,7 @@ All API tests pass with Hebrew names displaying correctly:
 ## Impact
 
 This fix resolves:
+
 - Student names showing as "undefined undefined"
 - Search not working properly
 - Add student form not matching backend expectations
@@ -154,6 +172,7 @@ This fix resolves:
 ## Verification
 
 Run the students API test:
+
 ```bash
 cd packages/frontend
 bash scripts/test-students-api.sh

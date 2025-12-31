@@ -155,6 +155,7 @@ fontFamily: {
 ```
 
 **Rationale:**
+
 - **Inter**: Excellent readability, professional, works well in dense UIs
 - **JetBrains Mono**: Clear distinction for numbers and data
 - **Rubik/Assistant**: Native Hebrew font support with good RTL handling
@@ -306,11 +307,13 @@ borderRadius: {
 5. **Success**: Solid success-600 background, white text
 
 **Sizes:**
+
 - **sm**: py-1.5 px-3, text-sm
 - **md** (default): py-2 px-4, text-base
 - **lg**: py-3 px-6, text-lg
 
 **States:**
+
 - **Hover**: Darker shade (e.g., primary-600 → primary-700)
 - **Active**: Even darker (primary-700 → primary-800)
 - **Disabled**: opacity-50, cursor-not-allowed
@@ -319,12 +322,14 @@ borderRadius: {
 ### Input
 
 **Variants:**
+
 - **Default**: border neutral-300, focus:ring-2 primary-500
 - **Error**: border error-500, focus:ring-2 error-500
 - **Success**: border success-500, focus:ring-2 success-500
 - **Disabled**: bg-neutral-100, cursor-not-allowed
 
 **Sizes:**
+
 - **sm**: py-1.5 px-3, text-sm
 - **md** (default): py-2 px-3, text-base
 - **lg**: py-3 px-4, text-lg
@@ -332,6 +337,7 @@ borderRadius: {
 ### Card
 
 **Structure:**
+
 - Background: white (neutral-50 for nested)
 - Border: 1px solid neutral-200 (optional)
 - Shadow: shadow (default) or shadow-md
@@ -339,6 +345,7 @@ borderRadius: {
 - Border radius: rounded-lg
 
 **Variants:**
+
 - **Default**: white bg, shadow
 - **Bordered**: white bg, border, no shadow
 - **Elevated**: white bg, shadow-md
@@ -354,6 +361,7 @@ borderRadius: {
 4. **Error**: bg-error-50, border-error-200, text-error-800, icon error-600
 
 **Structure:**
+
 - Border left: 4px solid (color-600)
 - Padding: p-4
 - Icon on right (RTL), text on left
@@ -362,12 +370,14 @@ borderRadius: {
 ### Loading Spinner
 
 **Sizes:**
+
 - **sm**: 16px
 - **md**: 24px
 - **lg**: 32px
 - **xl**: 48px
 
 **Colors:**
+
 - Primary-600 (default)
 - White (on colored backgrounds)
 - Current color (inherits from parent)
@@ -377,6 +387,7 @@ borderRadius: {
 ### Header / Navigation
 
 **Desktop:**
+
 - Height: 64px
 - Background: white
 - Border bottom: 1px solid neutral-200
@@ -384,11 +395,13 @@ borderRadius: {
 - Padding: px-6
 
 **Mobile:**
+
 - Height: 56px
 - Fixed position
 - Z-index: 50
 
 **Navigation items:**
+
 - Text: neutral-600
 - Hover: primary-600
 - Active: primary-700, font-semibold
@@ -493,6 +506,7 @@ screens: {
 ### Contrast Ratios
 
 All text meets WCAG AA standards:
+
 - Normal text (16px+): 4.5:1 minimum
 - Large text (24px+): 3:1 minimum
 - UI components: 3:1 minimum

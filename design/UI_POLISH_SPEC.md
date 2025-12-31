@@ -28,21 +28,25 @@ All improvements use existing Tailwind utilities and design system tokens. No cu
 **File:** `/packages/frontend/src/app/students/[id]/chat/page.tsx`
 
 **Current State (Lines 191-200):**
+
 ```tsx
-{sending && (
-  <div className="flex justify-start mb-4">
-    <div className="bg-neutral-100 rounded-lg px-4 py-3 rounded-bl-none">
-      <div className="flex gap-1">
-        <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
-        <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
-        <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce"></span>
+{
+  sending && (
+    <div className="flex justify-start mb-4">
+      <div className="bg-neutral-100 rounded-lg px-4 py-3 rounded-bl-none">
+        <div className="flex gap-1">
+          <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+          <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+          <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce"></span>
+        </div>
       </div>
     </div>
-  </div>
-)}
+  );
+}
 ```
 
 **Issues:**
+
 - Animation delay syntax may not work correctly
 - No Hebrew text label for "AI is typing"
 - Colors too subtle (neutral-400 is too light)
@@ -51,23 +55,35 @@ All improvements use existing Tailwind utilities and design system tokens. No cu
 **Required Changes:**
 
 ```tsx
-{sending && (
-  <div className="flex justify-start mb-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
-    <div className="bg-neutral-100 rounded-lg px-4 py-3 rounded-bl-none shadow-sm">
-      <div className="flex items-center gap-2">
-        <div className="flex gap-1">
-          <span className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-          <span className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-          <span className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+{
+  sending && (
+    <div className="flex justify-start mb-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
+      <div className="bg-neutral-100 rounded-lg px-4 py-3 rounded-bl-none shadow-sm">
+        <div className="flex items-center gap-2">
+          <div className="flex gap-1">
+            <span
+              className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
+              style={{ animationDelay: '0ms' }}
+            ></span>
+            <span
+              className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
+              style={{ animationDelay: '150ms' }}
+            ></span>
+            <span
+              className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
+              style={{ animationDelay: '300ms' }}
+            ></span>
+          </div>
+          <span className="text-xs text-neutral-600">המערכת מקלידה...</span>
         </div>
-        <span className="text-xs text-neutral-600">המערכת מקלידה...</span>
       </div>
     </div>
-  </div>
-)}
+  );
+}
 ```
 
 **Why:**
+
 - `primary-500` is more visible than `neutral-400`
 - Hebrew label provides context
 - Inline `style` attribute ensures animation-delay works
@@ -79,6 +95,7 @@ All improvements use existing Tailwind utilities and design system tokens. No cu
 **File:** `/packages/frontend/src/components/chat/ChatMessage.tsx`
 
 **Current State (Lines 20-27):**
+
 ```tsx
 <div className={`flex w-full mb-4 ${isUser ? 'justify-end' : 'justify-start'}`}>
   <div
@@ -104,6 +121,7 @@ All improvements use existing Tailwind utilities and design system tokens. No cu
 ```
 
 **Why:**
+
 - Smooth fade-in when messages appear
 - `shadow-sm` adds subtle depth
 - `transition-all` enables hover effects if needed later
@@ -113,10 +131,9 @@ All improvements use existing Tailwind utilities and design system tokens. No cu
 **File:** `/packages/frontend/src/components/ui/Spinner.tsx`
 
 **Current LoadingContent (Lines 92-103):**
+
 ```tsx
-export const LoadingContent: React.FC<{ message?: string }> = ({
-  message = 'טוען...',
-}) => {
+export const LoadingContent: React.FC<{ message?: string }> = ({ message = 'טוען...' }) => {
   return (
     <div className="flex items-center justify-center py-12">
       <div className="text-center">
@@ -131,17 +148,13 @@ export const LoadingContent: React.FC<{ message?: string }> = ({
 **Required Changes:**
 
 ```tsx
-export const LoadingContent: React.FC<{ message?: string }> = ({
-  message = 'טוען...',
-}) => {
+export const LoadingContent: React.FC<{ message?: string }> = ({ message = 'טוען...' }) => {
   return (
     <div className="flex items-center justify-center py-12">
       <div className="text-center space-y-4">
         <Spinner size="lg" />
         {message && (
-          <p className="text-base text-neutral-600 font-medium animate-pulse">
-            {message}
-          </p>
+          <p className="text-base text-neutral-600 font-medium animate-pulse">{message}</p>
         )}
       </div>
     </div>
@@ -150,6 +163,7 @@ export const LoadingContent: React.FC<{ message?: string }> = ({
 ```
 
 **Why:**
+
 - `space-y-4` provides consistent spacing
 - `font-medium` makes loading message more prominent
 - `animate-pulse` provides subtle feedback that loading is active
@@ -160,30 +174,26 @@ export const LoadingContent: React.FC<{ message?: string }> = ({
 **File:** `/packages/frontend/src/components/ui/Button.tsx`
 
 **Current Loading Spinner (Lines 81-103):**
+
 ```tsx
-{loading && (
-  <svg
-    className="animate-spin -ms-1 me-2 h-4 w-4"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    aria-hidden="true"
-  >
-    <circle
-      className="opacity-25"
-      cx="12"
-      cy="12"
-      r="10"
-      stroke="currentColor"
-      strokeWidth="4"
-    />
-    <path
-      className="opacity-75"
-      fill="currentColor"
-      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-    />
-  </svg>
-)}
+{
+  loading && (
+    <svg
+      className="animate-spin -ms-1 me-2 h-4 w-4"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+      />
+    </svg>
+  );
+}
 ```
 
 **Issue:** RTL margin issue with `-ms-1 me-2`
@@ -191,32 +201,28 @@ export const LoadingContent: React.FC<{ message?: string }> = ({
 **Required Changes:**
 
 ```tsx
-{loading && (
-  <svg
-    className="animate-spin h-4 w-4 me-2"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    aria-hidden="true"
-  >
-    <circle
-      className="opacity-25"
-      cx="12"
-      cy="12"
-      r="10"
-      stroke="currentColor"
-      strokeWidth="4"
-    />
-    <path
-      className="opacity-75"
-      fill="currentColor"
-      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-    />
-  </svg>
-)}
+{
+  loading && (
+    <svg
+      className="animate-spin h-4 w-4 me-2"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+      />
+    </svg>
+  );
+}
 ```
 
 **Why:**
+
 - Remove `-ms-1` which creates awkward spacing in RTL
 - Keep `me-2` for consistent spacing
 
@@ -229,6 +235,7 @@ export const LoadingContent: React.FC<{ message?: string }> = ({
 **File:** `/packages/frontend/src/components/ui/Alert.tsx`
 
 **Current Alert (Lines 122-154):**
+
 ```tsx
 return (
   <div
@@ -253,6 +260,7 @@ return (
 ```
 
 **Issues:**
+
 - Icon and text spacing could be better
 - Dismiss button hover state too subtle
 - No animation on appear/dismiss
@@ -283,6 +291,7 @@ return (
 ```
 
 **Why:**
+
 - `gap-3` replaces margin utilities for cleaner spacing
 - `animate-in` provides smooth entry
 - `leading-relaxed` improves Hebrew text readability
@@ -295,34 +304,35 @@ return (
 **File:** `/packages/frontend/src/app/students/[id]/chat/page.tsx`
 
 **Current Error Alert (Lines 177-182):**
+
 ```tsx
-{error && (
-  <div className="mb-4">
-    <Alert variant="error" dismissible onDismiss={() => setError(null)}>
-      {error}
-    </Alert>
-  </div>
-)}
+{
+  error && (
+    <div className="mb-4">
+      <Alert variant="error" dismissible onDismiss={() => setError(null)}>
+        {error}
+      </Alert>
+    </div>
+  );
+}
 ```
 
 **Required Changes:**
 
 ```tsx
-{error && (
-  <div className="mb-6">
-    <Alert
-      variant="error"
-      title="שגיאה"
-      dismissible
-      onDismiss={() => setError(null)}
-    >
-      {error}
-    </Alert>
-  </div>
-)}
+{
+  error && (
+    <div className="mb-6">
+      <Alert variant="error" title="שגיאה" dismissible onDismiss={() => setError(null)}>
+        {error}
+      </Alert>
+    </div>
+  );
+}
 ```
 
 **Why:**
+
 - `mb-6` provides better visual separation
 - `title="שגיאה"` makes error more prominent
 - Provides consistent error messaging pattern
@@ -332,32 +342,38 @@ return (
 **File:** `/packages/frontend/src/app/students/page.tsx`
 
 **Current Error (Lines 176-180):**
+
 ```tsx
-{error && (
-  <Alert variant="error" dismissible onDismiss={() => setError(null)}>
-    {error}
-  </Alert>
-)}
+{
+  error && (
+    <Alert variant="error" dismissible onDismiss={() => setError(null)}>
+      {error}
+    </Alert>
+  );
+}
 ```
 
 **Required Changes:**
 
 ```tsx
-{error && (
-  <div className="mb-6">
-    <Alert
-      variant="error"
-      title="שגיאה בטעינת תלמידים"
-      dismissible
-      onDismiss={() => setError(null)}
-    >
-      {error}
-    </Alert>
-  </div>
-)}
+{
+  error && (
+    <div className="mb-6">
+      <Alert
+        variant="error"
+        title="שגיאה בטעינת תלמידים"
+        dismissible
+        onDismiss={() => setError(null)}
+      >
+        {error}
+      </Alert>
+    </div>
+  );
+}
 ```
 
 **Why:**
+
 - Descriptive title provides context
 - Consistent margin spacing
 
@@ -370,6 +386,7 @@ return (
 **File:** `/packages/frontend/src/app/students/page.tsx`
 
 **Current Grid (Line 239):**
+
 ```tsx
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 ```
@@ -379,6 +396,7 @@ return (
 **Current Student Card (Lines 309-382):**
 
 **Issues to fix:**
+
 - Delete button hover state could be smoother
 - Card hover state missing
 - Metadata section spacing
@@ -386,6 +404,7 @@ return (
 **Required Changes to StudentCard:**
 
 Line 309-310:
+
 ```tsx
 function StudentCard({ student, onDelete, onAnalyze }: StudentCardProps) {
   return (
@@ -393,6 +412,7 @@ function StudentCard({ student, onDelete, onAnalyze }: StudentCardProps) {
 ```
 
 Line 327-331 (delete button):
+
 ```tsx
 <button
   onClick={() => onDelete(student.id, student.name)}
@@ -402,6 +422,7 @@ Line 327-331 (delete button):
 ```
 
 Line 375-379 (metadata):
+
 ```tsx
 <div className="mt-4 pt-4 border-t border-neutral-200">
   <p className="text-xs text-neutral-500">
@@ -411,6 +432,7 @@ Line 375-379 (metadata):
 ```
 
 **Why:**
+
 - `hover:shadow-lg` on card provides nice lift effect
 - `hover:bg-error-50` on delete button provides clear hover feedback
 - `mt-4 pt-4` on metadata provides better visual separation
@@ -428,6 +450,7 @@ If this component exists, ensure consistent padding. If not, check the chat page
 **Check lines 200-207 for consistent spacing:**
 
 Current spacing appears correct, but verify:
+
 - Main content padding: `py-8` is correct
 - Card spacing in ResultsContent component
 
@@ -442,12 +465,14 @@ Current spacing appears correct, but verify:
 **Current buttonVariants (Lines 5-38):**
 
 **Issues:**
+
 - Missing smooth transition on all variants
 - Disabled state could be more distinct
 
 **Required Changes:**
 
 Line 6 (base classes):
+
 ```tsx
 const buttonVariants = cva(
   'inline-flex items-center justify-center rounded font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-current',
@@ -455,6 +480,7 @@ const buttonVariants = cva(
 ```
 
 **Why:**
+
 - `duration-200` ensures consistent animation timing
 - `disabled:hover:bg-current` prevents hover state change when disabled
 
@@ -463,41 +489,47 @@ const buttonVariants = cva(
 **File:** `/packages/frontend/src/app/students/page.tsx`
 
 **Current Pagination (Lines 263-275):**
+
 ```tsx
-{Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-  <button
-    key={pageNum}
-    onClick={() => handlePageChange(pageNum)}
-    className={`px-3 py-1 rounded font-medium transition-colors ${
-      currentPage === pageNum
-        ? 'bg-primary-600 text-white'
-        : 'bg-white text-neutral-700 hover:bg-neutral-100 border border-neutral-300'
-    }`}
-  >
-    {pageNum}
-  </button>
-))}
+{
+  Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+    <button
+      key={pageNum}
+      onClick={() => handlePageChange(pageNum)}
+      className={`px-3 py-1 rounded font-medium transition-colors ${
+        currentPage === pageNum
+          ? 'bg-primary-600 text-white'
+          : 'bg-white text-neutral-700 hover:bg-neutral-100 border border-neutral-300'
+      }`}
+    >
+      {pageNum}
+    </button>
+  ));
+}
 ```
 
 **Required Changes:**
 
 ```tsx
-{Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-  <button
-    key={pageNum}
-    onClick={() => handlePageChange(pageNum)}
-    className={`px-3 py-1.5 rounded font-medium transition-all duration-200 ${
-      currentPage === pageNum
-        ? 'bg-primary-600 text-white shadow-sm'
-        : 'bg-white text-neutral-700 hover:bg-neutral-100 hover:shadow-sm border border-neutral-300'
-    }`}
-  >
-    {pageNum}
-  </button>
-))}
+{
+  Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+    <button
+      key={pageNum}
+      onClick={() => handlePageChange(pageNum)}
+      className={`px-3 py-1.5 rounded font-medium transition-all duration-200 ${
+        currentPage === pageNum
+          ? 'bg-primary-600 text-white shadow-sm'
+          : 'bg-white text-neutral-700 hover:bg-neutral-100 hover:shadow-sm border border-neutral-300'
+      }`}
+    >
+      {pageNum}
+    </button>
+  ));
+}
 ```
 
 **Why:**
+
 - `py-1.5` improves touch target size
 - `shadow-sm` on active/hover provides depth
 - `duration-200` ensures smooth transitions
@@ -507,6 +539,7 @@ const buttonVariants = cva(
 **File:** `/packages/frontend/src/components/chat/ChatInput.tsx`
 
 **Current Send Button (Lines 61-76):**
+
 ```tsx
 <Button
   onClick={handleSend}
@@ -549,6 +582,7 @@ const buttonVariants = cva(
 ```
 
 **Why:**
+
 - Enhanced shadow on hover provides feedback
 - Hebrew aria-label improves accessibility
 
@@ -561,6 +595,7 @@ const buttonVariants = cva(
 **File:** `/packages/frontend/src/components/chat/ChatInput.tsx`
 
 **Current Container (Line 47):**
+
 ```tsx
 <div className="border-t border-neutral-200 bg-white p-4">
 ```
@@ -572,6 +607,7 @@ const buttonVariants = cva(
 ```
 
 **Why:**
+
 - Reduced padding on mobile for more text area space
 - Maintains comfortable padding on larger screens
 
@@ -580,6 +616,7 @@ const buttonVariants = cva(
 **File:** `/packages/frontend/src/components/chat/ChatMessage.tsx`
 
 **Current (Line 22):**
+
 ```tsx
 className={`max-w-[80%] rounded-lg px-4 py-3 shadow-sm transition-all ${
 ```
@@ -591,6 +628,7 @@ className={`max-w-[90%] sm:max-w-[80%] rounded-lg px-4 py-3 shadow-sm transition
 ```
 
 **Why:**
+
 - On mobile, 80% can be too narrow for Hebrew text
 - 90% on mobile, 80% on larger screens provides better balance
 
@@ -599,6 +637,7 @@ className={`max-w-[90%] sm:max-w-[80%] rounded-lg px-4 py-3 shadow-sm transition
 **File:** `/packages/frontend/src/app/students/page.tsx`
 
 **Current (Line 239):**
+
 ```tsx
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 ```
@@ -610,12 +649,9 @@ className={`max-w-[90%] sm:max-w-[80%] rounded-lg px-4 py-3 shadow-sm transition
 **File:** `/packages/frontend/src/app/students/page.tsx`
 
 **Current Add Student Button (Lines 134-140):**
+
 ```tsx
-<Button
-  variant="primary"
-  size="lg"
-  onClick={() => setShowAddForm(!showAddForm)}
->
+<Button variant="primary" size="lg" onClick={() => setShowAddForm(!showAddForm)}>
   {showAddForm ? 'ביטול' : '+ הוסף תלמיד'}
 </Button>
 ```
@@ -634,6 +670,7 @@ className={`max-w-[90%] sm:max-w-[80%] rounded-lg px-4 py-3 shadow-sm transition
 ```
 
 **Why:**
+
 - Full width on mobile for easier touch target
 - Auto width on larger screens for natural sizing
 
@@ -646,6 +683,7 @@ className={`max-w-[90%] sm:max-w-[80%] rounded-lg px-4 py-3 shadow-sm transition
 **File:** `/packages/frontend/src/app/(auth)/login/page.tsx`
 
 **Current Issues:**
+
 - Uses generic `gray-50`, `gray-300`, `blue-600` instead of design tokens
 - Not using design system Button, Input, Alert components
 - Inconsistent with rest of application
@@ -653,59 +691,79 @@ className={`max-w-[90%] sm:max-w-[80%] rounded-lg px-4 py-3 shadow-sm transition
 **Required Changes:**
 
 **Replace line 29:**
+
 ```tsx
 <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8" dir="rtl">
 ```
+
 With:
+
 ```tsx
 <div className="min-h-screen flex items-center justify-center bg-neutral-50 py-12 px-4 sm:px-6 lg:px-8" dir="rtl">
 ```
 
 **Replace line 32:**
+
 ```tsx
 <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
 ```
+
 With:
+
 ```tsx
 <h2 className="mt-6 text-center text-3xl font-bold text-neutral-900">
 ```
 
 **Replace line 35:**
+
 ```tsx
 <p className="mt-2 text-center text-sm text-gray-600">
 ```
+
 With:
+
 ```tsx
 <p className="mt-2 text-center text-sm text-neutral-600">
 ```
 
 **Replace line 37:**
+
 ```tsx
 <Link href="/register" className="font-medium text-blue-600 hover:text-blue-500">
 ```
+
 With:
+
 ```tsx
 <Link href="/register" className="font-medium text-primary-600 hover:text-primary-700">
 ```
 
 **Replace error alert (lines 44-48):**
+
 ```tsx
-{error && (
-  <div className="rounded-md bg-red-50 p-4">
-    <div className="text-sm text-red-700">{error}</div>
-  </div>
-)}
+{
+  error && (
+    <div className="rounded-md bg-red-50 p-4">
+      <div className="text-sm text-red-700">{error}</div>
+    </div>
+  );
+}
 ```
+
 With:
+
 ```tsx
-{error && (
-  <Alert variant="error" title="שגיאה בהתחברות">
-    {error}
-  </Alert>
-)}
+{
+  error && (
+    <Alert variant="error" title="שגיאה בהתחברות">
+      {error}
+    </Alert>
+  );
+}
 ```
 
 **Replace inputs (lines 55-84) with Input component:**
+
 ```tsx
 <div className="space-y-4">
   <Input
@@ -736,6 +794,7 @@ With:
 ```
 
 **Replace submit button (lines 108-115):**
+
 ```tsx
 <Button
   type="submit"
@@ -750,8 +809,12 @@ With:
 ```
 
 **Replace forgot password link (lines 101-103):**
+
 ```tsx
-<Link href="/forgot-password" className="font-medium text-primary-600 hover:text-primary-700 transition-colors">
+<Link
+  href="/forgot-password"
+  className="font-medium text-primary-600 hover:text-primary-700 transition-colors"
+>
   שכחת סיסמה?
 </Link>
 ```
@@ -760,6 +823,7 @@ With:
 Lines 128-153 (Google) and 156-169 (Microsoft) - wrap in Button component with variant="secondary"
 
 **Why:**
+
 - Consistency with design system
 - Professional appearance
 - Easier maintenance
@@ -772,28 +836,33 @@ Lines 128-153 (Google) and 156-169 (Microsoft) - wrap in Button component with v
 For Frontend Agent, implement in this order:
 
 ### Phase 1: Highest Impact (30 minutes)
+
 - [ ] Chat loading indicator animation (1.1)
 - [ ] Chat message fade-in (1.2)
 - [ ] Error alerts with titles (2.2, 2.3)
 - [ ] Loading content pulse animation (1.3)
 
 ### Phase 2: High Impact (30 minutes)
+
 - [ ] Alert component enhancements (2.1)
 - [ ] Student card hover effects (3.1)
 - [ ] Button loading state RTL fix (1.4)
 - [ ] Pagination button improvements (4.2)
 
 ### Phase 3: Medium Impact (30 minutes)
+
 - [ ] Button transition timing (4.1)
 - [ ] Chat input button shadow (4.3)
 - [ ] Delete button hover state (3.1)
 
 ### Phase 4: Mobile & Polish (30 minutes)
+
 - [ ] Mobile chat padding (5.1)
 - [ ] Mobile message width (5.2)
 - [ ] Mobile button sizing (5.4)
 
 ### Phase 5: Bonus (if time permits)
+
 - [ ] Login page design system upgrade (6.1)
 
 ---
@@ -803,6 +872,7 @@ For Frontend Agent, implement in this order:
 After implementation, verify:
 
 ### Visual Testing
+
 - [ ] Loading states appear smoothly across all pages
 - [ ] Error messages are clearly visible with Hebrew titles
 - [ ] Buttons have smooth hover/focus transitions
@@ -810,6 +880,7 @@ After implementation, verify:
 - [ ] Hebrew text is properly aligned RTL throughout
 
 ### Interaction Testing
+
 - [ ] Chat message sending shows "המערכת מקלידה..." indicator
 - [ ] Error alerts can be dismissed smoothly
 - [ ] All buttons respond to hover/focus/active states
@@ -817,6 +888,7 @@ After implementation, verify:
 - [ ] Delete confirmation works properly
 
 ### Responsive Testing
+
 - [ ] Test on mobile viewport (375px)
 - [ ] Test on tablet viewport (768px)
 - [ ] Test on desktop viewport (1280px)
@@ -824,6 +896,7 @@ After implementation, verify:
 - [ ] Student grid adapts properly
 
 ### Accessibility Testing
+
 - [ ] All buttons have proper Hebrew aria-labels
 - [ ] Focus states visible for keyboard navigation
 - [ ] Screen reader announcements work for loading states
@@ -836,26 +909,31 @@ After implementation, verify:
 Use these exact values from the design system:
 
 ### Colors
+
 - Primary: `primary-600` (buttons), `primary-500` (focus/icons)
 - Errors: `error-600` (buttons), `error-500` (borders)
 - Success: `success-600`
 - Neutral: `neutral-50` (background), `neutral-600` (text), `neutral-400` (icons)
 
 ### Spacing
+
 - Component gap: `gap-3` or `gap-4`
 - Section margin: `mb-6` or `mb-8`
 - Card padding: `p-6` (default)
 
 ### Shadows
+
 - Cards: `shadow` (default), `shadow-md` (elevated)
 - Hover: `hover:shadow-lg`
 - Buttons: `shadow-sm` to `shadow-md`
 
 ### Transitions
+
 - Duration: `duration-200` (fast), `duration-300` (normal)
 - Easing: `transition-all` (comprehensive), `transition-colors` (color only)
 
 ### Border Radius
+
 - Buttons/inputs: `rounded` (4px)
 - Cards: `rounded-lg` (8px)
 - Pills: `rounded-full`

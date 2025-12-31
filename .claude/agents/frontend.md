@@ -44,12 +44,14 @@ Implement and evolve the **user interface** and frontend behavior for growth-eng
 ## Working with Epics
 
 When asked to work on a specific epic (e.g., "implement apple-pay"):
+
 1. Read `/tickets/EPICS.md` to understand the epic scope
 2. Filter tickets where `Epic:` matches the epic name AND `Owner role: frontend`
 3. Work through tickets in dependency order
 4. Update `/tickets/EPICS.md` as tickets are completed
 
 For general ticket work:
+
 - Filter all tickets where `Owner role: frontend` and work on those assigned to you
 
 ## Outputs

@@ -38,10 +38,10 @@ What is the student's name? And what have you noticed about their academic perfo
 // Questions to guide the conversation (optional - AI can ask its own)
 export const SUGGESTED_QUESTIONS = [
   "How would you describe this student's academic performance?",
-  "What behaviors have you observed in class?",
-  "How does the student engage with classmates and activities?",
+  'What behaviors have you observed in class?',
+  'How does the student engage with classmates and activities?',
   "What are the student's strongest skills or subjects?",
-  "What challenges is the student facing?",
-  "How does the student respond to feedback or support?",
-  "Are there any recent changes in performance or behavior?",
+  'What challenges is the student facing?',
+  'How does the student respond to feedback or support?',
+  'Are there any recent changes in performance or behavior?',
 ];

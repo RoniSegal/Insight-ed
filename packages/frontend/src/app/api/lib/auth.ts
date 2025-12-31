@@ -22,21 +22,14 @@ export interface JWTPayload {
  * Validate hardcoded credentials
  */
 export function validateCredentials(email: string, password: string): boolean {
-  return (
-    email === TEACHER_ACCOUNT.email &&
-    password === TEACHER_ACCOUNT.password
-  );
+  return email === TEACHER_ACCOUNT.email && password === TEACHER_ACCOUNT.password;
 }
 
 /**
  * Generate JWT token with user info
  */
 export function generateToken(userId: string, email: string, role: string): string {
-  return jwt.sign(
-    { userId, email, role },
-    JWT_SECRET,
-    { expiresIn: '24h' }
-  );
+  return jwt.sign({ userId, email, role }, JWT_SECRET, { expiresIn: '24h' });
 }
 
 /**

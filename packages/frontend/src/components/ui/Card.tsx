@@ -25,8 +25,7 @@ const cardVariants = cva('bg-white rounded-lg', {
 });
 
 export interface CardProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof cardVariants> {
+  extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof cardVariants> {
   as?: 'div' | 'section' | 'article';
 }
 
@@ -43,11 +42,7 @@ export interface CardProps
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant, padding, as: Component = 'div', children, ...props }, ref) => {
     return (
-      <Component
-        ref={ref}
-        className={cn(cardVariants({ variant, padding }), className)}
-        {...props}
-      >
+      <Component ref={ref} className={cn(cardVariants({ variant, padding }), className)} {...props}>
         {children}
       </Component>
     );
@@ -66,11 +61,7 @@ export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
 export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
   ({ className, title, description, action, children, ...props }, ref) => {
     return (
-      <div
-        ref={ref}
-        className={cn('flex items-start justify-between mb-4', className)}
-        {...props}
-      >
+      <div ref={ref} className={cn('flex items-start justify-between mb-4', className)} {...props}>
         <div className="flex-1">
           {title && <h3 className="text-xl font-semibold text-neutral-800">{title}</h3>}
           {description && <p className="text-sm text-neutral-500 mt-1">{description}</p>}

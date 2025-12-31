@@ -16,10 +16,7 @@ export async function POST(request: NextRequest) {
     const { conversationId } = body;
 
     if (!conversationId) {
-      return NextResponse.json(
-        { error: 'Conversation ID required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Conversation ID required' }, { status: 400 });
     }
 
     // Get conversation from shared store
@@ -38,15 +35,10 @@ export async function POST(request: NextRequest) {
     // }
 
     // Get final analysis message (last assistant message)
-    const finalMessage = conversation.messages
-      .filter((m: any) => m.role === 'assistant')
-      .pop();
+    const finalMessage = conversation.messages.filter((m: any) => m.role === 'assistant').pop();
 
     if (!finalMessage) {
-      return NextResponse.json(
-        { error: 'No analysis generated yet' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'No analysis generated yet' }, { status: 400 });
     }
 
     // Create analysis result using the analysisStore

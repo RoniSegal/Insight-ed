@@ -12,6 +12,7 @@ npm install
 ```
 
 This will install:
+
 - `class-variance-authority` - Component variants
 - `clsx` - Conditional classes
 - `tailwind-merge` - Merge Tailwind classes
@@ -61,11 +62,7 @@ export default function MyPage() {
     <>
       <Header />
       <PageContainer>
-        <PageHeader
-          title="כותרת העמוד"
-          description="תיאור העמוד"
-          action={<Button>פעולה</Button>}
-        />
+        <PageHeader title="כותרת העמוד" description="תיאור העמוד" action={<Button>פעולה</Button>} />
 
         {/* Your content here */}
       </PageContainer>
@@ -115,24 +112,18 @@ export default function Dashboard() {
   return (
     <DashboardGrid columns={{ default: 1, md: 2, lg: 3 }}>
       <Card>
-        <div className="text-4xl font-bold text-primary-600 font-mono">
-          142
-        </div>
+        <div className="text-4xl font-bold text-primary-600 font-mono">142</div>
         <div className="text-neutral-600">תלמידים</div>
       </Card>
 
       <Card>
-        <div className="text-4xl font-bold text-success-600 font-mono">
-          87%
-        </div>
+        <div className="text-4xl font-bold text-success-600 font-mono">87%</div>
         <div className="text-neutral-600">שיעור השלמה</div>
       </Card>
 
       <Card variant="insight">
         <h3 className="font-semibold mb-2">תובנה חשובה</h3>
-        <p className="text-sm text-neutral-600">
-          השיפור במתמטיקה יוצא דופן השבוע!
-        </p>
+        <p className="text-sm text-neutral-600">השיפור במתמטיקה יוצא דופן השבוע!</p>
       </Card>
     </DashboardGrid>
   );
@@ -185,22 +176,27 @@ import { Alert } from '@/components/ui';
 
 ```tsx
 // Primary - Blue (main actions, links)
-primary-50 | primary-500 | primary-600 | primary-700
+(primary - 50) | (primary - 500) | (primary - 600) | (primary - 700);
 
 // Success - Green (positive, completed)
-success-50 | success-500 | success-600
+(success - 50) | (success - 500) | (success - 600);
 
 // Error - Red (errors, destructive actions)
-error-50 | error-500 | error-600
+(error - 50) | (error - 500) | (error - 600);
 
 // Warning - Orange (needs attention)
-warning-50 | warning-500 | warning-600
+(warning - 50) | (warning - 500) | (warning - 600);
 
 // Accent - Amber (highlights, insights)
-accent-50 | accent-500 | accent-600
+(accent - 50) | (accent - 500) | (accent - 600);
 
 // Neutral - Gray (text, backgrounds, borders)
-neutral-50 | neutral-100 | neutral-200 | neutral-500 | neutral-600 | neutral-700
+(neutral - 50) |
+  (neutral - 100) |
+  (neutral - 200) |
+  (neutral - 500) |
+  (neutral - 600) |
+  (neutral - 700);
 ```
 
 ## Typography Scale
@@ -220,24 +216,24 @@ text-5xl   // 48px - Display
 ## Font Families
 
 ```tsx
-font-sans     // Inter - UI text (default)
-font-hebrew   // Rubik - Hebrew text (auto-applied in RTL)
-font-mono     // JetBrains Mono - Numbers, data, code
+font - sans; // Inter - UI text (default)
+font - hebrew; // Rubik - Hebrew text (auto-applied in RTL)
+font - mono; // JetBrains Mono - Numbers, data, code
 ```
 
 ## Spacing (4px grid)
 
 ```tsx
-p-1   // 4px
-p-2   // 8px
-p-3   // 12px
-p-4   // 16px
-p-6   // 24px
-p-8   // 32px
-p-12  // 48px
+p - 1; // 4px
+p - 2; // 8px
+p - 3; // 12px
+p - 4; // 16px
+p - 6; // 24px
+p - 8; // 32px
+p - 12; // 48px
 
-gap-4  // 16px gap in flex/grid
-space-y-6  // 24px vertical spacing between children
+gap - 4; // 16px gap in flex/grid
+space - y - 6; // 24px vertical spacing between children
 ```
 
 ## Component Variants Quick Reference
@@ -293,6 +289,7 @@ All components automatically support RTL when `dir="rtl"` is set on `<html>`:
 ```
 
 Key RTL considerations:
+
 - Use `space-x-reverse` for horizontal spacing
 - Use `ms-*` (margin-start) instead of `ml-*` (margin-left)
 - Use `me-*` (margin-end) instead of `mr-*` (margin-right)
@@ -304,15 +301,11 @@ Key RTL considerations:
 import { cn, formatDate, getInitials } from '@/lib/utils';
 
 // Merge classes
-const classes = cn(
-  'base-class',
-  isActive && 'active-class',
-  className
-);
+const classes = cn('base-class', isActive && 'active-class', className);
 
 // Format dates
 formatDate(new Date(), 'short'); // "31/12/2025"
-formatDate(new Date(), 'long');  // "יום שלישי, 31 בדצמבר 2025"
+formatDate(new Date(), 'long'); // "יום שלישי, 31 בדצמבר 2025"
 
 // Get initials
 getInitials('דוד כהן'); // "דכ"
@@ -349,6 +342,7 @@ When building components:
 ## View the Design System
 
 Open `/design/prototypes/design-system-showcase.html` in your browser to see:
+
 - All colors with shades
 - Typography examples
 - All component variants

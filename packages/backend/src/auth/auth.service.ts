@@ -1,4 +1,9 @@
-import { Injectable, UnauthorizedException, ConflictException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  ConflictException,
+  BadRequestException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClient, User, UserRole } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
@@ -9,7 +14,7 @@ import { LoginDto } from './dto/login.dto';
 export class AuthService {
   constructor(
     private readonly prisma: PrismaClient,
-    private readonly jwtService: JwtService,
+    private readonly jwtService: JwtService
   ) {}
 
   /**
@@ -60,7 +65,9 @@ export class AuthService {
   /**
    * Login with email/password
    */
-  async login(loginDto: LoginDto): Promise<{ accessToken: string; refreshToken: string; user: Partial<User> }> {
+  async login(
+    loginDto: LoginDto
+  ): Promise<{ accessToken: string; refreshToken: string; user: Partial<User> }> {
     const { email, password } = loginDto;
 
     // Check failed login attempts (account lockout)

@@ -11,7 +11,6 @@ import { Alert } from '@/components/ui/Alert';
 import { LoadingContent } from '@/components/ui/Spinner';
 import { ApiClient } from '@/lib/api-client';
 
-
 export default function ChatPage() {
   return (
     <ProtectedRoute>
@@ -130,9 +129,7 @@ function ChatPageContent() {
     }
 
     if (messages.length < 6) {
-      const confirmed = confirm(
-        'נראה שהשיחה קצרה. האם אתה בטוח שברצונך לסיים את הניתוח?'
-      );
+      const confirmed = confirm('נראה שהשיחה קצרה. האם אתה בטוח שברצונך לסיים את הניתוח?');
       if (!confirmed) return;
     }
 

@@ -29,11 +29,7 @@ export const ChatMessage = memo(function ChatMessage({ message }: ChatMessagePro
         <div className="whitespace-pre-wrap break-words leading-relaxed">{message.content}</div>
 
         {/* Timestamp */}
-        <div
-          className={`text-xs mt-2 ${
-            isUser ? 'text-primary-100' : 'text-neutral-500'
-          }`}
-        >
+        <div className={`text-xs mt-2 ${isUser ? 'text-primary-100' : 'text-neutral-500'}`}>
           {new Date(message.timestamp).toLocaleTimeString('he-IL', {
             hour: '2-digit',
             minute: '2-digit',

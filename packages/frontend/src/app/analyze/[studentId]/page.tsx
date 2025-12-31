@@ -112,10 +112,7 @@ function ChatInterface({ studentId }: { studentId: string }) {
       <div className="min-h-screen flex items-center justify-center p-6">
         <Alert variant="error" title="שגיאה">
           לא נמצא תלמיד עם מזהה זה.{' '}
-          <button
-            onClick={handleBackToStudents}
-            className="underline font-semibold"
-          >
+          <button onClick={handleBackToStudents} className="underline font-semibold">
             חזרה לרשימת תלמידים
           </button>
         </Alert>
@@ -133,9 +130,7 @@ function ChatInterface({ studentId }: { studentId: string }) {
           <div className="max-w-7xl mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="text-right" dir="rtl">
-                <h1 className="text-2xl font-bold text-neutral-800">
-                  ניתוח הושלם בהצלחה!
-                </h1>
+                <h1 className="text-2xl font-bold text-neutral-800">ניתוח הושלם בהצלחה!</h1>
                 <p className="text-neutral-600 mt-1">
                   {studentFullName} - כיתה {student.grade}
                 </p>
@@ -183,7 +178,11 @@ function ChatInterface({ studentId }: { studentId: string }) {
       {error && (
         <div className="px-6 pt-4">
           <div className="max-w-4xl mx-auto">
-            <Alert variant="error" dismissible onDismiss={() => useChatStore.setState({ error: null })}>
+            <Alert
+              variant="error"
+              dismissible
+              onDismiss={() => useChatStore.setState({ error: null })}
+            >
               {error}
             </Alert>
           </div>

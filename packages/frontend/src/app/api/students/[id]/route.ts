@@ -16,10 +16,7 @@ import { studentsStore } from '@/app/api/lib/studentsStore';
  *   student: Student
  * }
  */
-export async function GET(
-  request: Request,
-  context: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
     // Await params in Next.js 15+
     const params = await context.params;
@@ -36,28 +33,19 @@ export async function GET(
     const token = authHeader.substring(7);
     const decoded = verifyToken(token);
     if (!decoded) {
-      return NextResponse.json(
-        { error: 'Invalid or expired token' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
     }
 
     // Get student
     const student = studentsStore.getById(params.id);
     if (!student) {
-      return NextResponse.json(
-        { error: 'Student not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Student not found' }, { status: 404 });
     }
 
     return NextResponse.json({ student });
   } catch (error) {
     console.error('Get student error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -81,10 +69,7 @@ export async function GET(
  *   student: Student
  * }
  */
-export async function PUT(
-  request: Request,
-  context: { params: Promise<{ id: string }> }
-) {
+export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
     // Await params in Next.js 15+
     const params = await context.params;
@@ -101,10 +86,7 @@ export async function PUT(
     const token = authHeader.substring(7);
     const decoded = verifyToken(token);
     if (!decoded) {
-      return NextResponse.json(
-        { error: 'Invalid or expired token' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
     }
 
     // Parse request body
@@ -121,16 +103,10 @@ export async function PUT(
 
     // Validate field values if provided
     if (name !== undefined && name.trim().length === 0) {
-      return NextResponse.json(
-        { error: 'Name cannot be empty' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Name cannot be empty' }, { status: 400 });
     }
     if (grade !== undefined && grade.trim().length === 0) {
-      return NextResponse.json(
-        { error: 'Grade cannot be empty' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Grade cannot be empty' }, { status: 400 });
     }
 
     // Prepare update data
@@ -142,19 +118,13 @@ export async function PUT(
     // Update student
     const student = studentsStore.update(params.id, updateData);
     if (!student) {
-      return NextResponse.json(
-        { error: 'Student not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Student not found' }, { status: 404 });
     }
 
     return NextResponse.json({ student });
   } catch (error) {
     console.error('Update student error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -171,10 +141,7 @@ export async function PUT(
  *   success: true
  * }
  */
-export async function DELETE(
-  request: Request,
-  context: { params: Promise<{ id: string }> }
-) {
+export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
     // Await params in Next.js 15+
     const params = await context.params;
@@ -191,27 +158,18 @@ export async function DELETE(
     const token = authHeader.substring(7);
     const decoded = verifyToken(token);
     if (!decoded) {
-      return NextResponse.json(
-        { error: 'Invalid or expired token' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
     }
 
     // Delete student
     const deleted = studentsStore.delete(params.id);
     if (!deleted) {
-      return NextResponse.json(
-        { error: 'Student not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Student not found' }, { status: 404 });
     }
 
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Delete student error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

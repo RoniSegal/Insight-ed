@@ -5,6 +5,7 @@ This directory contains the backend API implementation for AI-powered student an
 ## Overview
 
 The Analysis API enables teachers to conduct conversational student assessments powered by OpenAI's GPT-4. The system:
+
 1. Initializes conversations with educational psychology prompts
 2. Maintains conversation history across multiple teacher responses
 3. Uses GPT-4 to ask follow-up questions and analyze responses
@@ -13,6 +14,7 @@ The Analysis API enables teachers to conduct conversational student assessments 
 ## Architecture
 
 ### Implementation Approach
+
 For the 3-day MVP, we implemented the backend using **Next.js API routes** instead of a separate NestJS server. This simplifies deployment and development while maintaining all required functionality.
 
 ### Core Components
@@ -40,12 +42,14 @@ src/app/api/
 Initialize a new conversation for a student.
 
 **Headers:**
+
 ```
 Authorization: Bearer <JWT_TOKEN>
 Content-Type: application/json
 ```
 
 **Request Body:**
+
 ```json
 {
   "studentId": "uuid-string"
@@ -53,6 +57,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "conversationId": "uuid-string",
@@ -67,12 +72,14 @@ Content-Type: application/json
 Send a message in an active conversation.
 
 **Headers:**
+
 ```
 Authorization: Bearer <JWT_TOKEN>
 Content-Type: application/json
 ```
 
 **Request Body:**
+
 ```json
 {
   "conversationId": "uuid-string",
@@ -81,6 +88,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "message": "תודה! זה מאוד מועיל. כיצד דוד בדרך כלל מתקשר עם השיעורים?",
@@ -99,12 +107,14 @@ Content-Type: application/json
 Generate final comprehensive analysis (called when `isComplete: true`).
 
 **Headers:**
+
 ```
 Authorization: Bearer <JWT_TOKEN>
 Content-Type: application/json
 ```
 
 **Request Body:**
+
 ```json
 {
   "conversationId": "uuid-string"
@@ -112,6 +122,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "analysis": "# 📊 ניתוח למידה מקיף...",
@@ -225,6 +236,7 @@ const completion = await openai.chat.completions.create({
 ```
 
 Token usage is logged for cost tracking:
+
 ```
 OpenAI API Call: {
   model: 'gpt-4-turbo-preview',
@@ -238,7 +250,9 @@ OpenAI API Call: {
 ## Features
 
 ### Authentication
+
 All endpoints require JWT authentication:
+
 ```typescript
 const user = verifyToken(request);
 if (!user) {
@@ -247,7 +261,9 @@ if (!user) {
 ```
 
 ### Rate Limiting
+
 Simple in-memory rate limiter:
+
 - **Limit:** 20 requests per minute per user
 - **Window:** 60 seconds
 
@@ -260,6 +276,7 @@ if (!checkRateLimit(user.userId, 20, 60000)) {
 ### Error Handling
 
 Comprehensive error handling for:
+
 - **OpenAI Rate Limits (429):** "Too many requests to AI service..."
 - **Invalid API Key (401):** Falls back to template responses
 - **Network Errors:** Retries once, then returns error
@@ -291,6 +308,7 @@ cd packages/frontend
 ```
 
 Expected output:
+
 ```
 Testing Chat API at http://localhost:4001
 ================================
@@ -319,6 +337,7 @@ npm run test:openai
 ```
 
 Expected output with valid key:
+
 ```
 Testing OpenAI API connection...
 
@@ -359,18 +378,23 @@ curl -s -X POST http://localhost:4001/api/analysis/chat \
 ## Performance & Costs
 
 ### Token Usage
+
 Average conversation:
+
 - **Questions (6 exchanges):** ~1,200 tokens
 - **Final analysis:** ~800 tokens
 - **Total per student:** ~2,000 tokens
 
 ### Cost Estimates
+
 Using GPT-4 Turbo pricing:
+
 - **Input tokens:** $0.01 per 1K tokens
 - **Output tokens:** $0.03 per 1K tokens
 - **Average cost per analysis:** ~$0.05-0.10
 
 ### Response Times
+
 - **Start conversation:** ~50-200ms (prompt loading)
 - **Chat message with OpenAI:** ~2-5 seconds (GPT-4 API call)
 - **Chat message with templates:** ~10-50ms (fallback)
@@ -378,27 +402,34 @@ Using GPT-4 Turbo pricing:
 ## Security Considerations
 
 ### 1. API Key Protection
+
 - Never commit `.env` or `.env.local` to git
 - Use `.env.example` for templates only
 - Rotate API keys regularly in production
 
 ### 2. Prompt Injection Prevention
+
 User messages are sanitized and isolated from system prompts:
+
 ```typescript
 // User input never modifies system prompt
 conversation.messages.push({
   role: 'user',
-  content: message.trim() // Sanitized input
+  content: message.trim(), // Sanitized input
 });
 ```
 
 ### 3. Rate Limiting
+
 Prevents abuse and manages costs:
+
 - 20 requests per minute per user
 - Could be enhanced with Redis in production
 
 ### 4. Authentication
+
 All endpoints require valid JWT tokens:
+
 ```typescript
 const user = verifyToken(request);
 ```
@@ -408,6 +439,7 @@ const user = verifyToken(request);
 ### Issue: "OpenAI API key not configured"
 
 **Solution:** Add valid API key to `.env.local`:
+
 ```bash
 OPENAI_API_KEY=sk-proj-YOUR-REAL-KEY-HERE
 ```
@@ -417,6 +449,7 @@ OPENAI_API_KEY=sk-proj-YOUR-REAL-KEY-HERE
 **Cause:** OpenAI free tier rate limits or internal rate limiter
 
 **Solution:**
+
 1. Wait 60 seconds for internal rate limit to reset
 2. Upgrade OpenAI plan if hitting their limits
 3. Reduce request frequency
@@ -426,6 +459,7 @@ OPENAI_API_KEY=sk-proj-YOUR-REAL-KEY-HERE
 **Cause:** OpenAI API key not configured or invalid
 
 **Solution:**
+
 1. Check API key starts with `sk-proj-` or `sk-`
 2. Verify key is valid on OpenAI platform
 3. Check `.env.local` is loaded (restart dev server)
@@ -435,6 +469,7 @@ OPENAI_API_KEY=sk-proj-YOUR-REAL-KEY-HERE
 **Cause:** Using in-memory store; conversation lost on server restart
 
 **Solution:**
+
 1. Start new conversation after server restart
 2. For production: Migrate to database storage
 
@@ -460,6 +495,7 @@ model Conversation {
 ### 2. Redis Rate Limiting
 
 Replace in-memory Map with Redis:
+
 ```typescript
 import { Redis } from 'ioredis';
 const redis = new Redis(process.env.REDIS_URL);
@@ -477,6 +513,7 @@ async function checkRateLimit(userId: string) {
 ### 3. Enhanced Error Monitoring
 
 Add Sentry or similar:
+
 ```typescript
 import * as Sentry from '@sentry/nextjs';
 
@@ -498,6 +535,7 @@ try {
 ## Support & Contact
 
 For issues or questions:
+
 1. Check this README
 2. Review `/context/student-analysis-prompt.md`
 3. Check ticket `/tickets/GE-057-openai-integration-backend.md`

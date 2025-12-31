@@ -23,12 +23,15 @@ export async function POST(request: NextRequest) {
     // Forward the Authorization header to authenticate the internal API call
     const authHeader = request.headers.get('authorization');
     if (!authHeader) {
-      return NextResponse.json({ error: 'Unauthorized - Missing authorization header' }, { status: 401 });
+      return NextResponse.json(
+        { error: 'Unauthorized - Missing authorization header' },
+        { status: 401 }
+      );
     }
 
     const studentsResponse = await fetch(`${request.nextUrl.origin}/api/students/${studentId}`, {
       headers: {
-        'Authorization': authHeader,
+        Authorization: authHeader,
       },
     });
 

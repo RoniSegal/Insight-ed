@@ -59,13 +59,8 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({ analysis, studen
             </Alert>
           )}
 
-          <div
-            className="prose prose-neutral max-w-none text-right"
-            style={{ direction: 'rtl' }}
-          >
-            <div className="whitespace-pre-wrap font-sans leading-relaxed">
-              {analysis}
-            </div>
+          <div className="prose prose-neutral max-w-none text-right" style={{ direction: 'rtl' }}>
+            <div className="whitespace-pre-wrap font-sans leading-relaxed">{analysis}</div>
           </div>
         </CardContent>
       </Card>

@@ -12,7 +12,9 @@ import { UserRole } from '@growth-engine/shared';
  * - Seeds test database with fixture data
  */
 
-const DATABASE_URL = process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5434/growth_engine?schema=public';
+const DATABASE_URL =
+  process.env.DATABASE_URL ||
+  'postgresql://postgres:postgres@localhost:5434/growth_engine?schema=public';
 const BACKEND_URL = 'http://localhost:4000/api/v1';
 
 // Store backend process reference for cleanup

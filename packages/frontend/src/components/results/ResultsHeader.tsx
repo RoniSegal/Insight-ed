@@ -29,9 +29,7 @@ export const ResultsHeader: React.FC<ResultsHeaderProps> = ({
     <div className={cn('mb-8', className)}>
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-neutral-900 mb-2">
-            ניתוח למידה - {studentName}
-          </h1>
+          <h1 className="text-3xl font-bold text-neutral-900 mb-2">ניתוח למידה - {studentName}</h1>
           <p className="text-neutral-600 flex items-center gap-2">
             <svg
               className="h-5 w-5"

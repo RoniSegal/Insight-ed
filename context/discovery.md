@@ -15,6 +15,7 @@
 **Current State:** Greenfield project - no application code exists yet
 
 **Planned Structure:** Monorepo with packages architecture
+
 ```
 growth-engine/
 ├── packages/
@@ -51,15 +52,18 @@ growth-engine/
 **Pre-Implementation Analysis:**
 
 #### 1. Code Organization and Architecture
+
 **Status:** ✅ Well-planned, not yet implemented
 
 **Strengths:**
+
 - Clear separation of concerns with monorepo packages structure
 - Next.js and NestJS both promote modular, scalable architectures
 - Multi-agent R&D OS framework ensures systematic development approach
 - Epic-based workflow will enable organized feature development
 
 **Recommendations Before Starting:**
+
 - Establish coding standards and style guide (ESLint, Prettier configs)
 - Define folder structure conventions for both frontend and backend
 - Create architectural decision records (ADRs) for key decisions
@@ -68,9 +72,11 @@ growth-engine/
 - Plan domain-driven design (DDD) structure for backend (modules per domain: auth, students, analysis, etc.)
 
 #### 2. Testing Coverage
+
 **Status:** ⚠️ No tests exist - testing strategy needed
 
 **Critical Setup Tasks:**
+
 - Configure Jest for unit and integration testing (both frontend and backend)
 - Set up Playwright or Cypress for E2E testing
 - Define testing standards:
@@ -83,6 +89,7 @@ growth-engine/
 - Implement pre-commit hooks to run tests locally
 
 **Testing Priorities:**
+
 1. **Critical:** AI analysis workflow (ChatGPT integration with proper mocking)
 2. **Critical:** Authentication and authorization (security-sensitive)
 3. **High:** Student data CRUD operations (data integrity)
@@ -91,15 +98,18 @@ growth-engine/
 6. **Medium:** Search and filtering
 
 #### 3. Documentation Quality
+
 **Status:** ✅ Excellent planning documentation, needs code documentation plan
 
 **Existing Documentation:**
+
 - Comprehensive multi-agent R&D OS framework (CLAUDE.md)
 - Agent role definitions (.claude/agents/)
 - Context files (client, requirements, discovery, decisions)
 - PRD and Architecture templates ready to be populated
 
 **Gaps to Address:**
+
 - API documentation strategy (consider Swagger/OpenAPI for NestJS)
 - Component documentation for React components (Storybook?)
 - Database schema documentation (automatic generation from ORM)
@@ -108,6 +118,7 @@ growth-engine/
 - Code commenting standards (when to comment, JSDoc format)
 
 **Recommendations:**
+
 - Use JSDoc comments for public APIs and complex functions
 - Generate API documentation automatically from code (NestJS Swagger)
 - Document environment variables and configuration in README
@@ -115,9 +126,11 @@ growth-engine/
 - Maintain CHANGELOG.md for release notes
 
 #### 4. Technical Debt Areas
+
 **Status:** ✅ No debt yet - opportunity to start clean
 
 **Proactive Debt Prevention:**
+
 - Avoid premature optimization - focus on MVP features first
 - Don't over-engineer abstractions until patterns emerge (Rule of Three)
 - Keep dependencies up to date from the start (Renovate bot, Dependabot)
@@ -126,6 +139,7 @@ growth-engine/
 - Regular architecture reviews (monthly or quarterly)
 
 **Common Pitfalls to Avoid:**
+
 - Tight coupling between frontend and backend (use API contracts, TypeScript shared types)
 - Monolithic backend modules (keep NestJS modules focused and bounded)
 - Insufficient error handling (implement global error handlers early)
@@ -135,9 +149,11 @@ growth-engine/
 - No API versioning strategy (plan for breaking changes)
 
 #### 5. Performance Bottlenecks
+
 **Status:** 🔍 No code yet - areas to monitor from the start
 
 **Potential Performance Concerns:**
+
 - **ChatGPT API latency:** Each analysis requires multiple API calls (3-5 seconds per exchange)
   - Mitigation: Implement streaming responses, loading states, progress indicators
   - Consider caching repeated prompts or responses
@@ -168,6 +184,7 @@ growth-engine/
   - File size limits and validation
 
 **Performance Monitoring Plan:**
+
 - Set up APM (Application Performance Monitoring) from day one
 - Track Core Web Vitals for frontend (LCP, FID, CLS)
 - Monitor API response times (p50, p95, p99)
@@ -180,6 +197,7 @@ growth-engine/
 ### Target Users
 
 **Primary Users:**
+
 1. **Classroom Teachers** (K-12)
    - Age range: 25-60
    - Tech proficiency: Varies (basic to advanced)
@@ -197,6 +215,7 @@ growth-engine/
 ### User Needs & Pain Points
 
 **Teacher Pain Points (from education research and industry insights):**
+
 1. **Time scarcity:** Teachers spend 50+ hours/week, limited time for individual student assessment
 2. **Assessment overload:** Required to conduct multiple assessments but struggle to synthesize insights
 3. **Differentiation challenges:** Know they should personalize instruction but lack data to inform decisions
@@ -207,6 +226,7 @@ growth-engine/
 8. **Parent communication:** Difficult to provide specific, evidence-based feedback to parents
 
 **Principal Pain Points:**
+
 1. **Limited visibility:** Hard to get comprehensive view of student needs across all classrooms
 2. **Resource allocation:** Difficult to identify where to focus intervention resources
 3. **Teacher support:** Can't effectively support teachers without understanding their class needs
@@ -215,6 +235,7 @@ growth-engine/
 6. **Data silos:** Student data scattered across multiple systems and teacher notebooks
 
 **User Goals:**
+
 - **Teachers:** Understand each student's unique needs in < 10 minutes per student
 - **Teachers:** Generate actionable intervention strategies based on their observations
 - **Teachers:** Track student progress over time to validate intervention effectiveness
@@ -225,6 +246,7 @@ growth-engine/
 ### User Journeys
 
 **Teacher Journey: Conducting Student Analysis**
+
 1. **Login** → Single sign-on with Google/Microsoft account (familiar, fast)
 2. **Dashboard** → See all students with completion status, identify who needs analysis
 3. **Select Student** → Choose student from class roster (searchable, filterable)
@@ -244,6 +266,7 @@ growth-engine/
 7. **Follow-up:** Repeat analysis periodically (quarterly/semester) to track progress
 
 **Principal Journey: Monitoring School-Wide Trends**
+
 1. **Login** → Secure authentication
 2. **Executive Dashboard:**
    - Key metrics: total students, analysis completion rate, flagged students
@@ -305,6 +328,7 @@ growth-engine/
    - Positioning: Growth Engine serves all students, not just specific populations
 
 **Competitive Advantages:**
+
 - AI-powered analysis reduces teacher time from hours to minutes
 - Conversational interface feels natural (not another form to fill out)
 - Captures tacit knowledge that teachers have but don't document
@@ -313,6 +337,7 @@ growth-engine/
 - Fast onboarding (< 30 minutes) vs. multi-day training for competitors
 
 **Market Gaps Growth Engine Fills:**
+
 - No competitor combines teacher observation + AI analysis + actionable recommendations
 - Most tools are either purely data (tests) or purely manual (teacher notes)
 - Principals lack tools for school-wide insights based on teacher observations
@@ -325,18 +350,21 @@ growth-engine/
 **Identified Constraints from Discovery:**
 
 ### Regulatory Compliance Constraints
+
 - **FERPA compliance:** All student data handling must meet federal privacy requirements
 - **COPPA compliance:** If any direct student interaction added, must comply with under-13 rules
 - **State-specific laws:** Varies by state (California CCPA, New York Ed Law 2-d, etc.)
 - **Data residency:** Some districts require data stored within US or specific regions
 
 ### Integration Constraints
+
 - **School IT security:** Many schools have strict firewall rules, limited ports, VPN requirements
 - **SSO providers:** Must support Google Workspace and Microsoft 365 (most common in K-12)
 - **Legacy systems:** Some schools still use outdated Student Information Systems (difficult to integrate)
 - **Internet bandwidth:** Many schools have limited bandwidth (rural areas especially)
 
 ### Cost Constraints
+
 - **OpenAI API costs:** Analysis requires multiple API calls per student ($0.01-0.05 per analysis estimated)
   - At scale (10,000 analyses/month): $100-500/month in API costs alone
   - Must build cost controls and quotas to prevent runaway spending
@@ -344,12 +372,14 @@ growth-engine/
 - **School budgets:** Limited EdTech budgets, need competitive pricing (<$10/teacher/month ideal)
 
 ### Performance Constraints
+
 - **Analysis latency:** Teachers won't wait >30 seconds for AI responses (user expectations)
 - **Concurrent analysis:** Back-to-school rush means 100+ teachers using system simultaneously
 - **Large class rosters:** Some teachers have 150+ students (high school), need efficient processing
 - **Low-bandwidth networks:** System must work on slow connections (3G in rural schools)
 
 ### Usability Constraints
+
 - **Limited training time:** Teachers won't attend multi-hour training sessions
 - **Varying tech literacy:** Must be intuitive for less tech-savvy educators
 - **Mobile access:** Teachers often use personal phones/tablets (need responsive design)
@@ -360,91 +390,109 @@ growth-engine/
 **Critical Decisions for Architecture Phase:**
 
 ### 1. Cloud Provider Selection
+
 **Question:** AWS, Google Cloud Platform, or Microsoft Azure?
 **Factors:**
+
 - Cost structure and pricing model
 - Education-specific programs and discounts (Google for Education, AWS Educate)
 - Managed service availability (PostgreSQL, Redis, container orchestration)
 - Compliance certifications (FERPA-ready infrastructure)
 - Team expertise and learning curve
-**Timeline:** Decide by end of Architect Phase (before infrastructure setup)
+  **Timeline:** Decide by end of Architect Phase (before infrastructure setup)
 
 ### 2. Database ORM Choice
+
 **Question:** TypeORM, Prisma, or Sequelize?
 **Factors:**
+
 - TypeScript support and type safety
 - Migration strategy and tooling
 - Performance characteristics
 - NestJS integration quality
 - Team familiarity
-**Timeline:** Decide during Architect Phase (impacts data model design)
+  **Timeline:** Decide during Architect Phase (impacts data model design)
 
 ### 3. State Management Strategy (Frontend)
+
 **Question:** Zustand, Redux Toolkit, React Context, or Jotai?
 **Factors:**
+
 - Complexity vs. simplicity tradeoff
 - Bundle size impact
 - Developer experience
 - Server state vs. client state handling
 - React Server Components compatibility (Next.js 14+)
-**Timeline:** Decide during Frontend Phase kickoff
+  **Timeline:** Decide during Frontend Phase kickoff
 
 ### 4. Email Service Provider
+
 **Question:** SendGrid, Amazon SES, Mailgun, or Postmark?
 **Factors:**
+
 - Deliverability reputation
 - Cost structure (transactional email pricing)
 - Template management features
 - Analytics and tracking
 - API quality and documentation
-**Timeline:** Decide before authentication implementation (password reset emails)
+  **Timeline:** Decide before authentication implementation (password reset emails)
 
 ### 5. OpenAI API Cost Management Strategy
+
 **Question:** How to control and predict AI costs?
 **Options:**
+
 - Per-school quotas (e.g., 100 analyses/month/school)
 - Rate limiting per teacher
 - Tiered pricing (basic vs. premium analysis depth)
 - Prompt optimization to reduce token usage
 - Caching common responses
-**Timeline:** Decide during Architect Phase (impacts pricing model and UX)
+  **Timeline:** Decide during Architect Phase (impacts pricing model and UX)
 
 ### 6. Monorepo Tool
+
 **Question:** npm workspaces, pnpm workspaces, Yarn workspaces, or Turborepo?
 **Factors:**
+
 - Build performance (caching, parallelization)
 - Dependency management efficiency
 - CI/CD integration
 - Team familiarity
 - Active maintenance and community
-**Timeline:** Decide immediately (project setup Phase 1)
+  **Timeline:** Decide immediately (project setup Phase 1)
 
 ### 7. Authentication Strategy
+
 **Question:** Self-managed auth or Auth-as-a-Service (Auth0, Clerk, AWS Cognito)?
 **Factors:**
+
 - Control vs. convenience tradeoff
 - Cost implications (per-user pricing vs. infrastructure)
 - SSO integration complexity
 - Security expertise required
 - Vendor lock-in concerns
-**Timeline:** Decide during Architect Phase (critical for security)
+  **Timeline:** Decide during Architect Phase (critical for security)
 
 ### 8. Analytics and Monitoring Stack
+
 **Question:** Which APM and monitoring tools?
 **Options:**
+
 - APM: New Relic, Datadog, Sentry, AWS X-Ray
 - Logging: CloudWatch, Datadog Logs, Logtail
 - Frontend: Vercel Analytics, Google Analytics, PostHog
-**Timeline:** Decide before MVP deployment (need monitoring from day one)
+  **Timeline:** Decide before MVP deployment (need monitoring from day one)
 
 ## Risks & Mitigations
 
 ### Risk 1: OpenAI API Dependency and Costs
+
 **Impact:** High
 **Probability:** Medium
 **Description:** Core product depends on third-party AI service; costs could spiral or service could be unavailable
 
 **Mitigations:**
+
 - Implement rate limiting and quotas per school/teacher
 - Build fallback queue system for API outages (retry later)
 - Optimize prompts to minimize token usage
@@ -454,11 +502,13 @@ growth-engine/
 - Build cost into pricing model with adequate margin
 
 ### Risk 2: FERPA/Privacy Compliance Violation
+
 **Impact:** Critical (legal liability, loss of customer trust)
 **Probability:** Low (with proper precautions)
 **Description:** Mishandling student data could violate FERPA and result in legal consequences
 
 **Mitigations:**
+
 - Engage legal counsel specializing in education law
 - Conduct privacy impact assessment (PIA) before launch
 - Implement data protection by design (encryption, access controls, audit logs)
@@ -469,11 +519,13 @@ growth-engine/
 - Clear privacy policy and terms of service reviewed by attorney
 
 ### Risk 3: Low Teacher Adoption
+
 **Impact:** High (product fails without users)
 **Probability:** Medium
 **Description:** Teachers may resist new tool due to change fatigue or perceived complexity
 
 **Mitigations:**
+
 - Extremely simple onboarding (<30 minutes)
 - Demonstrate immediate value in pilot (time savings, actionable insights)
 - Integrate into existing workflow (not another system to check)
@@ -484,11 +536,13 @@ growth-engine/
 - Avoid complex features in MVP - start simple
 
 ### Risk 4: ChatGPT Analysis Quality Issues
+
 **Impact:** High (inaccurate recommendations damage credibility)
 **Probability:** Medium
 **Description:** AI may generate inappropriate, inaccurate, or biased recommendations
 
 **Mitigations:**
+
 - Extensive prompt engineering and testing
 - Human-in-the-loop: teachers review and approve all analyses
 - Bias detection and mitigation in prompts
@@ -500,11 +554,13 @@ growth-engine/
 - Transparency: clearly label AI-generated content
 
 ### Risk 5: Database Performance Degradation at Scale
+
 **Impact:** Medium (poor user experience, increased costs)
 **Probability:** Medium
 **Description:** As student data grows to 100k+, queries may slow down significantly
 
 **Mitigations:**
+
 - Proper database indexing from day one
 - Query optimization and EXPLAIN ANALYZE reviews
 - Implement caching layer (Redis) early
@@ -515,11 +571,13 @@ growth-engine/
 - Pagination for all large result sets
 
 ### Risk 6: Scope Creep and Feature Bloat
+
 **Impact:** Medium (delayed launch, over-engineered MVP)
 **Probability:** High (common in software projects)
 **Description:** Stakeholders request additional features, delaying MVP and increasing complexity
 
 **Mitigations:**
+
 - Clear PRD with explicit "out of scope" section
 - Product owner empowered to say no
 - Ruthless prioritization (MoSCoW method)
@@ -532,6 +590,7 @@ growth-engine/
 ## Next Steps
 
 **Immediate Actions (Week 1):**
+
 - [x] Complete discovery documentation (this file)
 - [ ] Populate PRD.md with comprehensive product requirements
 - [ ] Populate ARCHITECTURE.md with system design decisions
@@ -540,6 +599,7 @@ growth-engine/
 - [ ] Schedule architecture review meeting with technical lead
 
 **Phase 1 - Project Setup (Weeks 1-2):**
+
 - [ ] Initialize monorepo structure with chosen tool
 - [ ] Set up base Next.js and NestJS applications
 - [ ] Configure development environment (Docker Compose)
@@ -550,6 +610,7 @@ growth-engine/
 - [ ] Set up initial logging and error tracking (Sentry)
 
 **Phase 2 - Foundation Development (Weeks 3-4):**
+
 - [ ] Implement authentication system (email/password + SSO)
 - [ ] Create user management (CRUD for teachers, principals, admins)
 - [ ] Build student management (CRUD, CSV import)
@@ -558,6 +619,7 @@ growth-engine/
 - [ ] Implement role-based access control (RBAC)
 
 **Phase 3 - Core Features (Weeks 5-8):**
+
 - [ ] Build AI analysis workflow (ChatGPT conversation)
 - [ ] Create analysis results display and editing
 - [ ] Implement teacher dashboard
@@ -566,6 +628,7 @@ growth-engine/
 - [ ] Implement search and filtering functionality
 
 **Phase 4 - Polish & Pilot Prep (Weeks 9-10):**
+
 - [ ] Security audit and FERPA compliance review
 - [ ] Performance testing and optimization
 - [ ] E2E test coverage for critical flows
@@ -575,6 +638,7 @@ growth-engine/
 - [ ] Training materials and onboarding flow
 
 **Phase 5 - Pilot Launch (Week 11+):**
+
 - [ ] Deploy to 3 pilot schools
 - [ ] Conduct onboarding sessions with pilot teachers
 - [ ] Provide intensive support (daily check-ins first week)

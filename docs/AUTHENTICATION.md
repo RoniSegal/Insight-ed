@@ -81,12 +81,12 @@ Growth Engine supports **two authentication methods**:
 
 ### Authentication Flow Selection
 
-| User Scenario | Authentication Method | Notes |
-|--------------|----------------------|-------|
-| School with Google Workspace | Google SSO (preferred) | Seamless login, no password to remember |
-| School with Microsoft 365 | Microsoft SSO (preferred) | Seamless login, leverages school identity |
-| Independent teacher or small school | Email/Password | Self-registration, email verification |
-| District admin (central IT) | Email/Password + MFA (future) | Higher security requirements |
+| User Scenario                       | Authentication Method         | Notes                                     |
+| ----------------------------------- | ----------------------------- | ----------------------------------------- |
+| School with Google Workspace        | Google SSO (preferred)        | Seamless login, no password to remember   |
+| School with Microsoft 365           | Microsoft SSO (preferred)     | Seamless login, leverages school identity |
+| Independent teacher or small school | Email/Password                | Self-registration, email verification     |
+| District admin (central IT)         | Email/Password + MFA (future) | Higher security requirements              |
 
 ---
 
@@ -137,13 +137,13 @@ Growth Engine supports **two authentication methods**:
 
 #### Error Scenarios
 
-| Scenario | HTTP Status | Error Response |
-|----------|------------|----------------|
-| Invalid email | 401 Unauthorized | `{ error: "Invalid credentials" }` |
-| Invalid password | 401 Unauthorized | `{ error: "Invalid credentials" }` (same message to prevent email enumeration) |
-| Account not verified | 403 Forbidden | `{ error: "Please verify your email" }` |
-| Account inactive | 403 Forbidden | `{ error: "Account has been deactivated" }` |
-| Too many failed attempts | 429 Too Many Requests | `{ error: "Account temporarily locked. Try again in 15 minutes" }` |
+| Scenario                 | HTTP Status           | Error Response                                                                 |
+| ------------------------ | --------------------- | ------------------------------------------------------------------------------ |
+| Invalid email            | 401 Unauthorized      | `{ error: "Invalid credentials" }`                                             |
+| Invalid password         | 401 Unauthorized      | `{ error: "Invalid credentials" }` (same message to prevent email enumeration) |
+| Account not verified     | 403 Forbidden         | `{ error: "Please verify your email" }`                                        |
+| Account inactive         | 403 Forbidden         | `{ error: "Account has been deactivated" }`                                    |
+| Too many failed attempts | 429 Too Many Requests | `{ error: "Account temporarily locked. Try again in 15 minutes" }`             |
 
 ### 2. Google SSO Authentication Flow
 
@@ -350,74 +350,79 @@ Growth Engine supports **two authentication methods**:
 
 ### Role Definitions
 
-| Role | Description | Scope | Typical Users |
-|------|-------------|-------|---------------|
-| **TEACHER** | Standard teacher account | Own students and classes only | Classroom teachers, tutors |
-| **PRINCIPAL** | School administrator | All students/classes in their school | Principals, vice principals |
-| **ADMIN** | District/system administrator | All schools in district (or all system data) | District IT, platform admins |
+| Role          | Description                   | Scope                                        | Typical Users                |
+| ------------- | ----------------------------- | -------------------------------------------- | ---------------------------- |
+| **TEACHER**   | Standard teacher account      | Own students and classes only                | Classroom teachers, tutors   |
+| **PRINCIPAL** | School administrator          | All students/classes in their school         | Principals, vice principals  |
+| **ADMIN**     | District/system administrator | All schools in district (or all system data) | District IT, platform admins |
 
 ### Permission Matrix
 
-| Resource | Action | TEACHER | PRINCIPAL | ADMIN |
-|----------|--------|---------|-----------|-------|
-| **Students** | | | | |
-| View own students | ✅ | ✅ | ✅ | ✅ |
-| View school students | ❌ | ✅ | ✅ | ✅ |
-| View all students | ❌ | ❌ | ❌ | ✅ |
-| Create student | ✅ | ✅ | ✅ | ✅ |
-| Edit own student | ✅ | ✅ | ✅ | ✅ |
-| Edit any student (same school) | ❌ | ✅ | ✅ | ✅ |
-| Delete student | ✅ (soft) | ✅ | ✅ | ✅ |
-| **Analyses** | | | | |
-| View own analyses | ✅ | ✅ | ✅ | ✅ |
-| View school analyses | ❌ | ✅ | ✅ | ✅ |
-| Create analysis (own students) | ✅ | ✅ | ✅ | ✅ |
-| Edit own analysis | ✅ | ✅ | ✅ | ✅ |
-| Delete own analysis | ✅ | ✅ | ✅ | ✅ |
-| Export analysis | ✅ | ✅ | ✅ | ✅ |
-| **Classes** | | | | |
-| View own classes | ✅ | ✅ | ✅ | ✅ |
-| View school classes | ❌ | ✅ | ✅ | ✅ |
-| Create class | ✅ | ✅ | ✅ | ✅ |
-| Edit own class | ✅ | ✅ | ✅ | ✅ |
-| Delete own class | ✅ | ✅ | ✅ | ✅ |
-| **Users** | | | | |
-| View own profile | ✅ | ✅ | ✅ | ✅ |
-| Edit own profile | ✅ | ✅ | ✅ | ✅ |
-| View school users | ❌ | ✅ | ✅ | ✅ |
-| Create user (same school) | ❌ | ✅ | ✅ | ✅ |
-| Edit user (same school) | ❌ | ✅ | ✅ | ✅ |
-| Deactivate user | ❌ | ✅ | ✅ | ✅ |
-| **Dashboard** | | | | |
-| Teacher dashboard | ✅ | ✅ | ✅ | ✅ |
-| Principal dashboard | ❌ | ✅ | ✅ | ✅ |
-| Admin dashboard | ❌ | ❌ | ❌ | ✅ |
-| School-wide analytics | ❌ | ✅ | ✅ | ✅ |
-| District-wide analytics | ❌ | ❌ | ❌ | ✅ |
+| Resource                       | Action    | TEACHER | PRINCIPAL | ADMIN |
+| ------------------------------ | --------- | ------- | --------- | ----- |
+| **Students**                   |           |         |           |       |
+| View own students              | ✅        | ✅      | ✅        | ✅    |
+| View school students           | ❌        | ✅      | ✅        | ✅    |
+| View all students              | ❌        | ❌      | ❌        | ✅    |
+| Create student                 | ✅        | ✅      | ✅        | ✅    |
+| Edit own student               | ✅        | ✅      | ✅        | ✅    |
+| Edit any student (same school) | ❌        | ✅      | ✅        | ✅    |
+| Delete student                 | ✅ (soft) | ✅      | ✅        | ✅    |
+| **Analyses**                   |           |         |           |       |
+| View own analyses              | ✅        | ✅      | ✅        | ✅    |
+| View school analyses           | ❌        | ✅      | ✅        | ✅    |
+| Create analysis (own students) | ✅        | ✅      | ✅        | ✅    |
+| Edit own analysis              | ✅        | ✅      | ✅        | ✅    |
+| Delete own analysis            | ✅        | ✅      | ✅        | ✅    |
+| Export analysis                | ✅        | ✅      | ✅        | ✅    |
+| **Classes**                    |           |         |           |       |
+| View own classes               | ✅        | ✅      | ✅        | ✅    |
+| View school classes            | ❌        | ✅      | ✅        | ✅    |
+| Create class                   | ✅        | ✅      | ✅        | ✅    |
+| Edit own class                 | ✅        | ✅      | ✅        | ✅    |
+| Delete own class               | ✅        | ✅      | ✅        | ✅    |
+| **Users**                      |           |         |           |       |
+| View own profile               | ✅        | ✅      | ✅        | ✅    |
+| Edit own profile               | ✅        | ✅      | ✅        | ✅    |
+| View school users              | ❌        | ✅      | ✅        | ✅    |
+| Create user (same school)      | ❌        | ✅      | ✅        | ✅    |
+| Edit user (same school)        | ❌        | ✅      | ✅        | ✅    |
+| Deactivate user                | ❌        | ✅      | ✅        | ✅    |
+| **Dashboard**                  |           |         |           |       |
+| Teacher dashboard              | ✅        | ✅      | ✅        | ✅    |
+| Principal dashboard            | ❌        | ✅      | ✅        | ✅    |
+| Admin dashboard                | ❌        | ❌      | ❌        | ✅    |
+| School-wide analytics          | ❌        | ✅      | ✅        | ✅    |
+| District-wide analytics        | ❌        | ❌      | ❌        | ✅    |
 
 ### Resource Ownership Rules
 
 #### Teachers
+
 - **Own Students**: Students in classes where teacher is the owner
 - **Own Classes**: Classes where `teacher_id = current_user_id`
 - **Own Analyses**: Analyses where `created_by_user_id = current_user_id`
 
 **Data Isolation (FERPA Compliance):**
+
 - Teachers CANNOT see students from other teachers' classes
 - Teachers CANNOT see other teachers' analyses
 - Exception: If student is in multiple classes (co-teaching), both teachers can see student
 
 #### Principals
+
 - **School Students**: All students where `student.schoolId = principal.schoolId`
 - **School Classes**: All classes where `class.schoolId = principal.schoolId`
 - **School Analyses**: All analyses for students in their school
 - **School Users**: All teachers in their school
 
 **Data Isolation:**
+
 - Principals CANNOT see students from other schools
 - Principals CAN see all analyses for their school (oversight responsibility)
 
 #### Admins
+
 - **All Access**: No restrictions (district or system-wide)
 - Used for: District reporting, platform maintenance, support
 
@@ -507,12 +512,14 @@ async findStudents(currentUser: User, filters: StudentFilterDto) {
 ### 1. Password Security
 
 **Requirements:**
+
 - Minimum 8 characters
 - Must contain: uppercase, lowercase, number
 - Optional: special character (recommended but not enforced)
 - Maximum 72 characters (bcrypt limit)
 
 **Password Hashing:**
+
 - **Algorithm**: bcrypt
 - **Salt Rounds**: 12 (balances security and performance)
 - **Storage**: Store hash only, never plaintext
@@ -529,6 +536,7 @@ const isValid = await bcrypt.compare(password, user.passwordHash);
 ```
 
 **Password Reset Tokens:**
+
 - **Generation**: Crypto-random 32-byte token
 - **Storage**: Hashed in database (SHA-256)
 - **Expiration**: 1 hour
@@ -537,6 +545,7 @@ const isValid = await bcrypt.compare(password, user.passwordHash);
 ### 2. JWT Token Security
 
 **Access Token:**
+
 - **Purpose**: Short-lived token for API authentication
 - **Expiration**: 15 minutes
 - **Claims**:
@@ -554,6 +563,7 @@ const isValid = await bcrypt.compare(password, user.passwordHash);
 - **Storage**: Client-side (localStorage or memory)
 
 **Refresh Token:**
+
 - **Purpose**: Long-lived token to obtain new access tokens
 - **Expiration**: 7 days
 - **Claims**:
@@ -570,6 +580,7 @@ const isValid = await bcrypt.compare(password, user.passwordHash);
 - **Rotation**: Optional - issue new refresh token with each refresh
 
 **Token Blacklisting (Optional):**
+
 - Use Redis to blacklist logged-out tokens
 - Key: `blacklist:${tokenId}`
 - TTL: Token expiration time
@@ -578,35 +589,41 @@ const isValid = await bcrypt.compare(password, user.passwordHash);
 ### 3. Session Management
 
 **Session Timeout:**
+
 - **Inactivity Timeout**: 30 minutes (configurable per school)
 - **Absolute Timeout**: 8 hours (for long teacher work sessions)
 - **Implementation**: Track last activity timestamp, validate on each request
 
 **Session Storage:**
+
 - **Stateless JWT**: No server-side session storage (default)
 - **Alternative**: Redis session store for high-security environments
 
 ### 4. CSRF Protection
 
 **Strategy:**
+
 - **SameSite Cookie**: Set `SameSite=Lax` on cookies
 - **CSRF Token**: For state-changing operations (POST, PUT, DELETE)
 - **Double-Submit Cookie**: Send CSRF token in both cookie and header
 
 ```typescript
 // NestJS CSRF middleware
-app.use(csurf({
-  cookie: {
-    httpOnly: true,
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production'
-  }
-}));
+app.use(
+  csurf({
+    cookie: {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+    },
+  })
+);
 ```
 
 ### 5. Account Lockout Policy
 
 **Failed Login Attempts:**
+
 - **Threshold**: 5 failed attempts within 15 minutes
 - **Lockout Duration**: 15 minutes
 - **Tracking**: Store failed attempts in Redis with TTL
@@ -623,6 +640,7 @@ if (attempts > 5) {
 ```
 
 **Unlock Mechanisms:**
+
 - Automatic unlock after 15 minutes
 - Manual unlock by principal/admin (future)
 - Password reset unlocks account
@@ -630,6 +648,7 @@ if (attempts > 5) {
 ### 6. Email Verification
 
 **New Accounts:**
+
 - Send verification email on registration
 - Account status: `emailVerified = false`
 - Block login until email verified
@@ -640,6 +659,7 @@ if (attempts > 5) {
 **Current Status**: Not implemented in MVP
 
 **Future Architecture Support:**
+
 - Add `mfaEnabled` and `mfaSecret` fields to User model
 - Support TOTP (Time-based One-Time Password) via Google Authenticator
 - MFA required for ADMIN role, optional for TEACHER/PRINCIPAL
@@ -652,6 +672,7 @@ if (attempts > 5) {
 ### 1. Google Workspace OAuth 2.0
 
 **OAuth Flow:**
+
 - **Authorization URL**: `https://accounts.google.com/o/oauth2/v2/auth`
 - **Token URL**: `https://oauth2.googleapis.com/token`
 - **Scopes**:
@@ -664,56 +685,60 @@ if (attempts > 5) {
 ```typescript
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'https://app.growthengine.app/api/v1/auth/google/callback',
-    scope: ['openid', 'profile', 'email']
-  },
-  async (accessToken, refreshToken, profile, done) => {
-    // 1. Extract user info from profile
-    const email = profile.emails[0].value;
-    const firstName = profile.name.givenName;
-    const lastName = profile.name.familyName;
-    const avatar = profile.photos[0]?.value;
-    const providerId = profile.id;
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: 'https://app.growthengine.app/api/v1/auth/google/callback',
+      scope: ['openid', 'profile', 'email'],
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      // 1. Extract user info from profile
+      const email = profile.emails[0].value;
+      const firstName = profile.name.givenName;
+      const lastName = profile.name.familyName;
+      const avatar = profile.photos[0]?.value;
+      const providerId = profile.id;
 
-    // 2. Find or create user
-    let user = await prisma.user.findUnique({ where: { email } });
+      // 2. Find or create user
+      let user = await prisma.user.findUnique({ where: { email } });
 
-    if (!user) {
-      // Create new user
-      user = await prisma.user.create({
-        data: {
-          email,
-          firstName,
-          lastName,
-          avatar,
-          authProvider: 'GOOGLE',
-          providerId,
-          role: 'TEACHER', // Default role
-          emailVerified: true, // Google emails are pre-verified
-          schoolId: await determineSchoolFromEmail(email) // Domain matching
-        }
-      });
-    } else if (user.authProvider === 'EMAIL' && !user.providerId) {
-      // Link SSO to existing email/password account
-      user = await prisma.user.update({
-        where: { id: user.id },
-        data: {
-          providerId,
-          authProvider: 'GOOGLE', // Switch to SSO
-          emailVerified: true
-        }
-      });
+      if (!user) {
+        // Create new user
+        user = await prisma.user.create({
+          data: {
+            email,
+            firstName,
+            lastName,
+            avatar,
+            authProvider: 'GOOGLE',
+            providerId,
+            role: 'TEACHER', // Default role
+            emailVerified: true, // Google emails are pre-verified
+            schoolId: await determineSchoolFromEmail(email), // Domain matching
+          },
+        });
+      } else if (user.authProvider === 'EMAIL' && !user.providerId) {
+        // Link SSO to existing email/password account
+        user = await prisma.user.update({
+          where: { id: user.id },
+          data: {
+            providerId,
+            authProvider: 'GOOGLE', // Switch to SSO
+            emailVerified: true,
+          },
+        });
+      }
+
+      return done(null, user);
     }
-
-    return done(null, user);
-  }
-));
+  )
+);
 ```
 
 **Domain Verification (School Matching):**
+
 - Extract domain from email (e.g., `@school.edu`)
 - Lookup school by verified domain
 - If no school found, require manual school selection or admin approval
@@ -721,6 +746,7 @@ passport.use(new GoogleStrategy({
 ### 2. Microsoft 365 OAuth 2.0
 
 **OAuth Flow:**
+
 - **Authorization URL**: `https://login.microsoftonline.com/common/oauth2/v2.0/authorize`
 - **Token URL**: `https://login.microsoftonline.com/common/oauth2/v2.0/token`
 - **Scopes**:
@@ -733,28 +759,33 @@ passport.use(new GoogleStrategy({
 ```typescript
 import { Strategy as MicrosoftStrategy } from 'passport-microsoft';
 
-passport.use(new MicrosoftStrategy({
-    clientID: process.env.MICROSOFT_CLIENT_ID,
-    clientSecret: process.env.MICROSOFT_CLIENT_SECRET,
-    callbackURL: 'https://app.growthengine.app/api/v1/auth/microsoft/callback',
-    scope: ['openid', 'profile', 'email']
-  },
-  async (accessToken, refreshToken, profile, done) => {
-    // Similar logic to Google strategy
-    // ...
-  }
-));
+passport.use(
+  new MicrosoftStrategy(
+    {
+      clientID: process.env.MICROSOFT_CLIENT_ID,
+      clientSecret: process.env.MICROSOFT_CLIENT_SECRET,
+      callbackURL: 'https://app.growthengine.app/api/v1/auth/microsoft/callback',
+      scope: ['openid', 'profile', 'email'],
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      // Similar logic to Google strategy
+      // ...
+    }
+  )
+);
 ```
 
 ### 3. Account Linking Strategy
 
 **Scenario 1: SSO user with existing email/password account**
+
 - User logs in with Google/Microsoft
 - System finds existing account with same email
 - Prompt user: "Link this account to your existing account?"
 - If yes: Update `authProvider` to SSO, set `providerId`
 
 **Scenario 2: Email/password user wants to add SSO**
+
 - User navigates to account settings
 - Click "Link Google Account" or "Link Microsoft Account"
 - Complete OAuth flow
@@ -763,13 +794,13 @@ passport.use(new MicrosoftStrategy({
 
 ### 4. SSO Error Handling
 
-| Error Scenario | Handling |
-|----------------|----------|
-| User cancels OAuth consent | Redirect to login with message: "Login cancelled" |
-| Email domain not whitelisted | Show error: "Your school is not registered. Contact admin." |
-| OAuth provider unavailable | Show error: "SSO service unavailable. Try email/password." |
-| Invalid OAuth response | Log error, show generic message: "Login failed. Try again." |
-| Email already exists (different provider) | Ask user to login with existing method, then link accounts |
+| Error Scenario                            | Handling                                                    |
+| ----------------------------------------- | ----------------------------------------------------------- |
+| User cancels OAuth consent                | Redirect to login with message: "Login cancelled"           |
+| Email domain not whitelisted              | Show error: "Your school is not registered. Contact admin." |
+| OAuth provider unavailable                | Show error: "SSO service unavailable. Try email/password."  |
+| Invalid OAuth response                    | Log error, show generic message: "Login failed. Try again." |
+| Email already exists (different provider) | Ask user to login with existing method, then link accounts  |
 
 ---
 
@@ -856,8 +887,10 @@ await prisma.auditLog.create({
 ### Authentication Endpoints
 
 #### POST /api/v1/auth/register
+
 **Description**: Register new user with email/password
 **Body**:
+
 ```json
 {
   "email": "teacher@school.edu",
@@ -867,7 +900,9 @@ await prisma.auditLog.create({
   "schoolCode": "SCH-001" // Optional, for school assignment
 }
 ```
+
 **Response** (201 Created):
+
 ```json
 {
   "success": true,
@@ -880,15 +915,19 @@ await prisma.auditLog.create({
 ```
 
 #### POST /api/v1/auth/login
+
 **Description**: Login with email/password
 **Body**:
+
 ```json
 {
   "email": "teacher@school.edu",
   "password": "SecurePass123!"
 }
 ```
+
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -909,30 +948,38 @@ await prisma.auditLog.create({
 ```
 
 #### GET /api/v1/auth/google
+
 **Description**: Initiate Google OAuth flow
 **Query Params**: None
 **Response**: Redirect to Google consent page
 
 #### GET /api/v1/auth/google/callback
+
 **Description**: Google OAuth callback
 **Query Params**: `code=...` (OAuth authorization code)
 **Response**: Redirect to frontend with tokens in URL params or cookies
 
 #### GET /api/v1/auth/microsoft
+
 **Description**: Initiate Microsoft OAuth flow
 
 #### GET /api/v1/auth/microsoft/callback
+
 **Description**: Microsoft OAuth callback
 
 #### POST /api/v1/auth/refresh
+
 **Description**: Refresh access token using refresh token
 **Body**:
+
 ```json
 {
   "refreshToken": "eyJhbGciOiJSUzI1NiIs..."
 }
 ```
+
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -943,15 +990,19 @@ await prisma.auditLog.create({
 ```
 
 #### POST /api/v1/auth/logout
+
 **Description**: Logout (blacklist tokens)
 **Headers**: `Authorization: Bearer <accessToken>`
 **Body**:
+
 ```json
 {
   "refreshToken": "eyJhbGciOiJSUzI1NiIs..."
 }
 ```
+
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -960,14 +1011,18 @@ await prisma.auditLog.create({
 ```
 
 #### POST /api/v1/auth/forgot-password
+
 **Description**: Request password reset email
 **Body**:
+
 ```json
 {
   "email": "teacher@school.edu"
 }
 ```
+
 **Response** (200 OK - always, to prevent email enumeration):
+
 ```json
 {
   "success": true,
@@ -976,15 +1031,19 @@ await prisma.auditLog.create({
 ```
 
 #### POST /api/v1/auth/reset-password
+
 **Description**: Reset password using token
 **Body**:
+
 ```json
 {
   "token": "reset-token-from-email",
   "newPassword": "NewSecurePass123!"
 }
 ```
+
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -993,14 +1052,18 @@ await prisma.auditLog.create({
 ```
 
 #### POST /api/v1/auth/verify-email
+
 **Description**: Verify email address using token
 **Body**:
+
 ```json
 {
   "token": "verification-token-from-email"
 }
 ```
+
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -1009,9 +1072,11 @@ await prisma.auditLog.create({
 ```
 
 #### GET /api/v1/auth/me
+
 **Description**: Get current user profile
 **Headers**: `Authorization: Bearer <accessToken>`
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -1269,6 +1334,7 @@ This authentication architecture provides:
 ✅ **Developer Experience**: Clear API contracts, NestJS/Passport integration guidance
 
 **Next Steps (GE-007 to GE-010):**
+
 - GE-007: Backend implementation (NestJS, Passport, JWT)
 - GE-008: Frontend implementation (Next.js, auth context, protected routes)
 - GE-009: UI/UX design (login forms, SSO buttons, password reset flow)

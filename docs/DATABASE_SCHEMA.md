@@ -22,6 +22,7 @@
 ## Schema Overview
 
 The Growth Engine database is designed to support:
+
 - Multi-tenancy at the school/district level
 - Role-based access control (RBAC)
 - Flexible AI analysis storage (JSONB)
@@ -42,6 +43,7 @@ The Growth Engine database is designed to support:
 ### Database Configuration
 
 **Encoding & Collation:**
+
 ```sql
 -- Database creation with Hebrew locale support
 CREATE DATABASE growth_engine
@@ -52,17 +54,20 @@ CREATE DATABASE growth_engine
 ```
 
 **Character Set:**
+
 - All tables use UTF-8 encoding (Unicode support)
 - Hebrew character range: U+0590-U+05FF
 - Latin character range: U+0020-U+007F
 - Supports mixed Hebrew/English text in all fields
 
 **Text Collation:**
+
 - Default collation: `he_IL.UTF-8` (Hebrew alphabetical order)
 - Ensures correct sorting for Hebrew names: א, ב, ג, ד, ה, ו, ז, ח, ט, י, כ, ל, מ, נ, ס, ע, פ, צ, ק, ר, ש, ת
 - Mixed language fields sorted by database collation rules
 
 **Unicode Normalization:**
+
 - Application-level normalization to NFC (Canonical Composition)
 - Prevents duplicate entries with different Unicode representations (e.g., composed vs decomposed characters)
 - Applied on all text inputs before database insertion
@@ -139,6 +144,7 @@ model District {
 ```
 
 **Fields:**
+
 - `id`: UUID primary key
 - `name`: District name (e.g., "Tel Aviv District")
 - `code`: Unique district code
@@ -147,6 +153,7 @@ model District {
 - `settings`: JSON field for district-specific configuration
 
 **Relationships:**
+
 - `schools`: One-to-many with Schools
 
 ---
@@ -184,6 +191,7 @@ model School {
 ```
 
 **Fields:**
+
 - `id`: UUID primary key
 - `name`: School name (e.g., "Tel Aviv High School")
 - `code`: Unique school code
@@ -191,6 +199,7 @@ model School {
 - `settings`: JSON field for school-specific configuration (e.g., analysis quotas)
 
 **Relationships:**
+
 - `district`: Many-to-one with District
 - `users`: One-to-many with Users
 - `students`: One-to-many with Students
@@ -253,6 +262,7 @@ model User {
 ```
 
 **Fields:**
+
 - `id`: UUID primary key
 - `email`: Unique email address (used for login)
 - `passwordHash`: Bcrypt hash (nullable for SSO users)
@@ -262,11 +272,13 @@ model User {
 - `schoolId`: Foreign key to School
 
 **Relationships:**
+
 - `school`: Many-to-one with School
 - `classes`: One-to-many with Classes (teacher-owned)
 - `analyses`: One-to-many with Analyses (teacher-created)
 
 **Security:**
+
 - Password hash uses bcrypt with 10 rounds
 - Soft delete preserves audit trail
 - `isActive` flag for account suspension
@@ -314,6 +326,7 @@ model Student {
 ```
 
 **Fields:**
+
 - `id`: UUID primary key
 - `firstName`, `lastName`: Student name
 - `studentId`: School-assigned ID (optional, unique within school)
@@ -321,16 +334,19 @@ model Student {
 - `schoolId`: Foreign key to School
 
 **Relationships:**
+
 - `school`: Many-to-one with School
 - `enrollments`: One-to-many with ClassEnrollments
 - `analyses`: One-to-many with Analyses
 
 **FERPA Compliance:**
+
 - PII fields marked for encryption
 - Soft delete preserves historical data
 - Audit logging required for all access
 
 **Hebrew & Unicode Support:**
+
 - All text fields (`firstName`, `lastName`, `notes`) support full Unicode (UTF-8)
 - Hebrew character range (U+0590-U+05FF) explicitly supported
 - Mixed Hebrew/English names allowed (e.g., "דוד Smith")
@@ -382,6 +398,7 @@ model Class {
 ```
 
 **Fields:**
+
 - `id`: UUID primary key
 - `name`: Class name/description
 - `subject`: Subject taught (optional)
@@ -390,6 +407,7 @@ model Class {
 - `schoolId`: Foreign key to School
 
 **Relationships:**
+
 - `teacher`: Many-to-one with User
 - `school`: Many-to-one with School
 - `enrollments`: One-to-many with ClassEnrollments
@@ -424,6 +442,7 @@ model ClassEnrollment {
 ```
 
 **Fields:**
+
 - `id`: UUID primary key
 - `studentId`: Foreign key to Student
 - `classId`: Foreign key to Class
@@ -431,6 +450,7 @@ model ClassEnrollment {
 - `droppedAt`: Timestamp when student dropped (nullable)
 
 **Relationships:**
+
 - `student`: Many-to-one with Student
 - `class`: Many-to-one with Class
 
@@ -495,6 +515,7 @@ model Analysis {
 ```
 
 **Fields:**
+
 - `id`: UUID primary key
 - `studentId`: Foreign key to Student
 - `teacherId`: Foreign key to User (teacher)
@@ -504,11 +525,13 @@ model Analysis {
 - `privateNotes`: Teacher-only notes (FERPA-compliant)
 
 **Relationships:**
+
 - `student`: Many-to-one with Student
 - `teacher`: Many-to-one with User
 - `conversations`: One-to-many with AnalysisConversations
 
 **Cost Tracking:**
+
 - `totalTokens`: Track OpenAI token usage
 - `estimatedCost`: Estimated cost for budgeting
 
@@ -546,6 +569,7 @@ model AnalysisConversation {
 ```
 
 **Fields:**
+
 - `id`: UUID primary key
 - `analysisId`: Foreign key to Analysis (cascade delete)
 - `role`: Message role (SYSTEM, ASSISTANT, USER)
@@ -554,9 +578,11 @@ model AnalysisConversation {
 - `sequenceNumber`: Order of messages in conversation
 
 **Relationships:**
+
 - `analysis`: Many-to-one with Analysis (cascade delete)
 
 **Storage Optimization:**
+
 - Content stored as TEXT (no length limit)
 - Cascade delete when analysis deleted
 - Indexed by analysis and sequence for fast retrieval
@@ -607,6 +633,7 @@ model AuditLog {
 ```
 
 **Fields:**
+
 - `id`: UUID primary key
 - `userId`: User who performed action (nullable for system actions)
 - `userEmail`: User email at time of action
@@ -618,6 +645,7 @@ model AuditLog {
 - `metadata`: Additional context (JSON)
 
 **FERPA Compliance:**
+
 - Immutable (no updates or deletes)
 - 7-year retention minimum
 - Tracks all student data access
@@ -630,6 +658,7 @@ model AuditLog {
 ### Primary Indexes
 
 All tables have:
+
 - Primary key index (UUID)
 - Foreign key indexes
 - Timestamp indexes (`createdAt`, `deletedAt`)
@@ -676,14 +705,14 @@ CREATE INDEX idx_students_fulltext ON students USING GIN(to_tsvector('hebrew', f
 
 ### Retention Policies
 
-| Data Type | Retention Period | Archival Strategy |
-|-----------|-----------------|-------------------|
-| Active Students | Indefinite | Soft delete on graduation/transfer |
-| Graduated Students | 7 years | Anonymize after 7 years |
-| Analyses | 7 years | Retain per FERPA requirements |
-| Audit Logs | 7 years minimum | Archive to cold storage after 1 year |
-| Conversations | 7 years | Cascade delete with analysis |
-| Users (inactive) | Indefinite | Soft delete, anonymize PII after 2 years |
+| Data Type          | Retention Period | Archival Strategy                        |
+| ------------------ | ---------------- | ---------------------------------------- |
+| Active Students    | Indefinite       | Soft delete on graduation/transfer       |
+| Graduated Students | 7 years          | Anonymize after 7 years                  |
+| Analyses           | 7 years          | Retain per FERPA requirements            |
+| Audit Logs         | 7 years minimum  | Archive to cold storage after 1 year     |
+| Conversations      | 7 years          | Cascade delete with analysis             |
+| Users (inactive)   | Indefinite       | Soft delete, anonymize PII after 2 years |
 
 ### Soft Delete Implementation
 
@@ -700,6 +729,7 @@ SELECT * FROM students WHERE deleted_at IS NULL;
 ### Anonymization Process
 
 After retention period:
+
 ```sql
 -- Anonymize student data
 UPDATE students
@@ -718,10 +748,12 @@ WHERE deleted_at < NOW() - INTERVAL '7 years';
 ### Encryption
 
 **At Rest:**
+
 - PostgreSQL database encryption enabled (GCP Cloud SQL default)
 - Application-level encryption for highly sensitive fields (optional)
 
 **In Transit:**
+
 - TLS 1.3 for all database connections
 - SSL required for PostgreSQL connections
 
@@ -765,6 +797,7 @@ CREATE POLICY teacher_students_policy ON students
 ### Prisma Migrations
 
 **Development:**
+
 ```bash
 # Create migration after schema changes
 npx prisma migrate dev --name descriptive-migration-name
@@ -774,6 +807,7 @@ npx prisma migrate reset
 ```
 
 **Production:**
+
 ```bash
 # Review migration SQL before applying
 npx prisma migrate diff
@@ -850,6 +884,7 @@ With Indexes: ~80 GB
 See `packages/backend/prisma/schema.prisma` for complete schema definition.
 
 **Key Enums:**
+
 - `UserRole`: TEACHER, PRINCIPAL, ADMIN
 - `AuthProvider`: EMAIL, GOOGLE, MICROSOFT
 - `AnalysisStatus`: IN_PROGRESS, COMPLETED, FAILED
@@ -857,6 +892,7 @@ See `packages/backend/prisma/schema.prisma` for complete schema definition.
 - `AuditAction`: CREATE, READ, UPDATE, DELETE, LOGIN, LOGOUT, EXPORT
 
 **Relationships:**
+
 - Districts → Schools (1:n)
 - Schools → Users, Students, Classes (1:n)
 - Users → Classes, Analyses (1:n)

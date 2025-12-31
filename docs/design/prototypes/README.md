@@ -12,6 +12,7 @@
 This directory contains fully functional HTML prototypes for the Growth Engine MVP. These prototypes implement the complete design system and demonstrate all critical user flows with realistic interactions.
 
 **What are these prototypes?**
+
 - **Functional HTML/CSS/JS** - Not mockups or images. These are working prototypes you can click through.
 - **Design System Implementation** - Built using the Growth Engine design system (`DESIGN_SYSTEM.md` and `COMPONENTS.md`).
 - **Interactive & Responsive** - All prototypes work on desktop, tablet, and mobile devices.
@@ -24,23 +25,27 @@ This directory contains fully functional HTML prototypes for the Growth Engine M
 ### Option 1: Open in Browser (Recommended)
 
 **Simplest method:**
+
 1. Navigate to `/docs/design/prototypes/`
 2. Double-click `index.html` to open in your default browser
 3. Click any prototype link to explore
 
 **macOS:**
+
 ```bash
 cd /Users/ronisegal/Projects/growth-engine/docs/design/prototypes
 open index.html
 ```
 
 **Windows:**
+
 ```bash
 cd C:\path\to\growth-engine\docs\design\prototypes
 start index.html
 ```
 
 **Linux:**
+
 ```bash
 cd /path/to/growth-engine/docs/design/prototypes
 xdg-open index.html
@@ -51,6 +56,7 @@ xdg-open index.html
 Some features work best with a local server (especially if you plan to test cross-page navigation):
 
 **Using Python (built-in):**
+
 ```bash
 cd /Users/ronisegal/Projects/growth-engine/docs/design/prototypes
 python3 -m http.server 8000
@@ -59,6 +65,7 @@ python3 -m http.server 8000
 ```
 
 **Using Node.js (if installed):**
+
 ```bash
 cd /Users/ronisegal/Projects/growth-engine/docs/design/prototypes
 npx http-server -p 8000
@@ -106,6 +113,7 @@ npx http-server -p 8000
 ```
 
 **Legend:**
+
 - ✅ = Fully implemented prototype
 - (no mark) = Spec'd but not yet built (placeholder for MVP completion)
 
@@ -116,6 +124,7 @@ npx http-server -p 8000
 ### 1. Authentication: Login (`auth/login.html`) ✅
 
 **What it demonstrates:**
+
 - Clean, trustworthy login interface
 - Email/password form with validation
 - SSO buttons for Google and Microsoft (brand guideline compliant)
@@ -125,6 +134,7 @@ npx http-server -p 8000
 - Responsive mobile layout
 
 **Interactive features:**
+
 - Try logging in with any email (except `demo@example.com`)
 - Use `demo@example.com` to see error state
 - Click SSO buttons to simulate OAuth flow
@@ -141,6 +151,7 @@ Login → Dashboard
 **⭐ THIS IS THE CORE PRODUCT ⭐**
 
 **What it demonstrates:**
+
 - Chat-like conversational UI (AI ↔ Teacher)
 - Progress tracking (3 sections: Academic, Behavioral, Engagement)
 - Real-time typing indicators
@@ -151,6 +162,7 @@ Login → Dashboard
 - Time remaining estimate
 
 **Interactive features:**
+
 - Type responses and hit Enter to send
 - Watch AI "think" with typing indicator
 - See progress bar update
@@ -159,6 +171,7 @@ Login → Dashboard
 - Keyboard shortcuts (Enter vs Shift+Enter)
 
 **Design decisions:**
+
 - **Conversational, not form-like** - Feels like chatting with a helpful assistant
 - **Progress transparency** - Teachers always know how much is left
 - **Graceful interruption** - Can save and resume anytime (reduces commitment anxiety)
@@ -172,6 +185,7 @@ Dashboard → Select Student → Start Analysis → **Conversation** → Review 
 ### 3. Teacher Dashboard (`teacher-dashboard/dashboard.html`) ✅
 
 **What it demonstrates:**
+
 - Clean metrics overview (total students, analyzed, in progress, flagged)
 - Color-coded metric cards with icons
 - "Students Needing Attention" section (prioritized)
@@ -180,6 +194,7 @@ Dashboard → Select Student → Start Analysis → **Conversation** → Review 
 - Empty states and loading patterns
 
 **Interactive features:**
+
 - Click "Start Analysis" on Marcus Johnson card → launches conversation
 - Hover effects on student cards
 - Click "View Analysis" → goes to results page
@@ -187,6 +202,7 @@ Dashboard → Select Student → Start Analysis → **Conversation** → Review 
 - Metrics are calculated realistically
 
 **Design decisions:**
+
 - **Scannable at a glance** - Sarah Chen (persona) can assess her class in <30 seconds
 - **Prioritized content** - Flagged students appear first (not buried in alphabetical list)
 - **Quick actions** - One-click to start analysis or view results
@@ -202,12 +218,14 @@ Login → **Dashboard** → (Select Student) → Analysis
 ### Browser Compatibility
 
 **Tested and working:**
+
 - ✅ Chrome 120+ (recommended)
 - ✅ Firefox 120+
 - ✅ Safari 17+
 - ✅ Edge 120+
 
 **Mobile browsers:**
+
 - ✅ Safari iOS 16+
 - ✅ Chrome Android
 
@@ -222,6 +240,7 @@ All prototypes support full keyboard navigation:
 5. **Arrow keys** - Navigate in lists/menus
 
 **Accessibility features to test:**
+
 - Focus rings visible on all interactive elements
 - Screen reader labels (test with VoiceOver or NVDA)
 - Color contrast ratios (use browser dev tools)
@@ -232,22 +251,26 @@ All prototypes support full keyboard navigation:
 Test on different screen sizes:
 
 **Desktop (1280px+):**
+
 - Full layout with sidebars
 - Multi-column grids
 - All features visible
 
 **Tablet (768px - 1023px):**
+
 - 2-column grids
 - Adjusted spacing
 - Navigation remains accessible
 
 **Mobile (320px - 767px):**
+
 - Single-column stacked layout
 - Larger touch targets (min 44x44px)
 - Hamburger menus (where applicable)
 - Simplified navigation
 
 **How to test:**
+
 1. Open browser dev tools (F12)
 2. Toggle device toolbar (Ctrl+Shift+M)
 3. Select different devices or enter custom dimensions
@@ -259,6 +282,7 @@ Test on different screen sizes:
 All prototypes implement styles from:
 
 **`/docs/design/DESIGN_SYSTEM.md`**
+
 - Color palette (primary, secondary, semantic colors)
 - Typography scale (Inter font family)
 - Spacing system (8px grid)
@@ -267,6 +291,7 @@ All prototypes implement styles from:
 - Accessibility standards
 
 **`/docs/design/COMPONENTS.md`**
+
 - Buttons (primary, secondary, ghost, danger)
 - Form inputs (text, email, password, textarea)
 - Cards (basic, interactive, highlighted)
@@ -278,6 +303,7 @@ All prototypes implement styles from:
 - Navigation
 
 **`styles.css`** (shared stylesheet)
+
 - CSS variables for all design tokens
 - Component base styles
 - Utility classes
@@ -291,12 +317,14 @@ All prototypes implement styles from:
 These are **prototypes**, not production code. Here's what's simulated:
 
 ### Backend/API Calls
+
 - **Authentication:** Simulated (no real OAuth, JWT tokens)
 - **AI responses:** Pre-scripted (not real ChatGPT API calls)
 - **Data persistence:** localStorage only (no database)
 - **File uploads:** Simulated (CSV import doesn't actually parse files)
 
 ### Features Not Implemented
+
 - Real-time collaboration
 - Email notifications
 - PDF generation (shows preview only)
@@ -305,6 +333,7 @@ These are **prototypes**, not production code. Here's what's simulated:
 - Multi-language support
 
 ### Known Issues
+
 - Some placeholder links go nowhere (marked as `#`)
 - Error handling is basic (production would be more robust)
 - No session management (refresh clears state)
@@ -325,6 +354,7 @@ These are **prototypes**, not production code. Here's what's simulated:
 5. **Responsive breakpoints** - match the prototypes' media queries
 
 **Tech stack alignment:**
+
 - Prototypes use vanilla HTML/CSS/JS (easy to port to any framework)
 - Production will use Next.js + Tailwind CSS + Radix UI
 - Design tokens in `styles.css` → map to Tailwind config
@@ -333,6 +363,7 @@ These are **prototypes**, not production code. Here's what's simulated:
 ### For QA/Testing
 
 **Use prototypes to:**
+
 - Understand expected user flows
 - Verify production UI matches design
 - Test accessibility features (keyboard nav, screen readers)
@@ -340,6 +371,7 @@ These are **prototypes**, not production code. Here's what's simulated:
 - Check interactive states (hover, focus, error, loading)
 
 **Design QA checklist:**
+
 - [ ] Colors match design system variables
 - [ ] Spacing uses 8px grid
 - [ ] Typography matches type scale
@@ -361,11 +393,13 @@ These are **prototypes**, not production code. Here's what's simulated:
 5. **Browse others** as needed
 
 **For design review:**
+
 1. Review `DESIGN_SYSTEM.md` first (understand the foundation)
 2. Review `COMPONENTS.md` (understand component specs)
 3. View prototypes in order of priority (auth → dashboard → analysis)
 
 **For user testing:**
+
 1. Give testers `index.html` as starting point
 2. Ask them to complete key task: "Analyze a student named Marcus Johnson"
 3. Observe where they struggle or delight
@@ -383,6 +417,7 @@ These are **prototypes**, not production code. Here's what's simulated:
 4. **Reference design system** - does it violate system rules or is this a system update?
 
 **Common feedback areas:**
+
 - Color contrast issues (use WebAIM checker)
 - Confusing interactions (unclear affordances)
 - Missing states (what happens when X?)
@@ -394,6 +429,7 @@ These are **prototypes**, not production code. Here's what's simulated:
 ## Next Steps
 
 **To complete MVP prototypes:**
+
 1. Build remaining authentication pages (signup, password reset)
 2. Build student management prototypes (roster, add, import CSV)
 3. Build analysis results prototypes (view, export PDF)
@@ -404,6 +440,7 @@ These are **prototypes**, not production code. Here's what's simulated:
 8. Handoff to frontend engineers for implementation
 
 **Post-MVP enhancements:**
+
 - Dark mode variations
 - Animation library (Framer Motion specs)
 - Print stylesheets for PDF exports
@@ -419,6 +456,7 @@ These are **prototypes**, not production code. Here's what's simulated:
 **Figma:** (TBD - prototypes will be recreated in Figma for handoff)
 
 **Key Resources:**
+
 - `/docs/PRD.md` - Product requirements
 - `/docs/design/DESIGN_SYSTEM.md` - Design foundation
 - `/docs/design/COMPONENTS.md` - Component library
@@ -429,6 +467,7 @@ These are **prototypes**, not production code. Here's what's simulated:
 ## Changelog
 
 **v1.0 (December 30, 2025):**
+
 - ✅ Initial prototype suite created
 - ✅ Design system CSS implemented
 - ✅ Login prototype (full interactive)
@@ -438,6 +477,7 @@ These are **prototypes**, not production code. Here's what's simulated:
 - ✅ README with viewing instructions
 
 **Future versions:**
+
 - v1.1: Complete remaining MVP prototypes
 - v1.2: User testing iteration
 - v1.3: Frontend handoff refinements

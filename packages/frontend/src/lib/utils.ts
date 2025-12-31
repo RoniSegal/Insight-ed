@@ -67,7 +67,7 @@ export function getInitials(name: string): string {
  * Sleep for a given number of milliseconds (useful for demos/testing)
  */
 export function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**

@@ -102,7 +102,9 @@ export abstract class BasePage {
    * Get success message
    */
   async getSuccessMessage(): Promise<string | null> {
-    const successElement = this.page.locator('[role="status"], .success-message, [data-testid="success"]');
+    const successElement = this.page.locator(
+      '[role="status"], .success-message, [data-testid="success"]'
+    );
     if (await successElement.isVisible()) {
       return await successElement.textContent();
     }

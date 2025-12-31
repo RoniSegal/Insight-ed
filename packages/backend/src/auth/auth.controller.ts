@@ -1,4 +1,4 @@
-import {Controller, Post, Get, Body, UseGuards, Req, Res } from '@nestjs/common';
+import { Controller, Post, Get, Body, UseGuards, Req, Res } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
@@ -73,7 +73,9 @@ export class AuthController {
     const refreshToken = await this.authService['generateRefreshToken'](user);
 
     // Redirect to frontend with tokens
-    res.redirect(`${process.env.FRONTEND_URL}/auth/callback?accessToken=${accessToken}&refreshToken=${refreshToken}`);
+    res.redirect(
+      `${process.env.FRONTEND_URL}/auth/callback?accessToken=${accessToken}&refreshToken=${refreshToken}`
+    );
   }
 
   // Microsoft OAuth routes
@@ -96,6 +98,8 @@ export class AuthController {
     const refreshToken = await this.authService['generateRefreshToken'](user);
 
     // Redirect to frontend with tokens
-    res.redirect(`${process.env.FRONTEND_URL}/auth/callback?accessToken=${accessToken}&refreshToken=${refreshToken}`);
+    res.redirect(
+      `${process.env.FRONTEND_URL}/auth/callback?accessToken=${accessToken}&refreshToken=${refreshToken}`
+    );
   }
 }

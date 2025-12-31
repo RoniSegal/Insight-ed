@@ -55,13 +55,14 @@ class AnalysisStore {
     if (studentId) {
       const analysisIds = this.byStudent.get(studentId) || [];
       return analysisIds
-        .map(id => this.analyses.get(id))
+        .map((id) => this.analyses.get(id))
         .filter((a): a is AnalysisResult => a !== undefined)
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     }
 
-    return Array.from(this.analyses.values())
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return Array.from(this.analyses.values()).sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
   }
 
   /**
@@ -100,7 +101,7 @@ class AnalysisStore {
 
     // Remove from student index
     const studentAnalyses = this.byStudent.get(analysis.studentId) || [];
-    const updatedAnalyses = studentAnalyses.filter(aid => aid !== id);
+    const updatedAnalyses = studentAnalyses.filter((aid) => aid !== id);
     if (updatedAnalyses.length > 0) {
       this.byStudent.set(analysis.studentId, updatedAnalyses);
     } else {

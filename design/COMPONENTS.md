@@ -5,6 +5,7 @@ This document describes all reusable UI components in the Growth Engine design s
 ## Installation & Usage
 
 All components are built with:
+
 - **TypeScript** for type safety
 - **Tailwind CSS** for styling
 - **class-variance-authority** for variant management
@@ -25,6 +26,7 @@ import { Button, Input, Card, Alert } from '@/components/ui';
 A versatile button component with multiple variants and states.
 
 **Props:**
+
 - `variant`: 'primary' | 'secondary' | 'ghost' | 'destructive' | 'success' | 'warning'
 - `size`: 'sm' | 'md' | 'lg'
 - `fullWidth`: boolean
@@ -57,6 +59,7 @@ A versatile button component with multiple variants and states.
 ```
 
 **Accessibility:**
+
 - Full keyboard navigation support
 - Focus ring visible on keyboard focus
 - Disabled state prevents interaction
@@ -69,6 +72,7 @@ A versatile button component with multiple variants and states.
 Form input with label, error, and helper text support.
 
 **Props:**
+
 - `variant`: 'default' | 'error' | 'success'
 - `size`: 'sm' | 'md' | 'lg'
 - `label`: string
@@ -112,10 +116,12 @@ Form input with label, error, and helper text support.
 ```
 
 **RTL Considerations:**
+
 - Icons automatically positioned correctly in RTL (left/right swap)
 - Uses logical properties (start/end) instead of left/right
 
 **Accessibility:**
+
 - Proper label association
 - Error messages announced to screen readers
 - Helper text provides additional context
@@ -128,11 +134,13 @@ Form input with label, error, and helper text support.
 Container component with multiple variants for different hierarchy levels.
 
 **Props:**
+
 - `variant`: 'default' | 'bordered' | 'elevated' | 'insight'
 - `padding`: 'none' | 'compact' | 'default' | 'spacious'
 - `as`: 'div' | 'section' | 'article'
 
 **Sub-components:**
+
 - `CardHeader` - Title, description, and action area
 - `CardContent` - Main content area
 - `CardFooter` - Footer with actions or metadata
@@ -169,6 +177,7 @@ Container component with multiple variants for different hierarchy levels.
 ```
 
 **Visual Identity:**
+
 - **Insight variant** uses signature gradient border + glow effect
 - Creates distinctive "aha moment" visual
 - Avoid overuse - reserve for truly important insights
@@ -180,6 +189,7 @@ Container component with multiple variants for different hierarchy levels.
 Notification component for various message types.
 
 **Props:**
+
 - `variant`: 'info' | 'success' | 'warning' | 'error'
 - `title`: string
 - `dismissible`: boolean
@@ -216,11 +226,13 @@ Notification component for various message types.
 ```
 
 **RTL Considerations:**
+
 - Icon positioned on right side (start)
 - Dismiss button on left side (end)
 - Border accent on right side (border-s-4)
 
 **Accessibility:**
+
 - `role="alert"` for screen reader announcements
 - Semantic color coding reinforced by icons
 - Keyboard accessible dismiss button
@@ -232,11 +244,13 @@ Notification component for various message types.
 Loading indicator with multiple sizes and colors.
 
 **Props:**
+
 - `size`: 'sm' | 'md' | 'lg' | 'xl'
 - `color`: 'primary' | 'white' | 'current'
 - `label`: string (for screen readers)
 
 **Additional Components:**
+
 - `LoadingPage` - Full page loading state
 - `LoadingContent` - Inline content loading state
 
@@ -265,6 +279,7 @@ Loading indicator with multiple sizes and colors.
 Top navigation bar with logo, menu, and user info.
 
 **Features:**
+
 - Responsive navigation
 - User role-based menu items
 - Logout functionality
@@ -275,10 +290,11 @@ Top navigation bar with logo, menu, and user info.
 ```tsx
 import { Header } from '@/components/layout';
 
-<Header />
+<Header />;
 ```
 
 **RTL Support:**
+
 - Navigation items ordered right-to-left
 - User menu aligned to left
 - Spacing uses space-x-reverse
@@ -290,6 +306,7 @@ import { Header } from '@/components/layout';
 Main content wrapper with consistent padding and max-width.
 
 **Props:**
+
 - `maxWidth`: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | 'full'
 - `className`: string
 
@@ -319,6 +336,7 @@ Main content wrapper with consistent padding and max-width.
 Page title section with optional description and action button.
 
 **Props:**
+
 - `title`: string
 - `description`: string
 - `action`: ReactNode
@@ -341,6 +359,7 @@ Page title section with optional description and action button.
 Responsive grid layout for dashboard cards.
 
 **Props:**
+
 - `columns`: object with breakpoint-specific column counts
 
 **Examples:**
@@ -372,14 +391,10 @@ Merge Tailwind classes with proper precedence.
 import { cn } from '@/lib/utils';
 
 // Conditional classes
-<div className={cn(
-  'base-classes',
-  isActive && 'active-classes',
-  className
-)} />
+<div className={cn('base-classes', isActive && 'active-classes', className)} />;
 
 // Merge conflicting classes (tailwind-merge handles conflicts)
-cn('px-4 py-2', 'px-6') // Result: 'px-6 py-2'
+cn('px-4 py-2', 'px-6'); // Result: 'px-6 py-2'
 ```
 
 ### formatDate()
@@ -390,7 +405,7 @@ Format dates in Hebrew locale.
 import { formatDate } from '@/lib/utils';
 
 formatDate(new Date(), 'short'); // "31/12/2025"
-formatDate(new Date(), 'long');  // "יום שלישי, 31 בדצמבר 2025"
+formatDate(new Date(), 'long'); // "יום שלישי, 31 בדצמבר 2025"
 ```
 
 ### getInitials()
@@ -401,7 +416,7 @@ Extract initials for avatars.
 import { getInitials } from '@/lib/utils';
 
 getInitials('דוד כהן'); // "דכ"
-getInitials('מרים');     // "מר"
+getInitials('מרים'); // "מר"
 ```
 
 ---
@@ -442,18 +457,12 @@ getInitials('מרים');     // "מר"
 
 ```tsx
 <Card>
-  <div className="text-4xl font-bold text-primary-600 font-mono mb-2">
-    {count}
-  </div>
-  <div className="text-neutral-600 mb-4">
-    {label}
-  </div>
+  <div className="text-4xl font-bold text-primary-600 font-mono mb-2">{count}</div>
+  <div className="text-neutral-600 mb-4">{label}</div>
   <div className="flex items-center text-sm">
-    <span className={cn(
-      'font-semibold',
-      trend > 0 ? 'text-success-600' : 'text-error-600'
-    )}>
-      {trend > 0 ? '+' : ''}{trend}%
+    <span className={cn('font-semibold', trend > 0 ? 'text-success-600' : 'text-error-600')}>
+      {trend > 0 ? '+' : ''}
+      {trend}%
     </span>
     <span className="text-neutral-500 mr-2">מהחודש שעבר</span>
   </div>
@@ -463,21 +472,23 @@ getInitials('מרים');     // "מר"
 ### Loading State Pattern
 
 ```tsx
-{isLoading ? (
-  <LoadingContent message="טוען נתונים..." />
-) : error ? (
-  <Alert variant="error" title="שגיאה">
-    {error.message}
-  </Alert>
-) : data.length === 0 ? (
-  <EmptyState
-    title="אין תלמידים"
-    description="התחל על ידי הוספת תלמיד ראשון"
-    action={<Button>הוסף תלמיד</Button>}
-  />
-) : (
-  <DataTable data={data} />
-)}
+{
+  isLoading ? (
+    <LoadingContent message="טוען נתונים..." />
+  ) : error ? (
+    <Alert variant="error" title="שגיאה">
+      {error.message}
+    </Alert>
+  ) : data.length === 0 ? (
+    <EmptyState
+      title="אין תלמידים"
+      description="התחל על ידי הוספת תלמיד ראשון"
+      action={<Button>הוסף תלמיד</Button>}
+    />
+  ) : (
+    <DataTable data={data} />
+  );
+}
 ```
 
 ### Confirmation Dialog Pattern
@@ -489,9 +500,7 @@ getInitials('מרים');     // "מר"
   </DialogHeader>
   <DialogContent>
     <p>האם אתה בטוח שברצונך למחוק את התלמיד?</p>
-    <p className="text-sm text-neutral-500 mt-2">
-      פעולה זו אינה ניתנת לביטול.
-    </p>
+    <p className="text-sm text-neutral-500 mt-2">פעולה זו אינה ניתנת לביטול.</p>
   </DialogContent>
   <DialogFooter>
     <Button variant="secondary" onClick={() => setShowConfirm(false)}>

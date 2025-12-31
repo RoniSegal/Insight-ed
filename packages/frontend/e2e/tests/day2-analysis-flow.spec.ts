@@ -45,7 +45,9 @@ test.describe('Day 2: Student Analysis Flow', () => {
     await expect(firstAiMessage).toContainText('שאלה 1 מתוך 6');
 
     // STEP 5: Send first response
-    const messageInput = page.locator('textarea[placeholder*="הקלד"], textarea[placeholder*="כתוב"]');
+    const messageInput = page.locator(
+      'textarea[placeholder*="הקלד"], textarea[placeholder*="כתוב"]'
+    );
     await expect(messageInput).toBeVisible();
 
     await messageInput.fill('התלמיד מצטיין במתמטיקה אבל מתקשה בקריאה');
@@ -79,7 +81,7 @@ test.describe('Day 2: Student Analysis Flow', () => {
     await completeButton.click();
 
     // Handle confirmation dialog if it appears
-    page.on('dialog', dialog => {
+    page.on('dialog', (dialog) => {
       expect(dialog.type()).toBe('confirm');
       dialog.accept();
     });
@@ -208,7 +210,7 @@ test.describe('Day 2: Student Analysis Flow', () => {
     await expect(page.locator('[data-role="assistant"]').first()).toBeVisible();
 
     // Simulate network error by blocking API calls
-    await page.route('**/api/analysis/chat', route => route.abort());
+    await page.route('**/api/analysis/chat', (route) => route.abort());
 
     // Try to send a message
     const messageInput = page.locator('textarea');
@@ -242,7 +244,9 @@ test.describe('Day 2: Student Analysis Flow', () => {
     await page.waitForTimeout(1000);
 
     // Count messages before refresh
-    const messagesBefore = await page.locator('[data-role="user"], [data-role="assistant"]').count();
+    const messagesBefore = await page
+      .locator('[data-role="user"], [data-role="assistant"]')
+      .count();
 
     // Refresh page
     await page.reload();
@@ -280,7 +284,7 @@ test.describe('Day 2: Student Analysis Flow', () => {
     expect(hebrewText).toMatch(/[\u0590-\u05FF]/); // Hebrew Unicode range
 
     // Verify text alignment (should be right-aligned for RTL)
-    const textAlign = await aiMessage.evaluate(el => getComputedStyle(el).textAlign);
+    const textAlign = await aiMessage.evaluate((el) => getComputedStyle(el).textAlign);
     expect(textAlign).toMatch(/right|start/);
   });
 
@@ -311,7 +315,9 @@ test.describe('Day 2: Edge Cases', () => {
     await messageInput.press('Enter');
 
     // Should handle gracefully
-    await expect(page.locator(`text=${longMessage.substring(0, 50)}`)).toBeVisible({ timeout: 5000 });
+    await expect(page.locator(`text=${longMessage.substring(0, 50)}`)).toBeVisible({
+      timeout: 5000,
+    });
   });
 
   test('should handle special characters in messages', async ({ page }) => {
