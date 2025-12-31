@@ -169,7 +169,7 @@ jobs:
           exit 1
 
       - name: Run E2E tests
-        run: npm run test:e2e
+        run: npm run test:e2e --workspace=@growth-engine/frontend
         env:
           PLAYWRIGHT_BASE_URL: http://localhost:3000
 
