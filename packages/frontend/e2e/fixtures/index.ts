@@ -5,4 +5,5 @@
 
 export * from './auth';
 export * from './api';
-export * from './database';
+// Export database fixtures individually to avoid conflicts
+export { setupTestDatabase, seedTestData } from './database';

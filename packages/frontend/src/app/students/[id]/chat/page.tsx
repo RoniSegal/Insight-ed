@@ -49,13 +49,13 @@ function ChatPageContent() {
       setError(null);
 
       // Fetch student info
-      const student = await ApiClient.get(`/students/${studentId}`);
+      const student = (await ApiClient.get(`/students/${studentId}`)) as { name: string };
       setStudentName(student.name);
 
       // Start conversation - get first AI message
-      const response = await ApiClient.post('/analysis/start', {
+      const response = (await ApiClient.post('/analysis/start', {
         studentId,
-      });
+      })) as { conversationId: string; message?: string };
 
       setConversationId(response.conversationId);
 

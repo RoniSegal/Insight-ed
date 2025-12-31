@@ -181,6 +181,7 @@ async function seedTestDatabase(): Promise<void> {
         settings: {},
       },
     });
+    void _teacher; // Created for testing, not used in setup
 
     const _principal = await prisma.user.create({
       data: {
@@ -196,6 +197,7 @@ async function seedTestDatabase(): Promise<void> {
         settings: {},
       },
     });
+    void _principal; // Created for testing, not used in setup
 
     const _admin = await prisma.user.create({
       data: {
@@ -211,6 +213,7 @@ async function seedTestDatabase(): Promise<void> {
         settings: {},
       },
     });
+    void _admin; // Created for testing, not used in setup
 
     console.log(`  ✅ Created 3 test users (teacher, principal, admin)`);
     console.log(`  📧 All users password: Test123!`);
