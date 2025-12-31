@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@layer base {
+  /* Reset and base styles */
+  * {
+    @apply border-neutral-200;
+  }
+
+  body {
+    @apply bg-neutral-50 text-neutral-700 font-sans antialiased;
+  }
+
+  /* Hebrew text support */
+  [dir="rtl"] {
+    @apply font-hebrew;
+  }
+
+  /* Headings */
+  h1 {
+    @apply text-4xl font-bold text-neutral-800;
+  }
+
+  h2 {
+    @apply text-3xl font-bold text-neutral-800;
+  }
+
+  h3 {
+    @apply text-2xl font-semibold text-neutral-800;
+  }
+
+  h4 {
+    @apply text-xl font-semibold text-neutral-700;
+  }
+
+  h5 {
+    @apply text-lg font-medium text-neutral-700;
+  }
+
+  h6 {
+    @apply text-base font-medium text-neutral-700;
+  }
+
+  /* Links */
+  a {
+    @apply text-primary-600 hover:text-primary-700 transition-colors;
+  }
+
+  /* Focus visible for keyboard navigation */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+  }
+}
+
+@layer components {
+  /* Container */
+  .container-page {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Card base */
+  .card {
+    @apply bg-white rounded-lg shadow p-6;
+  }
+
+  .card-bordered {
+    @apply bg-white rounded-lg border border-neutral-200 p-6;
+  }
+
+  .card-elevated {
+    @apply bg-white rounded-lg shadow-md p-6;
+  }
+
+  /* Insight card with signature glow */
+  .card-insight {
+    @apply bg-white rounded-lg shadow-md p-6 border-2 border-transparent;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, #3b82f6, #f59e0b) border-box;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+                0 2px 4px -2px rgb(0 0 0 / 0.1),
+                0 0 20px rgb(59 130 246 / 0.2);
+  }
+
+  /* Section spacing */
+  .section {
+    @apply py-8;
+  }
+
+  .section-lg {
+    @apply py-12;
+  }
+}
+
+@layer utilities {
+  /* RTL utilities */
+  .rtl-flip {
+    transform: scaleX(-1);
+  }
+
+  [dir="rtl"] .rtl-auto-flip {
+    transform: scaleX(-1);
+  }
+
+  /* Scrollbar styling */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-neutral-100;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-neutral-300 rounded-full;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    @apply bg-neutral-400;
+  }
+
+  /* Animation utilities */
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s infinite linear;
+    background: linear-gradient(
+      to right,
+      #f3f4f6 0%,
+      #e5e7eb 20%,
+      #f3f4f6 40%,
+      #f3f4f6 100%
+    );
+    background-size: 1000px 100%;
+  }
+}
+
+/* Print styles for analysis results */
+@media print {
+  @page {
+    margin: 2cm;
+    size: A4;
+  }
+
+  body {
+    @apply bg-white text-black;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Hide elements that shouldn't be printed */
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Show elements only in print */
+  .print\:block {
+    display: block !important;
+  }
+
+  /* Ensure cards are print-friendly */
+  .card,
+  .card-elevated,
+  .card-bordered {
+    @apply shadow-none border border-neutral-300;
+    page-break-inside: avoid;
+  }
+
+  /* Prevent page breaks inside important elements */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+
+  /* Ensure proper spacing for printed content */
+  .prose {
+    max-width: 100% !important;
+  }
+
+  /* Make sure links show their href */
+  a[href]:after {
+    content: none;
+  }
+
+  /* Remove shadows and backgrounds for cleaner print */
+  * {
+    box-shadow: none !important;
+  }
+}
