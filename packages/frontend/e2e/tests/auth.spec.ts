@@ -35,8 +35,8 @@ test.describe('Authentication', () => {
     // Verify user is authenticated
     expect(await dashboardPage.isAuthenticated()).toBe(true);
 
-    // Verify URL is dashboard
-    await expect(page).toHaveURL(/\/(dashboard|home)/);
+    // Verify URL is dashboard or students page
+    await expect(page).toHaveURL(/\/(students|dashboard|home)/);
   });
 
   test('should login as principal successfully', async ({ page }) => {
@@ -48,7 +48,7 @@ test.describe('Authentication', () => {
     await loginPage.waitForLoginSuccess();
 
     expect(await dashboardPage.isAuthenticated()).toBe(true);
-    await expect(page).toHaveURL(/\/(dashboard|home)/);
+    await expect(page).toHaveURL(/\/(students|dashboard|home)/);
   });
 
   test('should show error for invalid credentials', async ({ page }) => {

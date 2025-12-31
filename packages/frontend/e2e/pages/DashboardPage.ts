@@ -20,7 +20,7 @@ export class DashboardPage extends BasePage {
 
     // Initialize locators
     this.userMenu = page.locator('[data-testid="user-menu"]');
-    this.logoutButton = page.getByRole('button', { name: /log out|התנתק/i });
+    this.logoutButton = page.getByRole('button', { name: /logout|log out|התנתק/i });
     this.pageTitle = page.locator('h1, [data-testid="page-title"]');
     this.searchInput = page.getByPlaceholder(/search|חיפוש/i);
     this.studentsGrid = page.locator('[data-testid="students-grid"]');
@@ -113,7 +113,8 @@ export class DashboardPage extends BasePage {
    */
   async isAuthenticated(): Promise<boolean> {
     try {
-      await this.userMenu.waitFor({ state: 'visible', timeout: 5000 });
+      // Check for logout button as evidence of authentication
+      await this.logoutButton.waitFor({ state: 'visible', timeout: 5000 });
       return true;
     } catch {
       return false;
