@@ -136,9 +136,10 @@ jobs:
       - name: Start frontend server
         env:
           NEXT_PUBLIC_API_URL: http://localhost:4000
+          PORT: 3000
         run: |
           cd packages/frontend
-          npm run start > ../../frontend.log 2>&1 &
+          npm run start -- -p 3000 > ../../frontend.log 2>&1 &
           FRONTEND_PID=$!
           echo "Frontend started with PID: $FRONTEND_PID"
           sleep 3
