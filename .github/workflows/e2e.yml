@@ -128,15 +128,44 @@ jobs:
           cat backend.log || echo "No backend log found"
           exit 1
 
-      - name: Start frontend server
-        working-directory: packages/frontend
+      - name: Build frontend
         env:
           NEXT_PUBLIC_API_URL: http://localhost:4000
-        run: npm run build && npm run start &
+        run: npm run build --workspace=@growth-engine/frontend
+
+      - name: Start frontend server
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:4000
+        run: |
+          cd packages/frontend
+          npm run start > ../../frontend.log 2>&1 &
+          FRONTEND_PID=$!
+          echo "Frontend started with PID: $FRONTEND_PID"
+          sleep 3
+          if ps -p $FRONTEND_PID > /dev/null; then
+            echo "Frontend process is running"
+          else
+            echo "Frontend process died immediately!"
+            cat ../../frontend.log
+            exit 1
+          fi
+          cd ../..
 
       - name: Wait for frontend
         run: |
-          timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 2; done'
+          echo "Waiting for frontend to be ready..."
+          for i in {1..30}; do
+            if curl -f http://localhost:3000 2>/dev/null; then
+              echo "Frontend is ready!"
+              exit 0
+            fi
+            echo "Attempt $i: Frontend not ready yet..."
+            sleep 2
+          done
+          echo "Frontend failed to start within 60 seconds"
+          echo "=== Frontend logs ==="
+          cat frontend.log || echo "No frontend log found"
+          exit 1
 
       - name: Run E2E tests
         run: npm run test:e2e
