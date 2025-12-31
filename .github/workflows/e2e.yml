@@ -55,6 +55,9 @@ jobs:
       - name: Build shared package
         run: npm run build --workspace=@growth-engine/shared
 
+      - name: Build backend
+        run: npm run build --workspace=@growth-engine/backend
+
       - name: Setup database
         working-directory: packages/backend
         env:
@@ -63,10 +66,6 @@ jobs:
           npx prisma generate
           npx prisma migrate deploy
           npx prisma db seed
-
-      - name: Build backend
-        working-directory: packages/backend
-        run: npm run build
 
       - name: Start backend server
         working-directory: packages/backend
