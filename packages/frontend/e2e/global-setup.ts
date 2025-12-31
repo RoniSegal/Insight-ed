@@ -167,7 +167,7 @@ async function seedTestDatabase(): Promise<void> {
     console.log('  👥 Creating test users...');
     const passwordHash = await bcrypt.hash('Test123!', 12);
 
-    const teacher = await prisma.user.create({
+    const _teacher = await prisma.user.create({
       data: {
         email: 'teacher@example.com',
         passwordHash,
@@ -182,7 +182,7 @@ async function seedTestDatabase(): Promise<void> {
       },
     });
 
-    const principal = await prisma.user.create({
+    const _principal = await prisma.user.create({
       data: {
         email: 'principal@example.com',
         passwordHash,
@@ -197,7 +197,7 @@ async function seedTestDatabase(): Promise<void> {
       },
     });
 
-    const admin = await prisma.user.create({
+    const _admin = await prisma.user.create({
       data: {
         email: 'admin@example.com',
         passwordHash,

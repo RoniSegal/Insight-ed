@@ -137,7 +137,7 @@ test.describe('Day 2: Student Analysis Flow', () => {
 
   test('should handle conversation with OpenAI when configured', async ({ page }) => {
     // Skip if OpenAI not configured
-    const response = await page.request.get('/api/health'); // Hypothetical endpoint
+    const _response = await page.request.get('/api/health'); // Hypothetical endpoint
     // This test would check if real OpenAI responses work
 
     // Navigate to chat
