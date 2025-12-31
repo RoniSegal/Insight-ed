@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growth Engine - Design System Showcase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Rubik:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                        secondary: {
+                            50: '#eef2ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        },
+                        accent: {
+                            50: '#fffbeb',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        success: {
+                            50: '#f0fdf4',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                        },
+                        warning: {
+                            50: '#fff7ed',
+                            500: '#f97316',
+                            600: '#ea580c',
+                        },
+                        error: {
+                            50: '#fef2f2',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                        },
+                        neutral: {
+                            50: '#f9fafb',
+                            100: '#f3f4f6',
+                            200: '#e5e7eb',
+                            300: '#d1d5db',
+                            400: '#9ca3af',
+                            500: '#6b7280',
+                            600: '#4b5563',
+                            700: '#374151',
+                            800: '#1f2937',
+                            900: '#111827',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        hebrew: ['Rubik', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px rgb(59 130 246 / 0.3)',
+                        'glow-accent': '0 0 20px rgb(245 158 11 / 0.3)',
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Rubik', sans-serif;
+        }
+
+        .card-insight {
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, #3b82f6, #f59e0b) border-box;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+                        0 2px 4px -2px rgb(0 0 0 / 0.1),
+                        0 0 20px rgb(59 130 246 / 0.2);
+        }
+    </style>
+</head>
+<body class="bg-neutral-50 antialiased">
+    <!-- Header -->
+    <header class="bg-white border-b border-neutral-200 shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-2 space-x-reverse">
+                    <div class="h-8 w-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">GE</span>
+                    </div>
+                    <span class="text-xl font-bold text-neutral-800">Growth Engine</span>
+                    <span class="text-sm text-neutral-500 mr-2">מערכת עיצוב</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Title -->
+        <div class="mb-12">
+            <h1 class="text-5xl font-bold text-neutral-800 mb-4">מערכת העיצוב של Growth Engine</h1>
+            <p class="text-xl text-neutral-600">רכיבי UI, צבעים, טיפוגרפיה ודוגמאות שימוש</p>
+        </div>
+
+        <!-- Colors Section -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-neutral-800 mb-6">פלטת צבעים</h2>
+
+            <!-- Primary Colors -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold text-neutral-700 mb-4">Primary - כחול חינוכי</h3>
+                <div class="grid grid-cols-5 gap-4">
+                    <div class="text-center">
+                        <div class="h-20 bg-primary-50 rounded-lg border border-neutral-200"></div>
+                        <p class="text-sm mt-2 font-mono">50</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="h-20 bg-primary-300 rounded-lg"></div>
+                        <p class="text-sm mt-2 font-mono">300</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="h-20 bg-primary-500 rounded-lg shadow"></div>
+                        <p class="text-sm mt-2 font-mono font-bold">500</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="h-20 bg-primary-600 rounded-lg shadow"></div>
+                        <p class="text-sm mt-2 font-mono font-bold">600</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="h-20 bg-primary-800 rounded-lg"></div>
+                        <p class="text-sm mt-2 font-mono">800</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Semantic Colors -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div>
+                    <h4 class="font-semibold mb-2">Success</h4>
+                    <div class="h-16 bg-success-500 rounded-lg shadow"></div>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-2">Warning</h4>
+                    <div class="h-16 bg-warning-500 rounded-lg shadow"></div>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-2">Error</h4>
+                    <div class="h-16 bg-error-500 rounded-lg shadow"></div>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-2">Accent</h4>
+                    <div class="h-16 bg-accent-500 rounded-lg shadow"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Typography Section -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-neutral-800 mb-6">טיפוגרפיה</h2>
+
+            <div class="bg-white rounded-lg shadow p-8 space-y-6">
+                <div>
+                    <p class="text-xs text-neutral-500 mb-2">Display / 48px</p>
+                    <h1 class="text-5xl font-bold text-neutral-800">כותרת ראשית גדולה</h1>
+                </div>
+                <div>
+                    <p class="text-xs text-neutral-500 mb-2">H1 / 36px</p>
+                    <h1 class="text-4xl font-bold text-neutral-800">כותרת עמוד ראשית</h1>
+                </div>
+                <div>
+                    <p class="text-xs text-neutral-500 mb-2">H2 / 30px</p>
+                    <h2 class="text-3xl font-semibold text-neutral-800">כותרת מקטע</h2>
+                </div>
+                <div>
+                    <p class="text-xs text-neutral-500 mb-2">H3 / 24px</p>
+                    <h3 class="text-2xl font-semibold text-neutral-700">כותרת תת-מקטע</h3>
+                </div>
+                <div>
+                    <p class="text-xs text-neutral-500 mb-2">Body / 16px</p>
+                    <p class="text-base text-neutral-600">טקסט גוף רגיל לתוכן העמוד. קריא ונוח לקריאה בעברית.</p>
+                </div>
+                <div>
+                    <p class="text-xs text-neutral-500 mb-2">Small / 14px</p>
+                    <p class="text-sm text-neutral-500">טקסט משני קטן, תוויות ומידע עזר</p>
+                </div>
+                <div>
+                    <p class="text-xs text-neutral-500 mb-2">Mono / Data</p>
+                    <p class="text-base font-mono text-neutral-700">123.45 | 98.2% | 1,234 students</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Buttons Section -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-neutral-800 mb-6">כפתורים</h2>
+
+            <div class="bg-white rounded-lg shadow p-8 space-y-8">
+                <!-- Primary Buttons -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Primary Buttons</h3>
+                    <div class="flex flex-wrap gap-4 items-center">
+                        <button class="px-3 py-1.5 text-sm bg-primary-600 text-white rounded font-semibold hover:bg-primary-700 shadow transition-colors">
+                            Small
+                        </button>
+                        <button class="px-4 py-2 text-base bg-primary-600 text-white rounded font-semibold hover:bg-primary-700 shadow transition-colors">
+                            Medium (Default)
+                        </button>
+                        <button class="px-6 py-3 text-lg bg-primary-600 text-white rounded font-semibold hover:bg-primary-700 shadow transition-colors">
+                            Large
+                        </button>
+                        <button class="px-4 py-2 text-base bg-primary-600 text-white rounded font-semibold opacity-50 cursor-not-allowed shadow" disabled>
+                            Disabled
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Secondary Buttons -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Secondary Buttons</h3>
+                    <div class="flex flex-wrap gap-4 items-center">
+                        <button class="px-4 py-2 text-base border-2 border-primary-600 text-primary-600 rounded font-semibold hover:bg-primary-50 transition-colors">
+                            Secondary
+                        </button>
+                        <button class="px-4 py-2 text-base text-primary-600 rounded font-semibold hover:bg-primary-50 transition-colors">
+                            Ghost
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Semantic Buttons -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Semantic Buttons</h3>
+                    <div class="flex flex-wrap gap-4 items-center">
+                        <button class="px-4 py-2 text-base bg-success-600 text-white rounded font-semibold hover:bg-success-700 shadow transition-colors">
+                            Success
+                        </button>
+                        <button class="px-4 py-2 text-base bg-warning-600 text-white rounded font-semibold hover:bg-warning-700 shadow transition-colors">
+                            Warning
+                        </button>
+                        <button class="px-4 py-2 text-base bg-error-600 text-white rounded font-semibold hover:bg-error-700 shadow transition-colors">
+                            Destructive
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Form Inputs Section -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-neutral-800 mb-6">שדות טופס</h2>
+
+            <div class="bg-white rounded-lg shadow p-8 space-y-6 max-w-2xl">
+                <div>
+                    <label class="block text-sm font-medium text-neutral-700 mb-1">שדה טקסט רגיל</label>
+                    <input type="text" placeholder="הקלד טקסט..." class="w-full px-3 py-2 border border-neutral-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-neutral-700 mb-1">שדה עם שגיאה</label>
+                    <input type="text" value="ערך לא תקין" class="w-full px-3 py-2 border border-error-500 rounded focus:outline-none focus:ring-2 focus:ring-error-500 focus:border-error-500 transition-all">
+                    <p class="mt-1 text-sm text-error-600">שדה זה נדרש</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-neutral-700 mb-1">שדה עם הצלחה</label>
+                    <input type="text" value="ערך תקין" class="w-full px-3 py-2 border border-success-500 rounded focus:outline-none focus:ring-2 focus:ring-success-500 focus:border-success-500 transition-all">
+                    <p class="mt-1 text-sm text-neutral-500">נראה טוב!</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-neutral-700 mb-1">שדה מנוטרל</label>
+                    <input type="text" value="לא ניתן לעריכה" disabled class="w-full px-3 py-2 border border-neutral-300 rounded bg-neutral-100 text-neutral-500 cursor-not-allowed">
+                </div>
+            </div>
+        </section>
+
+        <!-- Cards Section -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-neutral-800 mb-6">כרטיסים</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Default Card -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-xl font-semibold text-neutral-800 mb-2">כרטיס רגיל</h3>
+                    <p class="text-neutral-600">כרטיס עם צל רגיל ורקע לבן. מתאים למרבית השימושים.</p>
+                </div>
+
+                <!-- Elevated Card -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold text-neutral-800 mb-2">כרטיס מורם</h3>
+                    <p class="text-neutral-600">כרטיס עם צל חזק יותר ליצירת היררכיה ברורה יותר.</p>
+                </div>
+
+                <!-- Bordered Card -->
+                <div class="bg-white rounded-lg border border-neutral-200 p-6">
+                    <h3 class="text-xl font-semibold text-neutral-800 mb-2">כרטיס עם מסגרת</h3>
+                    <p class="text-neutral-600">כרטיס עם מסגרת במקום צל. עיצוב מינימליסטי יותר.</p>
+                </div>
+
+                <!-- Insight Card (Signature) -->
+                <div class="card-insight border-2 border-transparent rounded-lg p-6">
+                    <h3 class="text-xl font-semibold text-neutral-800 mb-2 flex items-center">
+                        <svg class="w-5 h-5 ml-2 text-accent-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
+                        </svg>
+                        כרטיס תובנה
+                    </h3>
+                    <p class="text-neutral-600">כרטיס מיוחד עם גבול גרדיאנט וזוהר. משמש להדגשת תובנות חשובות.</p>
+                </div>
+
+                <!-- Card with Header and Footer -->
+                <div class="bg-white rounded-lg shadow p-6 md:col-span-2">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-semibold text-neutral-800">כרטיס עם כותרת ופוטר</h3>
+                            <p class="text-sm text-neutral-500 mt-1">תיאור משני לכרטיס</p>
+                        </div>
+                        <button class="text-primary-600 hover:text-primary-700 font-medium text-sm">
+                            פעולה
+                        </button>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-neutral-600">תוכן הכרטיס נמצא כאן. יכול להכיל טקסט, נתונים, גרפים ועוד.</p>
+                        <div class="flex items-center space-x-4 space-x-reverse font-mono text-sm">
+                            <span class="text-neutral-500">סטטיסטיקות:</span>
+                            <span class="text-success-600 font-semibold">+12.5%</span>
+                            <span class="text-neutral-700">142 תלמידים</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-neutral-200 flex justify-between items-center">
+                        <span class="text-sm text-neutral-500">עודכן לאחרונה: 5 דקות</span>
+                        <button class="text-sm text-primary-600 hover:text-primary-700 font-medium">
+                            צפה בפרטים ←
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Alerts Section -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-neutral-800 mb-6">התראות</h2>
+
+            <div class="space-y-4 max-w-3xl">
+                <!-- Info Alert -->
+                <div class="bg-primary-50 border-s-4 border-primary-500 p-4 rounded-lg">
+                    <div class="flex items-start">
+                        <svg class="h-5 w-5 text-primary-600 ms-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd"/>
+                        </svg>
+                        <div class="flex-1 text-primary-800">
+                            <h3 class="font-semibold mb-1">מידע חשוב</h3>
+                            <p class="text-sm">זוהי התראת מידע רגילה עם פרטים נוספים שהמשתמש צריך לדעת.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success Alert -->
+                <div class="bg-success-50 border-s-4 border-success-500 p-4 rounded-lg">
+                    <div class="flex items-start">
+                        <svg class="h-5 w-5 text-success-600 ms-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/>
+                        </svg>
+                        <div class="flex-1 text-success-800">
+                            <h3 class="font-semibold mb-1">פעולה בוצעה בהצלחה!</h3>
+                            <p class="text-sm">השינויים שלך נשמרו והמערכת עודכנה.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warning Alert -->
+                <div class="bg-warning-50 border-s-4 border-warning-500 p-4 rounded-lg">
+                    <div class="flex items-start">
+                        <svg class="h-5 w-5 text-warning-600 ms-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
+                        </svg>
+                        <div class="flex-1 text-warning-800">
+                            <h3 class="font-semibold mb-1">שים לב!</h3>
+                            <p class="text-sm">יש נושא שדורש את תשומת לבך אך לא חוסם את המשך העבודה.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Alert -->
+                <div class="bg-error-50 border-s-4 border-error-500 p-4 rounded-lg">
+                    <div class="flex items-start">
+                        <svg class="h-5 w-5 text-error-600 ms-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd"/>
+                        </svg>
+                        <div class="flex-1 text-error-800">
+                            <h3 class="font-semibold mb-1">אירעה שגיאה</h3>
+                            <p class="text-sm">לא ניתן להשלים את הפעולה. אנא נסה שוב או פנה לתמיכה.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading States Section -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-neutral-800 mb-6">מצבי טעינה</h2>
+
+            <div class="bg-white rounded-lg shadow p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Spinners -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Spinners</h3>
+                        <div class="flex items-center space-x-6 space-x-reverse">
+                            <div class="text-center">
+                                <svg class="animate-spin h-4 w-4 text-primary-600 mx-auto" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <p class="text-xs mt-2">Small</p>
+                            </div>
+                            <div class="text-center">
+                                <svg class="animate-spin h-6 w-6 text-primary-600 mx-auto" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <p class="text-xs mt-2">Medium</p>
+                            </div>
+                            <div class="text-center">
+                                <svg class="animate-spin h-8 w-8 text-primary-600 mx-auto" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <p class="text-xs mt-2">Large</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Skeleton Loaders -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Skeleton Loaders</h3>
+                        <div class="space-y-3">
+                            <div class="h-4 bg-neutral-200 rounded animate-pulse"></div>
+                            <div class="h-4 bg-neutral-200 rounded animate-pulse w-5/6"></div>
+                            <div class="h-4 bg-neutral-200 rounded animate-pulse w-4/6"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Responsive Grid Example -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-neutral-800 mb-6">דוגמת Grid רספונסיבי</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="text-4xl font-bold text-primary-600 font-mono mb-2">142</div>
+                    <div class="text-neutral-600">סה"כ תלמידים</div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="text-4xl font-bold text-success-600 font-mono mb-2">87%</div>
+                    <div class="text-neutral-600">שיעור השלמה</div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="text-4xl font-bold text-accent-600 font-mono mb-2">24</div>
+                    <div class="text-neutral-600">ניתוחים פעילים</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="border-t border-neutral-200 pt-8 mt-16">
+            <p class="text-center text-neutral-500 text-sm">
+                Growth Engine Design System v1.0 - מותאם לחינוך, בנוי עם אהבה
+            </p>
+        </footer>
+    </main>
+</body>
+</html>
