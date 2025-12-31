@@ -89,8 +89,6 @@ jobs:
           JWT_ACCESS_TOKEN_EXPIRATION: 15m
           JWT_REFRESH_TOKEN_EXPIRATION: 7d
           OPENAI_API_KEY: test-openai-key
-          GOOGLE_CLIENT_ID: test-google-client-id
-          GOOGLE_CLIENT_SECRET: test-google-client-secret
           API_URL: http://localhost:4000
           BACKEND_URL: http://localhost:4000
           FRONTEND_URL: http://localhost:3000
