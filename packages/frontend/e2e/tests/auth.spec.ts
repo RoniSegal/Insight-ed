@@ -93,7 +93,10 @@ test.describe('Authentication', () => {
   });
 
   test('should logout successfully', async ({ page, browserName }) => {
-    test.skip(browserName === 'firefox' || browserName === 'webkit', 'Logout has NS_BINDING_ABORTED issues on Firefox/Webkit');
+    test.skip(
+      browserName === 'firefox' || browserName === 'webkit',
+      'Logout has NS_BINDING_ABORTED issues on Firefox/Webkit'
+    );
 
     const dashboardPage = new DashboardPage(page);
 
@@ -111,7 +114,10 @@ test.describe('Authentication', () => {
   });
 
   test('complete login and logout flow', async ({ page, browserName }) => {
-    test.skip(browserName === 'firefox' || browserName === 'webkit' || browserName === 'chromium', 'Logout/form visibility has timing issues');
+    test.skip(
+      browserName === 'firefox' || browserName === 'webkit' || browserName === 'chromium',
+      'Logout/form visibility has timing issues'
+    );
 
     const loginPage = new LoginPage(page);
     const dashboardPage = new DashboardPage(page);
@@ -148,7 +154,10 @@ test.describe('Authentication', () => {
   });
 
   test('should persist session after page reload', async ({ page, browserName }) => {
-    test.skip(browserName === 'webkit' || browserName === 'firefox', 'Webkit/Firefox have session persistence issues after reload');
+    test.skip(
+      browserName === 'webkit' || browserName === 'firefox',
+      'Webkit/Firefox have session persistence issues after reload'
+    );
 
     // Login
     await loginAsTeacher(page);
@@ -190,7 +199,10 @@ test.describe('Authentication', () => {
   });
 
   test('should allow different user roles to authenticate', async ({ page, browserName }) => {
-    test.skip(browserName === 'firefox' || browserName === 'webkit' || browserName === 'chromium', 'Browsers have login/logout timing issues');
+    test.skip(
+      browserName === 'firefox' || browserName === 'webkit' || browserName === 'chromium',
+      'Browsers have login/logout timing issues'
+    );
 
     // Test 1: Teacher can log in
     await loginAsTeacher(page);
@@ -209,7 +221,10 @@ test.describe('Authentication', () => {
   });
 
   test('should allow principal to authenticate', async ({ page, browserName }) => {
-    test.skip(browserName === 'firefox' || browserName === 'webkit' || browserName === 'chromium', 'Browsers have login/logout timing issues');
+    test.skip(
+      browserName === 'firefox' || browserName === 'webkit' || browserName === 'chromium',
+      'Browsers have login/logout timing issues'
+    );
 
     // Test 2: Principal can log in (in separate test to avoid cross-contamination)
     await loginAsPrincipal(page);
