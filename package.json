@@ -8,7 +8,8 @@
   ],
   "scripts": {
     "dev": "npm run dev --workspaces --if-present",
-    "build": "npm run build --workspaces --if-present",
+    "build": "npm run build --workspace=@growth-engine/shared && npm run build --workspace=@growth-engine/backend --workspace=@growth-engine/frontend",
+    "build:all": "npm run build --workspace=@growth-engine/shared && npm run build --workspace=@growth-engine/backend --workspace=@growth-engine/frontend",
     "test": "npm run test --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
