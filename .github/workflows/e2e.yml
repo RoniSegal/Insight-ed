@@ -55,6 +55,12 @@ jobs:
       - name: Build shared package
         run: npm run build --workspace=@growth-engine/shared
 
+      - name: Generate Prisma Client
+        working-directory: packages/backend
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/growth_engine_e2e
+        run: npx prisma generate
+
       - name: Build backend
         run: npm run build --workspace=@growth-engine/backend
 
@@ -63,7 +69,6 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/growth_engine_e2e
         run: |
-          npx prisma generate
           npx prisma migrate deploy
           npx prisma db seed
 
