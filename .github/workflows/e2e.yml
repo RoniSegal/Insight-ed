@@ -64,12 +64,21 @@ jobs:
           npx prisma migrate deploy
           npx prisma db seed
 
+      - name: Build backend
+        working-directory: packages/backend
+        run: npm run build
+
       - name: Start backend server
         working-directory: packages/backend
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/growth_engine_e2e
           REDIS_URL: redis://localhost:6379
           JWT_SECRET: test-secret-key
+          JWT_ACCESS_SECRET: test-access-secret-key
+          JWT_REFRESH_SECRET: test-refresh-secret-key
+          JWT_ACCESS_TOKEN_EXPIRATION: 15m
+          JWT_REFRESH_TOKEN_EXPIRATION: 7d
+          OPENAI_API_KEY: test-openai-key
           NODE_ENV: test
         run: npm run start:prod &
 
