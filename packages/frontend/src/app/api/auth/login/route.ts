@@ -31,13 +31,19 @@ const BACKEND_URL = process.env.BACKEND_API_URL || 'http://localhost:4000/api/v1
  */
 export async function POST(request: Request) {
   try {
+    console.log('[LOGIN API] Request received');
+    console.log('[LOGIN API] BACKEND_URL:', BACKEND_URL);
+
     const body = await request.json();
     const { email, password } = body;
 
     // Validate required fields
     if (!email || !password) {
+      console.log('[LOGIN API] Validation failed - missing email or password');
       return NextResponse.json({ error: 'Email and password required' }, { status: 400 });
     }
+
+    console.log('[LOGIN API] Forwarding to backend:', `${BACKEND_URL}/auth/login`);
 
     // Forward request to backend API
     const response = await fetch(`${BACKEND_URL}/auth/login`, {
@@ -48,8 +54,11 @@ export async function POST(request: Request) {
       body: JSON.stringify({ email, password }),
     });
 
+    console.log('[LOGIN API] Backend response status:', response.status);
+
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ error: 'Authentication failed' }));
+      console.log('[LOGIN API] Backend error:', errorData);
       return NextResponse.json(
         { error: errorData.message || errorData.error || 'Authentication failed' },
         { status: response.status }
@@ -57,9 +66,10 @@ export async function POST(request: Request) {
     }
 
     const data = await response.json();
+    console.log('[LOGIN API] Success - returning user data');
     return NextResponse.json(data);
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('[LOGIN API] Exception:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
