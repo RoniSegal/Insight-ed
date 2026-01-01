@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 
+// Force dynamic rendering for this API route
+export const dynamic = 'force-dynamic';
+
 const BACKEND_URL = process.env.BACKEND_API_URL || 'http://localhost:4000/api/v1';
 
 /**

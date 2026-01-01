@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 
+// Force dynamic rendering for this API route
+export const dynamic = 'force-dynamic';
+
 import { verifyToken, getTeacherAccount } from '@/app/api/lib/auth';
 
 /**
