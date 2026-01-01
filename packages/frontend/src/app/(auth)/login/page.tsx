@@ -21,11 +21,10 @@ export default function LoginPage() {
     try {
       await login(email, password);
 
-      // Small delay to ensure Zustand persist has written to localStorage
-      // This prevents race condition where navigation happens before state is persisted
-      await new Promise(resolve => setTimeout(resolve, 100));
-
-      router.push('/students');
+      // Use window.location.href for a full page reload instead of client-side navigation
+      // This ensures localStorage is fully written and read on the new page load
+      // avoiding race conditions with Zustand persist middleware
+      window.location.href = '/students';
     } catch (err: any) {
       setError(err.message || 'Invalid email or password');
     }
