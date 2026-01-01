@@ -18,10 +18,14 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
 
+    console.log('[LOGIN PAGE] Form submitted, calling login...');
     try {
       await login(email, password);
+      console.log('[LOGIN PAGE] Login successful, navigating to /students...');
       router.push('/students');
+      console.log('[LOGIN PAGE] router.push called');
     } catch (err: any) {
+      console.error('[LOGIN PAGE] Login failed:', err);
       setError(err.message || 'Invalid email or password');
     }
   };

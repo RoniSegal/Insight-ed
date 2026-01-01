@@ -46,21 +46,27 @@ export const useAuthStore = create<AuthState>()(
       },
 
       login: async (email: string, password: string) => {
+        console.log('[AUTH STORE] Login called');
         set({ isLoading: true });
         try {
+          console.log('[AUTH STORE] Calling API /auth/login');
           const response: any = await ApiClient.post('/auth/login', {
             email,
             password,
           });
+          console.log('[AUTH STORE] API response received:', { hasAccessToken: !!response.accessToken, hasUser: !!response.user });
 
           // For MVP, we only have accessToken, no refreshToken
           ApiClient.setAuthTokens(response.accessToken, response.refreshToken || '');
+          console.log('[AUTH STORE] Tokens set, updating state');
           set({
             user: response.user,
             isAuthenticated: true,
             isLoading: false,
           });
+          console.log('[AUTH STORE] State updated - isAuthenticated: true, user:', !!response.user);
         } catch (error: any) {
+          console.error('[AUTH STORE] Login error:', error);
           set({ isLoading: false });
           throw error;
         }
