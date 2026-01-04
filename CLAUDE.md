@@ -20,6 +20,7 @@ This repo represents an R&D department for the project:
 Work is **role-based** and **ticket-driven**.
 
 **Core Agents:**
+
 - Product
 - Architect
 - Designer
@@ -28,13 +29,16 @@ Work is **role-based** and **ticket-driven**.
 - E2E Test Engineer
 
 **Quality Gate Agents:**
+
 - Code Reviewer (`.claude/agents/code-reviewer.md`)
 - Team Lead (`.claude/agents/team-lead.md`)
 
 **Optional Specialist Agents:**
+
 - DevOps, Data Engineer, ML Engineer, Security Engineer, QA Engineer, etc.
 
 Claude must:
+
 - **Run agents in parallel when tasks are independent** (use multiple Task tool calls in a single message)
 - Run agents sequentially only when there are dependencies between tasks
 - Respect ticket ownership and dependencies
@@ -43,18 +47,21 @@ Claude must:
 **Parallel vs Sequential Execution:**
 
 ✅ **Run in PARALLEL** (single message with multiple Task calls):
+
 - Designer + Backend + Frontend all working on different tickets in same epic
 - Code reviewer reviewing multiple independent files
 - Multiple E2E test agents running different test suites
 - Exploring multiple parts of codebase simultaneously
 
 ❌ **Run SEQUENTIALLY** (wait for one to finish before starting next):
+
 - Backend must finish API before Frontend can integrate
 - Architect must design before Backend/Frontend can implement
 - Code must be written before Code Reviewer can review
 - Code Reviewer must approve before Team Lead can verify
 
 **Example - Parallel:**
+
 ```
 User: "Implement the login feature"
 Claude: [Sends ONE message with THREE Task calls]:
@@ -64,6 +71,7 @@ Claude: [Sends ONE message with THREE Task calls]:
 ```
 
 **Example - Sequential:**
+
 ```
 User: "Add authentication endpoint"
 Claude: [Task(subagent_type='backend')] → waits for completion
@@ -74,6 +82,7 @@ Claude: [Task(subagent_type='team-lead')] → waits for final approval
 Tickets live in `/tickets` and are the **source of truth** for work.
 
 **Epic-based workflow:**
+
 - Related tickets across multiple roles (designer, backend, frontend, e2e) are grouped by **Epic** field.
 - Each ticket has an `Epic:` field (e.g., "apple-pay", "user-auth", "project-setup").
 - Users can say "implement apple-pay" to work on all tickets in that epic across all agents.
@@ -98,6 +107,7 @@ Agents should always read from these before making changes.
 **These rules apply to ALL agents (Designer, Backend, Frontend, E2E, Specialists):**
 
 ### 1. Minimal Code Changes Only
+
 - **Only modify code that is directly necessary** to meet the ticket requirements
 - Do NOT make "improvements" or "optimizations" outside the scope of the task
 - Do NOT refactor existing code unless:
@@ -108,6 +118,7 @@ Agents should always read from these before making changes.
 - If existing code works, leave it alone
 
 ### 2. No Refactoring Without Approval
+
 - **Never refactor code "while you're there"** - this introduces unnecessary risk
 - Do NOT:
   - Rename variables or functions in unrelated code
@@ -118,6 +129,7 @@ Agents should always read from these before making changes.
 - **Exception:** Code reviewer or user explicitly approves the refactoring
 
 ### 3. No Dead Code
+
 - **Remove all unused code** - do NOT leave commented-out code or unused imports
 - If removing a feature, delete the code completely:
   - Remove unused functions, classes, components
@@ -133,6 +145,7 @@ Agents should always read from these before making changes.
 - **Exception:** If uncertain whether code is unused, ask the user before deleting
 
 ### 4. Surgical Changes
+
 - Make targeted, surgical changes to accomplish the task
 - Minimize the diff - fewer lines changed = lower risk
 - If you must touch a file, touch as few lines as possible
@@ -140,6 +153,7 @@ Agents should always read from these before making changes.
 - Match the existing codebase conventions exactly
 
 **Example - GOOD:**
+
 ```diff
   function calculatePrice(item: Item): number {
 -   return item.price;
@@ -148,6 +162,7 @@ Agents should always read from these before making changes.
 ```
 
 **Example - BAD (unnecessary refactoring):**
+
 ```diff
 - function calculatePrice(item: Item): number {
 -   return item.price;
@@ -161,6 +176,7 @@ Agents should always read from these before making changes.
 ```
 
 **Why These Rules Matter:**
+
 - Reduces merge conflicts and review overhead
 - Minimizes bugs introduced by unnecessary changes
 - Keeps git history clean and focused
@@ -174,6 +190,7 @@ Agents should always read from these before making changes.
 ### 1. 🟥 Product Phase
 
 Triggered by user commands like:
+
 - "Run Product Phase" (initial setup)
 - "Run Product Intake" (initial setup)
 - "Product: work on requirements" (initial setup)
@@ -185,6 +202,7 @@ Active agent: **Product** (`.claude/agents/product.md`).
 **Two modes:**
 
 **A. Initial Mode** - Setting up the project for the first time:
+
 - Read all context files
 - Create comprehensive PRD
 - Generate initial backlog with all core epics
@@ -192,12 +210,14 @@ Active agent: **Product** (`.claude/agents/product.md`).
 **B. Incremental Mode** - Adding features to a live system (two-phase process):
 
 **Phase 1: Review & Approve**
+
 - Read feature requests from `/context/feature-requests.md`
 - Evaluate each request: alignment, impact, effort, fit with roadmap
 - Approve, Reject, or Defer each request with reasoning
 - Do NOT create tickets yet
 
 **Phase 2: Create Tickets for Approved Features**
+
 - Only work on features with Status: "Approved"
 - Read existing PRD and tickets (preserve everything)
 - Update PRD with new feature section
@@ -205,6 +225,7 @@ Active agent: **Product** (`.claude/agents/product.md`).
 - Do NOT modify existing epics/tickets
 
 Responsibilities:
+
 1. Read `/context/client.md`, `/context/requirements.md`, `/context/discovery.md`.
 2. Produce or update `/docs/PRD.md`.
 3. Generate tickets in `/tickets` grouped by **epics/features**:
@@ -221,13 +242,14 @@ Responsibilities:
 5. Maintain `/tickets/OPEN_QUESTIONS.md` for unknowns or blocked items.
 
 The Product agent **must not** design architecture or implementation details.
-It describes the *what* and *why*, not the *how*.
+It describes the _what_ and _why_, not the _how_.
 
 ---
 
 ### 2. 🟦 Architect Phase
 
 Triggered by commands like:
+
 - "Run Architect Phase"
 - "Architect: plan system"
 - "Design architecture"
@@ -235,6 +257,7 @@ Triggered by commands like:
 Active agent: **Architect** (`.claude/agents/architect.md`).
 
 Responsibilities:
+
 1. Read `/docs/PRD.md`, `/context/*`, and existing `/tickets`.
 2. Produce or update `/docs/ARCHITECTURE.md`:
    - components and boundaries
@@ -254,6 +277,7 @@ The Architect agent should **not** directly implement features, but it can propo
 ### 3. 🟨 Delivery Phases (Designer, Backend, Frontend)
 
 Triggered by commands like:
+
 - "Run Designer Tickets"
 - "Run Backend Tickets"
 - "Run Frontend Tickets"
@@ -261,6 +285,7 @@ Triggered by commands like:
 Active agent: one of **Designer**, **Backend**, or **Frontend**.
 
 General rules:
+
 1. Read:
    - `/docs/PRD.md`
    - `/docs/ARCHITECTURE.md`
@@ -280,6 +305,7 @@ The agent must not modify tickets owned by another role except to add clarificat
 ### 4. 🟩 E2E Test Phase
 
 Triggered by commands like:
+
 - "Run E2E Tests Phase"
 - "Run E2E QA"
 - "E2E: review features"
@@ -287,6 +313,7 @@ Triggered by commands like:
 Active agent: **E2E Test Engineer** (`.claude/agents/e2e.md`).
 
 Responsibilities:
+
 1. Read:
    - `/docs/PRD.md`
    - `/docs/ARCHITECTURE.md`
@@ -305,8 +332,8 @@ Responsibilities:
    - E2E test files or skeletons when appropriate
 4. Act as **release gate**:
    - For each feature, explicitly mark:
-     - "E2E status: ready for production" *with reasoning*  
-       or  
+     - "E2E status: ready for production" _with reasoning_  
+       or
      - "E2E status: NOT ready – missing tests: …"
 
 The E2E agent must never mark a feature as **ready for production** if critical flows are untested or tests are failing/unreliable.
@@ -318,6 +345,7 @@ The E2E agent must never mark a feature as **ready for production** if critical 
 The system starts with core agents: **Product, Architect, Designer, Backend, Frontend, E2E**.
 
 Specialist agents can be added in TWO ways:
+
 1. **During initial setup** (`rda brief` command) - Detected from project requirements
 2. **During development** (Product/Architect identifies missing expertise)
 
@@ -343,16 +371,19 @@ If work requires expertise beyond existing agents, the system must **hire a new 
 ### Who Detects Missing Expertise?
 
 **Product Agent** - During feature request review:
+
 - Identifies if a feature needs DevOps, Data, ML, Security, Mobile, or other specialist expertise
 - Marks feature request as **Status: Blocked** with reason
 - Creates "Hire [ROLE] agent" ticket
 
 **Architect Agent** - During architecture design:
+
 - Identifies if architectural decisions require specialist expertise (e.g., ML pipelines, data warehousing, CI/CD)
 - Creates "Hire [ROLE] agent" ticket
 - Drafts agent specification
 
 **Any Agent** - During ticket work:
+
 - If blocked by missing expertise, escalate to Product or Architect
 - Do NOT fake expertise or assign work to wrong agent
 
@@ -451,12 +482,14 @@ rda gen-agents
 ```
 
 **During `rda brief`:**
+
 - Answer questions about your project (name, domain, stack, integrations, etc.)
 - CLI automatically detects which specialist agents you might need
 - You confirm which specialist agents to include
 - Saves to `project.brief.json` with `requiredAgents` field
 
 **During `rda gen-agents`:**
+
 - Generates core agents (always): product, architect, designer, backend, frontend, e2e, code-reviewer, team-lead
 - Generates specialist agents (only if in `requiredAgents`): devops, data-engineer, ml-engineer, etc.
 - Creates `.claude/agents/` with project-specific context
@@ -468,6 +501,7 @@ rda gen-agents
 In this project, you can guide Claude using commands like:
 
 **Initial Setup (first time):**
+
 - "Run Product Phase according to .claude/agents/product.md"
 - "Run Architect Phase according to .claude/agents/architect.md"
 - "Run Designer Tickets according to .claude/agents/designer.md"
@@ -478,14 +512,17 @@ In this project, you can guide Claude using commands like:
 **Adding New Features (post-launch - two-phase workflow):**
 
 Phase 1 - Review & Approve:
+
 - "Product: review feature requests" → Product reviews and approves/rejects requests
 - "Product: triage new requests" → Same as above
 
 Phase 2 - Create Tickets:
+
 - "Product: create tickets for approved features" → Creates PRD sections + tickets for approved features
 - "Product: add [feature name] to PRD" → Creates PRD + tickets for specific approved feature
 
 **Epic-based Implementation:**
+
 - "Implement apple-pay feature" → Works on all tickets where Epic: apple-pay across all relevant agents
 - "Continue with project-setup epic" → Resumes work on all project-setup tickets
 - "Show me the status of user-auth epic" → Reports on all tickets in the user-auth epic
@@ -518,6 +555,7 @@ Phase 2 - Create Tickets:
 **Key Gate:** Feature requests must be approved by Product before tickets are created.
 
 When working on an epic, Claude should:
+
 1. Identify all tickets with matching Epic field
 2. Work through them in dependency order
 3. Activate the appropriate agent for each ticket's owner role

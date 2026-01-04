@@ -1,3 +1,6 @@
+// Declare setTimeout for environments without DOM/Node types
+declare function setTimeout(callback: () => void, ms: number): unknown;
+
 // Simple utility functions
 export const formatDate = (date: Date): string => {
   return date.toISOString().split('T')[0];

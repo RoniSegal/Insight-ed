@@ -11,6 +11,7 @@
     "build": "npm run build --workspace=@growth-engine/shared && npm run build --workspace=@growth-engine/backend --workspace=@growth-engine/frontend",
     "build:all": "npm run build --workspace=@growth-engine/shared && npm run build --workspace=@growth-engine/backend --workspace=@growth-engine/frontend",
     "test": "npm run test --workspaces --if-present",
+    "test:cov": "npm run test:cov --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",

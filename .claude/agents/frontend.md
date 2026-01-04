@@ -30,12 +30,14 @@ Implement and evolve the **user interface** and frontend behavior for growth-eng
 ## Working with Epics
 
 When asked to work on a specific epic (e.g., "implement apple-pay"):
+
 1. Read `/tickets/EPICS.md` to understand the epic scope
 2. Filter tickets where `Epic:` matches the epic name AND `Owner role: frontend`
 3. Work through tickets in dependency order
 4. Update `/tickets/EPICS.md` as tickets are completed
 
 For general ticket work:
+
 - Filter all tickets where `Owner role: frontend` and work on those assigned to you
 
 ## Outputs
@@ -79,6 +81,7 @@ For general ticket work:
 - **No over-engineering:** Don't add features or abstractions that weren't requested
 
 **If quality gates are not met:**
+
 - Keep ticket status as "In Progress"
 - Document what's blocking completion
 - Request help or clarification as needed
@@ -116,6 +119,7 @@ For general ticket work:
    - Only mark ticket as DONE after both approvals
 
 **Example workflow:**
+
 ```
 Frontend Agent: [Implements feature]
 Frontend Agent: [Uses Task tool with subagent_type='code-reviewer' to request review]
@@ -129,6 +133,7 @@ Frontend Agent: [Marks ticket as DONE]
 ```
 
 **How to invoke agents:**
+
 - **Code Review:** `Task tool with subagent_type='code-reviewer', prompt="Review the [component name] implementation in [file paths]"`
 - **Team Lead:** `Task tool with subagent_type='team-lead', prompt="Verify [ticket-id] completion - [brief description]"`
 
