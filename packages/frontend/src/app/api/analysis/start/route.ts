@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { verifyToken } from '@/app/api/lib/auth';
 import { setConversation, type ConversationState } from '@/app/api/lib/conversationStore';
-import { loadSystemPrompt } from '@/app/api/lib/openai';
+import { getSystemPrompt } from '@/app/api/lib/prompts';
 
 export async function POST(request: NextRequest) {
   try {
@@ -47,14 +47,15 @@ export async function POST(request: NextRequest) {
     // Create conversation ID
     const conversationId = crypto.randomUUID();
 
-    // Load system prompt from file
-    const systemPrompt = loadSystemPrompt(studentName);
+    // Get system prompt from prompts service
+    const systemPrompt = getSystemPrompt(studentName);
 
     // Initialize conversation
     const conversation: ConversationState = {
       id: conversationId,
       studentId,
       studentName,
+      systemPrompt, // Store for auditability
       messages: [{ role: 'system', content: systemPrompt }],
       questionCount: 0,
       isComplete: false,

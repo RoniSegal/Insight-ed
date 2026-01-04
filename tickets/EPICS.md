@@ -73,6 +73,36 @@ This file tracks all epics/features and their associated tickets for the Growth 
 
 ## Active Epics
 
+### Epic: prompt-management
+**Epic ID:** prompt-management
+**Status:** TODO (Ready to Start)
+**Priority:** P1 (high)
+**Target Release:** v1.0 (MVP)
+**Description:** Move prompt management from file-based to backend service layer. Enables production-ready deployment (containerization), prompt versioning, and future A/B testing capabilities. Phase 1 implements service layer with hardcoded prompts. Phase 2 (future) adds database storage.
+**E2E Status:** Not Started
+
+**Related Tickets (Phase 1 - 4 tickets):**
+- [ ] GE-066 (backend) - Prompt Management - Backend Service Layer
+- [ ] GE-067 (backend) - Prompt Management - Backend Integration
+- [ ] GE-068 (frontend) - Prompt Management - Frontend Integration
+- [ ] GE-070 (team-lead) - Prompt Management - Epic Coordination & PR
+
+**Phase 2 (Future - 1 ticket):**
+- [ ] GE-069 (backend) - Prompt Management - Database Schema (DO NOT START until Phase 1 stable)
+
+**Notes:**
+- **Context:** Current system loads prompts from `/context/chat-prompt-simple.txt` at runtime - not production-safe
+- **Goal:** Backend service manages prompts (no file dependencies) for containerization
+- **Benefits:** Production-ready, versioning support, proper message structure (system vs conversation)
+- **Phase 1 Scope:** PromptsService with hardcoded prompts, update AnalysisService
+- **Phase 2 Scope:** Database storage, admin UI, A/B testing (implement after 2-4 weeks in production)
+- **Architecture:** /docs/ARCHITECTURE_PROPOSAL_PROMPT_MANAGEMENT.md
+
+**Dependencies:**
+- GE-057 (backend) - OpenAI integration exists
+
+---
+
 ### Epic 1: project-setup
 **Epic ID:** project-setup
 **Status:** Complete (5/5 tickets complete)
@@ -354,8 +384,10 @@ No standalone tickets for MVP. All work is organized by epics.
 
 | Epic ID | Epic Name | Priority | Tickets | Status | Target |
 |---------|-----------|----------|---------|--------|--------|
-| project-setup | Project Setup | P0 | 5 | Not Started | v1.0 |
-| authentication | Authentication | P0 | 5 | Not Started | v1.0 |
+| 3-day-mvp-demo | 3-Day MVP Demo | P0 | 16 | In Progress | v0.1 |
+| project-setup | Project Setup | P0 | 5 | Complete | v1.0 |
+| authentication | Authentication | P0 | 6 | In Progress | v1.0 |
+| prompt-management | Prompt Management | P1 | 5 | TODO | v1.0 |
 | user-management | User Management | P1 | 4 | Not Started | v1.0 |
 | student-management | Student Management | P0 | 4 | Not Started | v1.0 |
 | ai-analysis | AI Analysis | P0 | 5 | Not Started | v1.0 |
@@ -364,7 +396,7 @@ No standalone tickets for MVP. All work is organized by epics.
 | principal-dashboard | Principal Dashboard | P1 | 4 | Not Started | v1.0 |
 | search-filter | Search & Filter | P2 | 4 | Not Started | v1.0 |
 | security-compliance | Security & Compliance | P0 | 2 | Not Started | v1.0 |
-| **TOTAL** | **10 Epics** | | **41 Tickets** | | |
+| **TOTAL** | **12 Epics** | | **59 Tickets** | | |
 
 ---
 
@@ -374,10 +406,11 @@ No standalone tickets for MVP. All work is organized by epics.
 |------|--------------|------------------|
 | Architect | 3 | project-setup, authentication, ai-analysis |
 | Designer | 8 | authentication, user-mgmt, student-mgmt, ai-analysis, analysis-results, teacher-dash, principal-dash, search-filter |
-| Backend | 14 | project-setup, authentication, user-mgmt, student-mgmt, ai-analysis, analysis-results, teacher-dash, principal-dash, search-filter, security |
-| Frontend | 8 | authentication, user-mgmt, student-mgmt, ai-analysis, analysis-results, teacher-dash, principal-dash, search-filter |
+| Backend | 17 | project-setup, authentication, prompt-management, user-mgmt, student-mgmt, ai-analysis, analysis-results, teacher-dash, principal-dash, search-filter, security |
+| Frontend | 9 | authentication, prompt-management, user-mgmt, student-mgmt, ai-analysis, analysis-results, teacher-dash, principal-dash, search-filter |
 | E2E | 8 | project-setup, authentication, user-mgmt, student-mgmt, ai-analysis, analysis-results, teacher-dash, principal-dash, search-filter, security |
-| **TOTAL** | **41** | **10 epics** |
+| Team Lead | 1 | prompt-management |
+| **TOTAL** | **46** | **11 epics** |
 
 ---
 

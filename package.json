@@ -7,7 +7,9 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "npm run dev --workspaces --if-present",
+    "dev": "npm run dev --workspace=@growth-engine/backend & npm run dev --workspace=@growth-engine/frontend",
+    "dev:backend": "npm run dev --workspace=@growth-engine/backend",
+    "dev:frontend": "npm run dev --workspace=@growth-engine/frontend",
     "build": "npm run build --workspace=@growth-engine/shared && npm run build --workspace=@growth-engine/backend --workspace=@growth-engine/frontend",
     "build:all": "npm run build --workspace=@growth-engine/shared && npm run build --workspace=@growth-engine/backend --workspace=@growth-engine/frontend",
     "test": "npm run test --workspaces --if-present",

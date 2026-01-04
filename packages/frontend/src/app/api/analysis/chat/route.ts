@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/app/api/lib/auth';
 import { getConversation, setConversation } from '@/app/api/lib/conversationStore';
 import { chat, isOpenAIConfigured, truncateConversationHistory } from '@/app/api/lib/openai';
+import { getQuestionTemplates } from '@/app/api/lib/prompts';
 
 // Rate limiting (simple in-memory implementation for MVP)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
@@ -28,14 +29,25 @@ function checkRateLimit(
   return true;
 }
 
-// Question templates in Hebrew (fallback when OpenAI is not configured)
-const questionTemplates = [
-  'תודה! זה מאוד מועיל.\n\n**שאלה 2 מתוך 6:**\nכיצד {studentName} בדרך כלל מתקשר/ת עם השיעורים? האם הוא/היא לומד/ת בצורה ויזואלית, שמיעתית, או קינסטטית יותר? תאר/י את ההשתתפות שלו/שלה בדיונים בכיתה ובפעילויות קבוצתיות.',
-  'מעולה, תובנות חשובות.\n\n**שאלה 3 מתוך 6:**\nספר/י לי על הרגלי השיעורים הביתיים וההתנהגות של {studentName}. האם הוא/היא משלים/ה משימות בזמן? כיצד היית מתאר/ת את ההתנהגות שלו/שלה בכיתה - ממוקד/ת, מתוסכל/ת בקלות, או משהו באמצע?',
-  'תודה על המידע.\n\n**שאלה 4 מתוך 6:**\nכיצד {studentName} מתקשר/ת עם חברי הכיתה? האם הוא/היא עובד/ת היטב בקבוצות? האם שמת/ת לב לדפוסים רגשיים או התנהגותיים שמשפיעים על הלמידה שלו/שלה?',
-  'מצוין, זה מאוד עוזר.\n\n**שאלה 5 מתוך 6:**\nמה האתגרים העיקריים שעומדים בפני {studentName} בלמידה? האם שמת/ת לב לשיפורים או שינויים לאחרונה בביצועיו/ביצועיה?',
-  'תובנות נהדרות, כמעט סיימנו!\n\n**שאלה 6 מתוך 6:**\nאילו חוזקות או כישרונות ייחודיים שמת/ת לב אצל {studentName}? האם יש עוד משהו חשוב עליו/עליה שיכול לעזור ביצירת תוכנית למידה מותאמת אישית?',
-];
+/**
+ * Get template response when OpenAI is not configured
+ * This provides a fallback for demo purposes using question templates from prompts service
+ */
+function getTemplateResponse(conversation: any): string {
+  const questionIndex = conversation.questionCount || 0;
+  const studentName = conversation.studentName || 'התלמיד/ה';
+  const questionTemplates = getQuestionTemplates();
+
+  if (questionIndex < questionTemplates.length) {
+    // Return next question
+    return questionTemplates[questionIndex].replace(/{studentName}/g, studentName);
+  } else {
+    // After 6 questions, suggest completing the analysis
+    return `תודה רבה על כל המידע המפורט! יש לי תמונה ברורה של ${studentName}.
+
+לחץ/י על כפתור "השלם ניתוח" כדי לקבל ניתוח מקיף עם המלצות ספציפיות לתלמיד/ה.`;
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -147,24 +159,5 @@ export async function POST(request: NextRequest) {
       { error: error.message || 'Failed to process message. Please try again.' },
       { status: 500 }
     );
-  }
-}
-
-/**
- * Get template response when OpenAI is not configured
- * This provides a fallback for demo purposes
- */
-function getTemplateResponse(conversation: any): string {
-  const questionIndex = conversation.questionCount || 0;
-  const studentName = conversation.studentName || 'התלמיד/ה';
-
-  if (questionIndex < questionTemplates.length) {
-    // Return next question
-    return questionTemplates[questionIndex].replace(/{studentName}/g, studentName);
-  } else {
-    // After 6 questions, suggest completing the analysis
-    return `תודה רבה על כל המידע המפורט! יש לי תמונה ברורה של ${studentName}.
-
-לחץ/י על כפתור "השלם ניתוח" כדי לקבל ניתוח מקיף עם המלצות ספציפיות לתלמיד/ה.`;
   }
 }

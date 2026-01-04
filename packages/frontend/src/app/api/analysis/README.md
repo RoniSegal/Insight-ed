@@ -182,7 +182,19 @@ Teacher → Start Conversation
 
 ### 2. System Prompt
 
-The system uses an educational psychologist prompt from `/context/chat-prompt-simple.txt`:
+**Updated 2026-01-04:** The system now uses prompts from the PromptsService instead of file-based loading.
+
+**Service Layer:**
+- **Frontend API**: `/packages/frontend/src/app/api/lib/prompts.ts` (standalone functions)
+- **Backend NestJS**: `/packages/backend/src/prompts/prompts.service.ts` (injectable service)
+
+**Reference File:** `/context/chat-prompt-simple.txt` (preserved for reference only, not loaded at runtime)
+
+**Why the change?** Removing file dependencies makes the application containerization-ready (Docker, Kubernetes, serverless).
+
+To modify prompts, edit the service constants in `prompts.ts` or `prompts.service.ts`, not the `.txt` file.
+
+**Prompt Content:**
 
 ```
 You are an expert educational psychologist for K-12 students.

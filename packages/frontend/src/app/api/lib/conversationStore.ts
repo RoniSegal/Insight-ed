@@ -7,6 +7,7 @@ export type ConversationState = {
   id: string;
   studentId: string;
   studentName: string;
+  systemPrompt: string; // Store the system prompt used for auditability
   messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }>;
   questionCount: number;
   isComplete: boolean;
