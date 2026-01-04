@@ -1,5 +1,5 @@
 import { UserRole, AuthProvider, type User } from '@growth-engine/shared';
-import { renderHook, act, waitFor } from '@testing-library/react';
+import { renderHook, act } from '@testing-library/react';
 
 import { ApiClient } from '@/lib/api-client';
 import { useAuthStore } from '@/lib/auth/auth-store';

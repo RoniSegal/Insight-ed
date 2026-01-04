@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react';
 
 import { ApiClient } from '@/lib/api-client';
-import { useChatStore, type Message } from '@/lib/store/chatStore';
+import { useChatStore } from '@/lib/store/chatStore';
 
 jest.mock('@/lib/api-client');
 
