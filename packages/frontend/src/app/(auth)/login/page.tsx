@@ -1,13 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { useAuthStore } from '@/lib/auth/auth-store';
 
 export default function LoginPage() {
-  const router = useRouter();
   const { login, loginWithGoogle, loginWithMicrosoft, isLoading } = useAuthStore();
 
   const [email, setEmail] = useState('');

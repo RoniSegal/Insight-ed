@@ -116,12 +116,12 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
     },
     ref
   ) => {
-    const Icon = icon || variantIcons[variant];
+    const IconComponent = variantIcons[variant ?? 'info'];
 
     return (
       <div ref={ref} className={cn(alertVariants({ variant }), className)} role="alert" {...props}>
         <div className="flex items-start gap-3">
-          <div className="flex-shrink-0">{Icon && <Icon />}</div>
+          <div className="flex-shrink-0">{icon ?? <IconComponent />}</div>
           <div className="flex-1 min-w-0">
             {title && <h3 className="font-semibold mb-1 text-base">{title}</h3>}
             <div className="text-sm leading-relaxed">{children}</div>

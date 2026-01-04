@@ -14,8 +14,8 @@ RED='\033[0;31m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-BASE_URL="http://localhost:3000"
-API_URL="http://localhost:3000/api"
+BASE_URL="http://localhost:4001"
+API_URL="http://localhost:4001/api"
 
 echo "${YELLOW}Prerequisites:${NC}"
 echo "1. Frontend dev server is running (npm run dev)"

@@ -97,10 +97,10 @@ function ChatPageContent() {
 
     try {
       // Send to API
-      const response = await ApiClient.post('/analysis/chat', {
+      const response = (await ApiClient.post('/analysis/chat', {
         conversationId,
         message: content,
-      });
+      })) as { message: string };
 
       // Add AI response
       const aiMessage: Message = {
@@ -137,9 +137,9 @@ function ChatPageContent() {
     setError(null);
 
     try {
-      const response = await ApiClient.post('/analysis/complete', {
+      const response = (await ApiClient.post('/analysis/complete', {
         conversationId,
-      });
+      })) as { analysisId: string };
 
       // Navigate to results page with analysisId from response
       router.push(`/results/${response.analysisId}`);

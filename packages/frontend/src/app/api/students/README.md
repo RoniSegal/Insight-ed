@@ -153,7 +153,7 @@ DELETE /api/students/:id
 All endpoints require a valid JWT token. Get a token by logging in:
 
 ```bash
-curl -X POST http://localhost:3000/api/auth/login \
+curl -X POST http://localhost:4001/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
     "email": "teacher@example.com",
@@ -246,17 +246,17 @@ Or test manually with curl:
 
 ```bash
 # Get token
-TOKEN=$(curl -s -X POST http://localhost:3000/api/auth/login \
+TOKEN=$(curl -s -X POST http://localhost:4001/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"teacher@example.com","password":"Test123!"}' \
   | jq -r '.accessToken')
 
 # List students
-curl -X GET http://localhost:3000/api/students \
+curl -X GET http://localhost:4001/api/students \
   -H "Authorization: Bearer $TOKEN" | jq
 
 # Create student
-curl -X POST http://localhost:3000/api/students \
+curl -X POST http://localhost:4001/api/students \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -266,17 +266,17 @@ curl -X POST http://localhost:3000/api/students \
   }' | jq
 
 # Get specific student
-curl -X GET http://localhost:3000/api/students/1 \
+curl -X GET http://localhost:4001/api/students/1 \
   -H "Authorization: Bearer $TOKEN" | jq
 
 # Update student
-curl -X PUT http://localhost:3000/api/students/1 \
+curl -X PUT http://localhost:4001/api/students/1 \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"grade": "כיתה ד׳"}' | jq
 
 # Delete student
-curl -X DELETE http://localhost:3000/api/students/6 \
+curl -X DELETE http://localhost:4001/api/students/6 \
   -H "Authorization: Bearer $TOKEN" | jq
 ```
 

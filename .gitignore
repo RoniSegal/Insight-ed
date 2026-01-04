@@ -46,3 +46,4 @@ tickets/
 
 # Root-level markdown files (keep locally but don't track)
 /*.md
+!CLAUDE.md

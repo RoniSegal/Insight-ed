@@ -3,7 +3,7 @@
 # Test Analysis Results API
 # Usage: ./test-analysis-api.sh [BASE_URL]
 
-BASE_URL="${1:-http://localhost:3000}"
+BASE_URL="${1:-http://localhost:4001}"
 API_URL="$BASE_URL/api"
 
 echo "Testing Analysis Results API at $API_URL"

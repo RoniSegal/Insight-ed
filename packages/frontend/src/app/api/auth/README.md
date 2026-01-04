@@ -104,16 +104,16 @@ Or test manually:
 
 ```bash
 # Login
-curl -X POST http://localhost:3000/api/auth/login \
+curl -X POST http://localhost:4001/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"teacher@example.com","password":"Test123!"}'
 
 # Get current user (replace TOKEN with actual token from login)
-curl -X GET http://localhost:3000/api/auth/me \
+curl -X GET http://localhost:4001/api/auth/me \
   -H "Authorization: Bearer TOKEN"
 
 # Logout
-curl -X POST http://localhost:3000/api/auth/logout
+curl -X POST http://localhost:4001/api/auth/logout
 ```
 
 ## Environment Variables
