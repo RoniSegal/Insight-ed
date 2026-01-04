@@ -15,6 +15,7 @@ Feature requests follow this lifecycle:
 7. **Rejected** - Product decided not to proceed (with reason)
 
 **IMPORTANT:** Feature requests do NOT automatically become tickets. The Product agent must:
+
 1. Review each request
 2. **Interview user if unclear** - Clarify problem, users, success criteria, constraints, scope
 3. Update request with clarified details
@@ -23,6 +24,7 @@ Feature requests follow this lifecycle:
 6. Only AFTER approval, add to PRD and create tickets
 
 **Product Interview:** If a request is vague or incomplete, the Product agent should use `AskUserQuestion` to gather:
+
 - Problem clarity (specific pain points, scenarios)
 - User segment (who needs this?)
 - Success criteria (how do we measure success?)
@@ -37,6 +39,7 @@ When adding a new feature request, use this format:
 
 ```markdown
 ### [Feature Name]
+
 **Date:** YYYY-MM-DD
 **Requested by:** User/stakeholder name or user segment
 **Priority:** P0 (critical) | P1 (high) | P2 (medium) | P3 (low)
@@ -55,16 +58,19 @@ Who are the primary users? (filled by Product during interview)
 How will we measure success? (filled by Product during interview)
 
 **Scope:**
+
 - In scope: (filled by Product during interview)
 - Out of scope: (filled by Product during interview)
 
 **Impact:**
+
 - Expected user benefit: (filled by Product)
 - Business impact: (filled by Product)
 - Effort estimate (if known): Small | Medium | Large (filled by Product)
 
 **Required Expertise:** (filled by Product agent during review)
 List of agents needed to implement this feature:
+
 - [ ] architect
 - [ ] designer
 - [ ] backend
@@ -73,6 +79,7 @@ List of agents needed to implement this feature:
 - [ ] **NEW AGENT NEEDED:** [role name] - Reason: [why existing agents can't handle this]
 
 **Product Decision:** (filled by Product agent during review)
+
 - [ ] Approved - Reason:
 - [ ] Rejected - Reason:
 - [ ] Deferred - Until:
@@ -89,6 +96,7 @@ Any additional context, constraints, or dependencies.
 Requests awaiting Product review:
 
 ### Example: Push Notifications
+
 **Date:** 2024-01-15
 **Requested by:** Mobile users
 **Priority:** P1
@@ -101,11 +109,13 @@ Users miss important updates because they don't check the app frequently.
 Add push notifications for key events: order updates, messages, and alerts.
 
 **Impact:**
+
 - Improved user engagement
 - Better retention
 - Effort: Large (requires backend infra + mobile SDK integration)
 
 **Product Decision:**
+
 - [ ] Approved - Reason:
 - [ ] Rejected - Reason:
 - [ ] Deferred - Until:
@@ -120,6 +130,7 @@ Consider notification preferences, quiet hours, and notification grouping.
 Feature requests that need a new specialist agent before they can proceed:
 
 ### Example: Automated CI/CD Pipeline
+
 **Date:** 2024-01-20
 **Requested by:** Engineering team
 **Priority:** P1
@@ -132,12 +143,14 @@ Manual deployments are error-prone and time-consuming. Need automated CI/CD pipe
 Set up automated pipeline: build → test → deploy to staging → deploy to production with rollback capability.
 
 **Impact:**
+
 - Faster deployments (manual: 2hrs → automated: 15min)
 - Fewer deployment errors
 - Better developer experience
 - Effort: Large (requires infrastructure setup, pipeline configuration)
 
 **Required Expertise:**
+
 - [x] architect - Pipeline architecture and design
 - [x] backend - Integration with existing services
 - [ ] frontend - Not needed
@@ -146,6 +159,7 @@ Set up automated pipeline: build → test → deploy to staging → deploy to pr
 - [x] **NEW AGENT NEEDED: devops** - CI/CD expertise, infrastructure as code, container orchestration, deployment automation
 
 **Product Decision:**
+
 - [ ] Approved - Reason:
 - [ ] Rejected - Reason:
 - [x] Blocked - Waiting for new agent: devops
@@ -161,6 +175,7 @@ Once DevOps agent is approved and created, this feature can be unblocked and mov
 Feature requests approved by Product, ready for ticket creation:
 
 ### Example: Dark Mode
+
 **Date:** 2024-01-10
 **Requested by:** Premium users
 **Priority:** P2
@@ -173,11 +188,13 @@ Users want dark mode for better usability in low-light conditions.
 Add system-wide dark mode with automatic switching based on OS preference.
 
 **Impact:**
+
 - Better UX for premium users
 - Competitive feature
 - Effort: Medium (CSS theming system + persistence)
 
 **Product Decision:**
+
 - [x] Approved - Reason: Highly requested by premium tier, aligns with accessibility goals
 - [ ] Rejected - Reason:
 - [ ] Deferred - Until:
@@ -205,6 +222,7 @@ Features that have been deployed:
 ## Rejected / Deferred Requests
 
 ### Example: Cryptocurrency Payments
+
 **Date:** 2024-01-08
 **Requested by:** Individual user
 **Priority:** P3
@@ -217,11 +235,13 @@ Some users want to pay with cryptocurrency.
 Integrate crypto payment gateway.
 
 **Product Decision:**
+
 - [ ] Approved - Reason:
 - [x] Rejected - Reason: Not aligned with current payment strategy, low user demand (single request), high regulatory complexity
 - [ ] Deferred - Until:
 
 ### Example: AI Chat Assistant
+
 **Date:** 2024-01-12
 **Requested by:** Customer success team
 **Priority:** P2
@@ -234,7 +254,7 @@ Support team is overwhelmed with common questions.
 Add AI-powered chat assistant for FAQ handling.
 
 **Product Decision:**
+
 - [ ] Approved - Reason:
 - [ ] Rejected - Reason:
 - [x] Deferred - Until: Q3 2024 - Good idea but waiting for AI costs to decrease and LLM integration patterns to mature
-

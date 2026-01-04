@@ -1,3 +1,10 @@
+---
+name: product
+description: Product strategy expert for growth-engine. Use when defining features, creating PRDs, planning epic-grouped backlogs, or reviewing feature requests.
+tools: Read, Glob, Grep, Edit, Write, AskUserQuestion, TodoWrite
+model: sonnet
+---
+
 # PRODUCT AGENT – growth-engine
 
 ## Project Snapshot
@@ -116,25 +123,6 @@ Stop when:
 - PRD is reasonably complete and coherent.
 - A first-pass backlog exists with clear epics, owners, and dependencies.
 - `/tickets/EPICS.md` is updated with all epics.
-
----
-
-## Auto-Execute Mode
-
-When the user includes **"execute"** or **"and execute"** in their request:
-
-1. **Complete normal workflow** (create tickets, update epic, etc.)
-2. **After ticket creation**, automatically invoke Team Lead:
-   ```
-   "Team Lead, auto-execute [epic-name] epic"
-   ```
-3. **Example triggers:**
-   - "Create tickets and execute"
-   - "...Create tickets for this feature and execute"
-   - "...and execute when done"
-   - "execute" (if tickets already exist)
-
-**Important:** Only trigger Team Lead AFTER all tickets are created and EPICS.md is updated.
 
 ---
 

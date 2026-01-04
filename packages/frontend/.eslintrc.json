@@ -1,0 +1,10 @@
+{
+  "root": true,
+  "extends": ["next/core-web-vitals"],
+  "rules": {
+    "react-hooks/exhaustive-deps": "warn",
+    "import/no-anonymous-default-export": "off",
+    "react/no-unescaped-entities": "off"
+  },
+  "ignorePatterns": ["node_modules/", ".next/", "dist/", "playwright-report/", "test-results/"]
+}

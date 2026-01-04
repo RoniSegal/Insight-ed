@@ -26,12 +26,14 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 ### Strategic Context
 
 **Why We're Building This:**
+
 - Educational outcomes depend on personalized instruction, but teachers lack tools to efficiently assess individual student needs at scale
 - Schools generate vast amounts of student data but struggle to transform it into actionable insights
 - Principals need visibility into school-wide patterns to allocate resources and support teachers effectively
 - AI technology is mature enough to augment (not replace) teacher expertise in understanding students
 
 **Business Problems Solved:**
+
 1. **Teacher Time Scarcity:** Reduce assessment time from 30-60 minutes per student to 5-10 minutes through AI-guided conversation
 2. **Inconsistent Assessment:** Provide structured framework ensuring comprehensive evaluation across academic, behavioral, and engagement dimensions
 3. **Lost Insights:** Capture tacit teacher knowledge that would otherwise remain undocumented
@@ -39,6 +41,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 5. **Resource Allocation:** Enable data-driven decisions about where to focus intervention resources and professional development
 
 **Market Opportunity:**
+
 - 3.7 million teachers in U.S. public K-12 schools
 - Growing EdTech market projected to reach $605 billion by 2027
 - Increasing demand for AI-powered tools that augment teacher capabilities
@@ -65,6 +68,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 ### User Goals
 
 **Teachers:**
+
 1. **Save Time:** Complete comprehensive student assessment in 5-10 minutes instead of 30-60 minutes
 2. **Gain Actionable Insights:** Receive specific, evidence-based recommendations for supporting each student
 3. **Track Progress:** Monitor student development over time with historical analysis comparisons
@@ -72,6 +76,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 5. **Reduce Documentation Burden:** Automatically generate professional reports for parent conferences, IEP meetings, and administrative requirements
 
 **Principals:**
+
 1. **School-Wide Visibility:** Understand student needs across all classrooms and grade levels at a glance
 2. **Identify Trends:** Recognize patterns requiring professional development, curriculum changes, or resource allocation
 3. **Support Teachers:** Identify teachers who need assistance and monitor platform adoption
@@ -79,6 +84,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 5. **Compliance & Reporting:** Generate reports for district administrators and school board presentations
 
 **District Administrators (Future):**
+
 1. **District-Level Insights:** Compare performance across schools and identify best practices
 2. **Resource Planning:** Make strategic decisions about staffing, professional development, and program funding
 3. **Accountability:** Demonstrate impact to school boards and community stakeholders
@@ -87,43 +93,43 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 
 #### MVP Success Criteria (Months 1-3)
 
-| Metric | Target | Measurement Method | Baseline |
-|--------|--------|-------------------|----------|
-| **Pilot School Enrollment** | 3-5 schools | Sales/onboarding tracking | 0 |
-| **Active Teachers** | 50-100 | Login and usage analytics | 0 |
-| **Analysis Completion Rate** | 80% of students | % of students with ≥1 analysis | N/A |
-| **Teacher Time Savings** | 2+ hours/week | User survey + usage data | Baseline survey |
-| **Teacher Satisfaction (NPS)** | 30+ | Post-analysis survey | N/A |
-| **System Uptime** | 99%+ during school hours | Monitoring tools | N/A |
-| **Security Incidents** | 0 | Security monitoring | N/A |
-| **Average Analysis Time** | <10 minutes | Session duration tracking | N/A |
+| Metric                         | Target                   | Measurement Method             | Baseline        |
+| ------------------------------ | ------------------------ | ------------------------------ | --------------- |
+| **Pilot School Enrollment**    | 3-5 schools              | Sales/onboarding tracking      | 0               |
+| **Active Teachers**            | 50-100                   | Login and usage analytics      | 0               |
+| **Analysis Completion Rate**   | 80% of students          | % of students with ≥1 analysis | N/A             |
+| **Teacher Time Savings**       | 2+ hours/week            | User survey + usage data       | Baseline survey |
+| **Teacher Satisfaction (NPS)** | 30+                      | Post-analysis survey           | N/A             |
+| **System Uptime**              | 99%+ during school hours | Monitoring tools               | N/A             |
+| **Security Incidents**         | 0                        | Security monitoring            | N/A             |
+| **Average Analysis Time**      | <10 minutes              | Session duration tracking      | N/A             |
 
 #### Product-Market Fit (Months 6-12)
 
-| Metric | Target | Measurement Method | Baseline |
-|--------|--------|-------------------|----------|
-| **Active Schools** | 20+ | Account count | 3-5 |
-| **Active Teachers** | 500+ | Weekly active users | 50-100 |
-| **Students Analyzed** | 15,000+ | Total student count | 1,500 |
-| **Teacher Retention** | 85%+ | % continuing after trial | N/A |
-| **School Renewal Rate** | 80%+ | Annual contract renewals | N/A |
-| **Net Promoter Score** | 40+ | Quarterly NPS survey | 30+ |
-| **Principal Adoption** | 90%+ | % of principals using dashboard | N/A |
-| **Feature Adoption** | 70%+ | % using trends/export features | N/A |
-| **Support Ticket Volume** | <5% of analyses | Support tickets / total analyses | N/A |
+| Metric                    | Target          | Measurement Method               | Baseline |
+| ------------------------- | --------------- | -------------------------------- | -------- |
+| **Active Schools**        | 20+             | Account count                    | 3-5      |
+| **Active Teachers**       | 500+            | Weekly active users              | 50-100   |
+| **Students Analyzed**     | 15,000+         | Total student count              | 1,500    |
+| **Teacher Retention**     | 85%+            | % continuing after trial         | N/A      |
+| **School Renewal Rate**   | 80%+            | Annual contract renewals         | N/A      |
+| **Net Promoter Score**    | 40+             | Quarterly NPS survey             | 30+      |
+| **Principal Adoption**    | 90%+            | % of principals using dashboard  | N/A      |
+| **Feature Adoption**      | 70%+            | % using trends/export features   | N/A      |
+| **Support Ticket Volume** | <5% of analyses | Support tickets / total analyses | N/A      |
 
 #### Scale Metrics (Months 12-24)
 
-| Metric | Target | Measurement Method | Baseline |
-|--------|--------|-------------------|----------|
-| **Active Schools** | 100+ | Account count | 20+ |
-| **Active Teachers** | 2,000+ | Weekly active users | 500+ |
-| **Total Analyses** | 500,000+ | Cumulative analysis count | 50,000 |
-| **Analyses Per Student/Year** | 3+ | Avg analyses per student | 1 |
-| **Revenue** | $500K+ ARR | Annual Recurring Revenue | $0 |
-| **Gross Margin** | 70%+ | (Revenue - COGS) / Revenue | N/A |
-| **Churn Rate** | <15% annually | Lost schools / total schools | N/A |
-| **Customer Acquisition Cost** | <$500/school | Sales cost / new schools | N/A |
+| Metric                        | Target        | Measurement Method           | Baseline |
+| ----------------------------- | ------------- | ---------------------------- | -------- |
+| **Active Schools**            | 100+          | Account count                | 20+      |
+| **Active Teachers**           | 2,000+        | Weekly active users          | 500+     |
+| **Total Analyses**            | 500,000+      | Cumulative analysis count    | 50,000   |
+| **Analyses Per Student/Year** | 3+            | Avg analyses per student     | 1        |
+| **Revenue**                   | $500K+ ARR    | Annual Recurring Revenue     | $0       |
+| **Gross Margin**              | 70%+          | (Revenue - COGS) / Revenue   | N/A      |
+| **Churn Rate**                | <15% annually | Lost schools / total schools | N/A      |
+| **Customer Acquisition Cost** | <$500/school  | Sales cost / new schools     | N/A      |
 
 **Key Performance Indicators:**
 
@@ -182,6 +188,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 ### Post-MVP (Deferred to Future Phases)
 
 **Phase 2 Enhancements (Months 9-18):**
+
 - Parent transparency portal (view analyses with teacher permission)
 - LMS integrations (Google Classroom, Canvas) for automated roster sync
 - Mobile native apps (iOS/Android) for on-the-go access
@@ -189,6 +196,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - Intervention tracking with before/after outcome measurement
 
 **Phase 3 Enhancements (Year 2+):**
+
 - Predictive analytics and early warning systems
 - District-wide benchmarking and best practice sharing
 - Professional development recommendation engine
@@ -196,6 +204,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - API for third-party integrations
 
 **Never in Scope:**
+
 - AI making decisions without teacher review (human always in the loop)
 - Automated grading or student evaluation
 - Student surveillance or monitoring (no tracking student devices)
@@ -216,6 +225,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 #### Persona 1: Sarah Chen – Elementary School Teacher
 
 **Background:**
+
 - **Age:** 32
 - **Role:** 4th Grade Teacher at Lincoln Elementary (suburban public school)
 - **Experience:** 8 years teaching, 3rd year at current school
@@ -224,6 +234,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - **Tech Proficiency:** Moderate – comfortable with Google Classroom, Zoom, basic productivity tools
 
 **Goals:**
+
 - Differentiate instruction to meet diverse student needs
 - Identify struggling students early enough for effective intervention
 - Provide specific, evidence-based feedback to parents at conferences
@@ -231,6 +242,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - Track student progress over the school year
 
 **Pain Points:**
+
 - "I know my students well but struggle to articulate what I observe in actionable ways"
 - "Parent conferences are stressful because I don't have concrete data to share beyond test scores"
 - "I suspect several students need extra support but don't have time for formal assessments"
@@ -238,12 +250,14 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - "I spend evenings writing student comments and recommendations that no one reads"
 
 **Use Cases:**
+
 - Conducts analysis for each student at start of year (September) to establish baseline
 - Re-analyzes struggling students monthly to track intervention effectiveness
 - Runs analyses before parent-teacher conferences for data-driven conversations
 - Uses trends dashboard to identify class-wide needs for lesson planning
 
 **Technical Proficiency:**
+
 - Comfortable with web apps and mobile devices (iPhone)
 - Prefers simple, intuitive interfaces over feature-rich complexity
 - Values fast onboarding with minimal training required
@@ -256,6 +270,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 #### Persona 2: Marcus Thompson – Middle School Principal
 
 **Background:**
+
 - **Age:** 47
 - **Role:** Principal at Roosevelt Middle School (urban public school, Title I)
 - **Experience:** 15 years as educator (10 years teacher, 5 years admin)
@@ -264,6 +279,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - **Tech Proficiency:** Advanced – uses data dashboards, SIS systems, manages budgets with spreadsheets
 
 **Goals:**
+
 - Ensure all students receive appropriate support and interventions
 - Make data-driven decisions about resource allocation and professional development
 - Identify trends requiring systemic changes (curriculum, staffing, programs)
@@ -271,6 +287,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - Demonstrate school improvement to district administrators and parents
 
 **Pain Points:**
+
 - "I can't see the full picture of student needs across 45 classrooms"
 - "Teachers tell me students are struggling, but I lack data to justify intervention funding"
 - "I'm blind to school-wide patterns until they become crises"
@@ -278,6 +295,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - "I want to support my teachers but don't know who needs help until problems escalate"
 
 **Use Cases:**
+
 - Reviews weekly dashboard to monitor analysis completion rates and flagged students
 - Generates monthly reports for district leadership showing intervention needs and trends
 - Identifies teachers with low platform usage for professional development conversations
@@ -285,6 +303,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - Exports grade-level reports for department chair meetings
 
 **Technical Proficiency:**
+
 - Power user of data tools and dashboards
 - Comfortable with filters, exports, and data analysis
 - Values visual charts and graphs over raw data tables
@@ -297,6 +316,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 #### Persona 3: Jennifer Rodriguez – High School Teacher
 
 **Background:**
+
 - **Age:** 28
 - **Role:** English Teacher at Washington High School (rural public school)
 - **Experience:** 4 years teaching
@@ -305,6 +325,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - **Tech Proficiency:** High – digital native, uses tech extensively in classroom
 
 **Goals:**
+
 - Track progress of 150 students without losing individual insights
 - Identify at-risk students before they fail or drop out
 - Provide targeted writing and reading support
@@ -312,18 +333,21 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - Build relationships despite limited one-on-one time
 
 **Pain Points:**
+
 - "With 150 students, I can barely remember all their names, let alone their individual needs"
 - "I want to personalize instruction but it's impossible at this scale"
 - "Students slip through the cracks because I don't have time for individual check-ins"
 - "Assessment tools are designed for elementary teachers with 25 students, not my situation"
 
 **Use Cases:**
+
 - Prioritizes analyzing students showing warning signs (declining grades, absences)
 - Uses bulk analysis features to process large rosters efficiently
 - Filters dashboard by class period to focus on one group at a time
 - Tracks intervention effectiveness for students on academic probation
 
 **Technical Proficiency:**
+
 - Expects modern, fast web interface
 - Comfortable with keyboard shortcuts and power user features
 - Values efficiency features like batch operations and saved filters
@@ -336,6 +360,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 #### Persona 4: Dr. Aisha Williams – District Curriculum Director (Future User)
 
 **Background:**
+
 - **Age:** 51
 - **Role:** District-Level Administrator overseeing 12 schools
 - **Experience:** 25 years in education (teacher, principal, central office)
@@ -343,6 +368,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - **Tech Proficiency:** Moderate-to-advanced – uses district dashboards, manages programs
 
 **Goals (Future Scope):**
+
 - Identify district-wide trends requiring curriculum or policy changes
 - Justify budget requests with concrete data
 - Share best practices across schools
@@ -350,6 +376,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - Ensure compliance with state and federal requirements
 
 **Pain Points:**
+
 - "Each school uses different systems; I can't compare apples to apples"
 - "I know some schools are doing great work, but I can't scale those practices district-wide"
 - "When the school board asks about achievement gaps, I have anecdotes, not data"
@@ -464,6 +491,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
    - **Return to Dashboard:** Clicks "Analyze Next Student" or "Back to Dashboard"
 
 **Success Criteria:**
+
 - ✅ Analysis completed in <10 minutes
 - ✅ AI-generated recommendations are relevant and actionable
 - ✅ Sarah feels report accurately reflects her observations
@@ -471,6 +499,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - ✅ Session can be interrupted and resumed without data loss
 
 **Edge Cases:**
+
 - **Session timeout:** If Sarah is interrupted (class emergency), session auto-saves every 2 minutes; can resume later
 - **AI hallucination:** If AI generates nonsensical recommendation, Sarah can delete and manually add her own
 - **Insufficient input:** If Sarah's responses are too brief, AI prompts for more detail: "Can you provide a specific example?"
@@ -559,6 +588,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
    - Bookmarks dashboard for daily check-in tomorrow
 
 **Success Criteria:**
+
 - ✅ Marcus identifies actionable trends in <15 minutes
 - ✅ Dashboard visualizations make patterns immediately obvious
 - ✅ Marcus can drill down from high-level metrics to specific students
@@ -566,6 +596,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - ✅ Insights lead to concrete administrative decisions (resource allocation, professional development)
 
 **Edge Cases:**
+
 - **No data:** If teachers haven't used platform yet, dashboard shows onboarding tips and encouragement to promote usage
 - **Incomplete data:** If only 30% of students analyzed, banner warns: "Low data coverage – insights may not represent full school"
 - **Conflicting flags:** If student flagged by one teacher but not others, system shows discrepancy for principal to investigate
@@ -640,6 +671,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
    - Sarah prints for upcoming parent conference
 
 **Success Criteria:**
+
 - ✅ Sarah can quickly see if student has improved, stayed same, or declined
 - ✅ Comparison view makes changes visually obvious (green/yellow/red highlighting)
 - ✅ AI asks contextual questions based on previous analysis (not starting from scratch)
@@ -647,6 +679,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - ✅ Sarah feels empowered to adjust interventions based on data
 
 **Edge Cases:**
+
 - **First analysis:** If no prior analysis exists, system skips comparison and conducts baseline
 - **Large time gap:** If >6 months since last analysis, system warns: "Long gap – student may have changed significantly"
 - **Contradictory progress:** If new analysis shows decline in previously strong area, system flags for Sarah's attention
@@ -723,6 +756,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
    - Option to request live support session with Customer Success team
 
 **Success Criteria:**
+
 - ✅ Jennifer completes onboarding in <30 minutes
 - ✅ Jennifer successfully imports all 150 students
 - ✅ Jennifer completes first analysis independently (with coaching)
@@ -730,6 +764,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - ✅ Jennifer sets personal goal and knows how to track progress
 
 **Edge Cases:**
+
 - **CSV format errors:** If CSV doesn't match expected format, system shows preview with errors highlighted and offers to fix automatically
 - **Duplicate students:** If Jennifer tries to import students already in system, system offers to merge or skip duplicates
 - **Overwhelm:** If Jennifer has 150 students and feels overwhelmed, system suggests: "Start with your smallest class (Period 3, 22 students) to build momentum"
@@ -746,6 +781,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 **Description:** Secure authentication system supporting email/password and Single Sign-On (SSO) with Google Workspace and Microsoft 365. Role-based access control (RBAC) ensures teachers, principals, and admins have appropriate permissions.
 
 **Acceptance Criteria:**
+
 - [ ] Users can sign up with email and password (min 8 characters, uppercase, lowercase, number)
 - [ ] Users can authenticate via Google Workspace SSO (OAuth 2.0)
 - [ ] Users can authenticate via Microsoft 365 SSO (OAuth 2.0 / SAML 2.0)
@@ -760,12 +796,14 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - [ ] All authentication endpoints protected against brute-force attacks
 
 **User Stories:**
+
 - As a teacher, I want to sign in with my school Google account so that I don't need to remember another password
 - As a principal, I want to be sure teachers can't see each other's students so that student privacy is protected
 - As a security-conscious admin, I want accounts to lock after failed login attempts so that unauthorized access is prevented
 - As a busy teacher, I want my session to stay active while I'm working so that I don't have to re-login constantly
 
 **Technical Notes:**
+
 - Use Passport.js for authentication strategies
 - JWT tokens for API authentication (short-lived, 15-minute expiry)
 - Refresh tokens for extended sessions (7-day expiry)
@@ -778,6 +816,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 **Description:** Teachers can add, organize, and manage student rosters. Supports manual entry, CSV bulk import, and class organization. Historical data is preserved even when students are archived.
 
 **Acceptance Criteria:**
+
 - [ ] Teachers can manually add students with: First Name, Last Name, Grade Level, Class/Section, Student ID (optional)
 - [ ] Teachers can edit student information
 - [ ] Teachers can archive students (not delete – preserves historical data)
@@ -796,12 +835,14 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - [ ] Principals can view all students across all teachers in their school (read-only)
 
 **User Stories:**
+
 - As a teacher, I want to import my roster from a CSV file so that I don't have to type 30+ students manually
 - As a teacher, I want to organize students by class period so that I can analyze one group at a time
 - As a high school teacher with 150 students, I want powerful search and filtering so that I can quickly find specific students
 - As a principal, I want to see all students across all teachers so that I have a complete view of my school
 
 **Technical Notes:**
+
 - CSV parsing library: Papa Parse or csv-parser
 - File upload limits: 5MB max, 1000 students per CSV
 - Duplicate detection: fuzzy matching on name (Levenshtein distance) + exact match on Student ID
@@ -814,6 +855,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 **Description:** Core feature enabling teachers to conduct conversational AI-guided student assessments. ChatGPT prompts teachers with structured questions, captures free-form responses, and generates comprehensive analysis reports with actionable recommendations.
 
 **Acceptance Criteria:**
+
 - [ ] Teacher selects student and clicks "Start Analysis"
 - [ ] System initiates conversational AI session with ChatGPT-4 API
 - [ ] AI asks structured questions covering:
@@ -837,6 +879,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - [ ] If ChatGPT API fails, system queues analysis for retry and notifies teacher
 
 **User Stories:**
+
 - As a teacher, I want to answer questions conversationally so that I can share my observations naturally without filling out forms
 - As a teacher, I want AI to ask follow-up questions so that my vague responses are refined into actionable insights
 - As a teacher, I want to pause mid-analysis if interrupted so that I don't lose my work
@@ -844,6 +887,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - As a teacher, I want private notes so that I can document sensitive information (e.g., suspected learning disability) without sharing with admin
 
 **Technical Notes:**
+
 - OpenAI API integration: GPT-4 model (gpt-4-turbo for cost efficiency)
 - Prompt engineering: System prompts optimized for educational assessment domain
 - Token usage tracking: Monitor costs per analysis (target: $0.01-0.05 per analysis)
@@ -858,6 +902,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 **Description:** Personalized dashboard for teachers showing all students, analysis completion status, quick access to pending work, and class-wide trends.
 
 **Acceptance Criteria:**
+
 - [ ] Dashboard displays all students assigned to teacher (grouped by class/section)
 - [ ] Each student shows:
   - Name, grade, class
@@ -882,11 +927,13 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - [ ] "Analyze Next Student" smart recommendation (suggests students who need baseline or follow-up)
 
 **User Stories:**
+
 - As a teacher, I want to see at a glance which students I haven't analyzed yet so that I can prioritize my work
 - As a teacher, I want to quickly access students flagged for follow-up so that I don't forget about struggling students
 - As a teacher, I want to see class-wide trends so that I can identify if my whole class needs support in a particular area
 
 **Technical Notes:**
+
 - Dashboard data cached in Redis (30-second TTL) to reduce database load
 - Lazy load trends widget (only fetch when expanded)
 - Pagination for teachers with >100 students (infinite scroll or page-based)
@@ -898,6 +945,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 **Description:** School-wide dashboard for principals providing aggregated metrics, trend visualizations, teacher activity monitoring, and drill-down capabilities.
 
 **Acceptance Criteria:**
+
 - [ ] Executive dashboard shows school-wide metrics:
   - Total students across all teachers
   - Total analyses completed
@@ -926,12 +974,14 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
   - Customizable date ranges and filters for exports
 
 **User Stories:**
+
 - As a principal, I want to see school-wide completion rates so that I can monitor platform adoption
 - As a principal, I want to identify which teachers aren't using the platform so that I can provide support or encouragement
 - As a principal, I want to see the most common intervention needs so that I can allocate resources (e.g., hire a reading specialist)
 - As a principal, I want to export reports for district meetings so that I can demonstrate our school's data-driven approach
 
 **Technical Notes:**
+
 - Aggregations pre-computed daily via cron job (stored in materialized view or cache)
 - Real-time data for current day, cached data for historical trends
 - Chart library: Recharts or Chart.js (React-compatible)
@@ -944,6 +994,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 **Description:** View historical analyses for each student, compare analyses over time, and track intervention effectiveness.
 
 **Acceptance Criteria:**
+
 - [ ] Student detail page shows timeline of all analyses (newest first)
 - [ ] Each analysis in timeline displays:
   - Date conducted
@@ -964,11 +1015,13 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
   - Includes "Progress Since Last Analysis" section in new report
 
 **User Stories:**
+
 - As a teacher, I want to compare a student's current analysis to their baseline so that I can see if interventions are working
 - As a teacher, I want the AI to remember previous analyses so that I don't have to repeat the same information
 - As a principal, I want to see evidence that our intervention programs are effective based on before/after analysis comparisons
 
 **Technical Notes:**
+
 - Version control for analyses (immutable records – edits create new versions)
 - Comparison algorithm: Text diffing + semantic analysis to identify changes
 - Progress report template: Markdown → PDF conversion (using Puppeteer or similar)
@@ -980,6 +1033,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 **Description:** Powerful search and filtering capabilities to help users find students, analyses, and trends quickly.
 
 **Acceptance Criteria:**
+
 - [ ] Global search bar on all pages:
   - Search by student name (fuzzy matching)
   - Search by student ID (exact match)
@@ -1003,11 +1057,13 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - [ ] Clear filters button resets all filters to default
 
 **User Stories:**
+
 - As a high school teacher with 150 students, I want to quickly find a specific student by name so that I don't waste time scrolling
 - As a principal, I want to filter students by "Flagged + 6th Grade" so that I can focus on highest-need students in a specific grade
 - As a teacher, I want to save my "Needs Analysis This Week" filter so that I can access it with one click
 
 **Technical Notes:**
+
 - Search: Debounced input (300ms) + Postgres full-text search or Elasticsearch (if scale requires)
 - Filters: URL query parameters to enable shareable filter states
 - Performance: Indexed database columns (name, student_id, grade, analysis_date)
@@ -1019,6 +1075,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 **Description:** Generate exportable reports in multiple formats (PDF, CSV, PowerPoint) for various stakeholders.
 
 **Acceptance Criteria:**
+
 - [ ] Student Analysis Report Export (PDF):
   - Professional single-page or multi-page report
   - Includes: Student name, analysis date, strengths, areas for improvement, recommendations
@@ -1043,11 +1100,13 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
   - Download link expires after 7 days
 
 **User Stories:**
+
 - As a teacher, I want to export a student's analysis as a PDF so that I can print it for parent-teacher conferences
 - As a principal, I want to export a PowerPoint summary so that I can present our school's data to the district
 - As a data-driven principal, I want to export raw data as CSV so that I can perform custom analysis in Excel
 
 **Technical Notes:**
+
 - PDF generation: Puppeteer (headless Chrome) rendering HTML templates
 - PowerPoint generation: PptxGenJS library
 - CSV generation: Fast-csv or built-in Node.js streams
@@ -1060,6 +1119,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 **Description:** Fine-grained permissions system ensuring users only access data appropriate for their role.
 
 **Acceptance Criteria:**
+
 - [ ] Three primary roles:
   - **Teacher:** Can view/edit own students, classes, and analyses; cannot see other teachers' data
   - **Principal:** Can view all students/teachers in their school; cannot edit teacher analyses; can export school data
@@ -1079,11 +1139,13 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
   - "Guest access" – temporary read-only access for specialists or student teachers
 
 **User Stories:**
+
 - As a teacher, I want assurance that other teachers can't see my students so that I feel comfortable documenting sensitive observations
 - As a principal, I want to view all teacher data so that I can support school-wide decision-making
 - As a district admin, I want to audit who accessed what data so that we can ensure compliance with privacy regulations
 
 **Technical Notes:**
+
 - Authorization middleware checks role + resource ownership on every API request
 - JWT claims include: user_id, role, school_id, district_id (scoping)
 - Database row-level security (RLS) as additional safeguard (Postgres RLS policies)
@@ -1170,8 +1232,8 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
    - AI transcribes and analyzes audio
 
 9. **Gamification:**
-    - Teacher achievements: "Analyzed all students!", "3-month streak"
-    - Leaderboards for schools (highest completion rate)
+   - Teacher achievements: "Analyzed all students!", "3-month streak"
+   - Leaderboards for schools (highest completion rate)
 
 ---
 
@@ -1180,6 +1242,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 ### Performance
 
 **Response Time:**
+
 - **Page Load Time:** <2 seconds for initial page load (p95 – 95th percentile)
 - **API Response Time:**
   - Standard queries (student list, dashboard metrics): <500ms (p95)
@@ -1189,21 +1252,25 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - **Dashboard Refresh:** <1 second for cached data, <3 seconds for fresh data
 
 **Concurrent Users:**
+
 - **MVP Target:** 100 concurrent users without performance degradation
 - **Year 1 Target:** 500 concurrent users
 - **Peak Load Handling:** 3x normal traffic during back-to-school periods (August-September) without downtime
 
 **Concurrent Analysis Sessions:**
+
 - **MVP Target:** 50 concurrent AI analysis sessions
 - **Year 1 Target:** 200 concurrent AI analysis sessions
 - **Rate Limiting:** Max 5 analyses per teacher per hour to prevent abuse and manage API costs
 
 **Data Volume Capacity:**
+
 - **Initial (MVP):** 10,000 students, 100 teachers, 50,000 analyses
 - **Year 1:** 100,000 students, 2,000 teachers, 500,000 analyses
 - **Database Performance:** Query response time remains <1 second at 10x initial volume
 
 **Optimization Requirements:**
+
 - Frontend bundle size: <300KB gzipped for initial load
 - Code splitting: Lazy load analytics charts and non-critical components
 - Image optimization: WebP format, responsive image sizes
@@ -1214,6 +1281,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 ### Security
 
 **Authentication:**
+
 - Industry-standard password hashing: bcrypt with minimum 10 rounds (cost factor)
 - Secure session management: HTTP-only cookies, SameSite=Strict, Secure flag (HTTPS only)
 - SSO integration: OAuth 2.0 for Google Workspace, OAuth 2.0 / SAML 2.0 for Microsoft 365
@@ -1223,6 +1291,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - Password expiration: Optional, configurable per district (e.g., 90-day rotation)
 
 **Authorization:**
+
 - Role-based access control (RBAC): Teacher, Principal, District Admin roles
 - Principle of least privilege: Users can only access data within their scope (own students, own school, own district)
 - API endpoint protection: JWT tokens required for all authenticated endpoints
@@ -1231,6 +1300,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - API rate limiting: Per-user and per-IP rate limits to prevent abuse
 
 **Data Protection:**
+
 - **Encryption at Rest:** AES-256 encryption for all student PII (names, IDs, analysis data) in database
 - **Encryption in Transit:** TLS 1.3 minimum for all HTTPS connections
 - **PII Handling:**
@@ -1252,6 +1322,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
   - Comply with "Right to Erasure" (GDPR, CCPA equivalent)
 
 **Compliance:**
+
 - **FERPA (Family Educational Rights and Privacy Act):**
   - Written parental consent required before sharing student data with third parties (not including school officials)
   - Parents have right to access and request corrections to student records
@@ -1272,6 +1343,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
   - Compliance monitoring for state-specific requirements
 
 **Vulnerability Management:**
+
 - **Dependency Management:**
   - Automated weekly scans for vulnerable dependencies (Dependabot, Snyk, Renovate)
   - Critical vulnerabilities patched within 48 hours
@@ -1288,6 +1360,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 ### Scalability
 
 **Expected Growth:**
+
 - **Year 1:** 20 schools, 500 teachers, 15,000 students, 50,000 analyses
 - **Year 2:** 100 schools, 2,500 teachers, 75,000 students, 300,000 analyses
 - **Year 3:** 300 schools, 7,500 teachers, 225,000 students, 1,000,000 analyses
@@ -1327,6 +1400,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
   - ChatGPT API quota management: School-level quotas (e.g., 1000 analyses/month/school)
 
 **Capacity Planning:**
+
 - **Monitoring:** Track CPU, memory, database connections, API latency, queue depth
 - **Alerting:** Alerts at 70% resource utilization to proactively scale
 - **Load Testing:** Quarterly load tests simulating 3x peak traffic
@@ -1335,6 +1409,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 ### Reliability
 
 **Uptime Targets:**
+
 - **MVP (Pilot Phase):** 99% uptime (3.65 days downtime/year) – acceptable for pilot
 - **Production Year 1:** 99.5% uptime (1.83 days downtime/year)
 - **Scale Year 2+:** 99.9% uptime (8.76 hours downtime/year)
@@ -1342,6 +1417,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - **Zero Downtime Deployments:** Rolling deployments for minor releases (no downtime)
 
 **Error Rate Targets:**
+
 - **API Error Rate:** <0.5% (excluding client errors 4xx)
 - **Database Transaction Error Rate:** <0.1%
 - **ChatGPT API Failure Handling:** Graceful degradation with retry logic (3 retries with exponential backoff)
@@ -1364,6 +1440,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
   - **Cross-Region Replication:** Critical files replicated to secondary region
 
 **Disaster Recovery:**
+
 - **Recovery Time Objective (RTO):** 4 hours (maximum acceptable downtime after disaster)
 - **Recovery Point Objective (RPO):** 1 hour (maximum acceptable data loss)
 - **Disaster Recovery Plan:** Documented and tested quarterly
@@ -1376,6 +1453,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - **On-Call Rotation:** 24/7 on-call engineer for critical incident response (post-MVP)
 
 **Monitoring & Alerting:**
+
 - **Application Performance Monitoring (APM):** New Relic, Datadog, or Sentry
   - Track: API latency, error rates, database query performance, user flows
 - **Uptime Monitoring:** External service (Pingdom, UptimeRobot) pings endpoints every 1 minute
@@ -1391,6 +1469,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 ### Accessibility
 
 **WCAG Compliance:**
+
 - **Target:** WCAG 2.1 Level AA compliance (minimum standard for public education tools)
 - **Keyboard Navigation:** All interactive elements accessible via keyboard (Tab, Enter, Esc)
 - **Screen Reader Support:** Compatible with JAWS (Windows), NVDA (Windows), VoiceOver (Mac/iOS)
@@ -1402,6 +1481,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - **Semantic HTML:** Use proper HTML5 elements (<nav>, <main>, <article>, <button> instead of <div onclick>)
 
 **Responsive Design:**
+
 - **Mobile-First Approach:** Design for mobile, enhance for desktop
 - **Breakpoints:**
   - Mobile: <640px (smartphones)
@@ -1411,6 +1491,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 - **Responsive Images:** Serve appropriately sized images for device (srcset, picture element)
 
 **Assistive Technology Support:**
+
 - ARIA landmarks and labels where semantic HTML insufficient
 - Live regions for dynamic content updates (e.g., "Analysis saved" confirmation)
 - Skip links to jump to main content (bypass navigation)
@@ -1422,6 +1503,7 @@ Growth Engine is an AI-powered educational assessment platform that transforms h
 The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI elements, system-generated content, and user-facing materials must be in Hebrew with proper right-to-left (RTL) text direction support.
 
 **UI & Content Requirements:**
+
 - **All interface text in Hebrew:** Buttons, labels, navigation, form fields, error messages, tooltips
 - **System-generated content in Hebrew:** Emails (password reset, notifications), PDF reports, dashboard text, AI analysis prompts and outputs
 - **Documentation in Hebrew:** Onboarding materials, help documentation, FAQs, tooltips
@@ -1430,6 +1512,7 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 - **Number formatting:** Hebrew number formatting conventions
 
 **Technical Implementation:**
+
 - **i18n Framework:** next-intl or react-i18next with RTL support
 - **RTL CSS:** Tailwind CSS with RTL plugin using logical properties (margin-inline-start vs margin-left)
 - **Bidirectional Text Handling:** Proper rendering of mixed Hebrew/English content (e.g., student names with English, technical terms)
@@ -1442,22 +1525,26 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 - **Text Search:** Full-text search supporting Hebrew morphology and character variants
 
 **Content Strategy:**
+
 - **Translation Files:** All UI strings stored in centralized JSON/YAML files (e.g., `/locales/he/common.json`)
 - **English Technical Terms:** Preserve English for universally recognized terms (e.g., "API", "ChatGPT", "PDF") where appropriate
 - **Translation Quality:** Professional Hebrew translation (not machine-translated) for clarity and educational appropriateness
 - **Consistency:** Maintain consistent terminology across the platform (e.g., always use same Hebrew term for "analysis")
 
 **Accessibility Considerations:**
+
 - RTL screen reader support (test with JAWS, NVDA, VoiceOver in Hebrew mode)
 - Keyboard navigation works correctly in RTL layout (Tab order right-to-left, Arrow keys reversed)
 - Form validation messages in clear, actionable Hebrew
 
 **Future Enhancement:**
+
 - **English Interface:** Secondary language option for non-Hebrew speakers (administrators, technical support)
 - **Additional Languages:** Expand to Arabic, Russian, or other languages based on market demand
 - **User Language Preference:** Allow users to select preferred language (future multi-language support)
 
 **Out of Scope for MVP:**
+
 - Multi-language support (Hebrew only for MVP)
 - User-selectable language switching
 - Automatic language detection based on browser locale
@@ -1469,6 +1556,7 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 ### Tech Stack
 
 **Frontend:**
+
 - **Framework:** Next.js 14+ (React 18+)
   - App Router (React Server Components)
   - TypeScript for type safety
@@ -1482,6 +1570,7 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 - **Fonts:** Hebrew web fonts (e.g., Rubik, Heebo, Assistant) optimized for readability
 
 **Backend:**
+
 - **Framework:** NestJS 10+ with TypeScript
   - Modular architecture (domain-driven design)
   - Dependency injection for testability
@@ -1494,6 +1583,7 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 - **Validation:** Joi or class-validator (NestJS pipes for input validation)
 
 **Database:**
+
 - **Primary Database:** PostgreSQL 15+
   - Relational data model (users, students, schools, classes)
   - JSONB columns for flexible analysis data (varying structure)
@@ -1501,12 +1591,14 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
   - Extensions: pg_trgm (fuzzy search), PostGIS (future: geographic school mapping)
 
 **Caching & Sessions:**
+
 - **Redis 7+**
   - Session storage (centralized for multi-instance deployments)
   - Application-level caching (dashboard metrics, aggregations)
   - Background job queue (Bull/BullMQ)
 
 **Integrations:**
+
 - **OpenAI API (ChatGPT-4):**
   - Model: gpt-4-turbo (cost-effective, fast)
   - Custom system prompts for educational assessment domain
@@ -1524,6 +1616,7 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 ### Infrastructure (Cloud Provider TBD – Decision During Architect Phase)
 
 **Hosting Options (Final decision pending):**
+
 - **AWS (Amazon Web Services):**
   - Compute: ECS (Fargate) or EKS (Kubernetes)
   - Database: RDS for PostgreSQL
@@ -1554,6 +1647,7 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 **Recommended:** Google Cloud Platform (GCP) for education focus, simplicity, and cost-effectiveness. Final decision during Architect Phase based on team expertise and detailed cost analysis.
 
 **CI/CD:**
+
 - **Pipeline:** GitHub Actions or GitLab CI
 - **Build Process:** Docker multi-stage builds
 - **Environments:** Development, Staging, Production
@@ -1561,6 +1655,7 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 - **Automated Testing:** Unit tests, integration tests, E2E tests run in CI pipeline (must pass to deploy)
 
 **Development Tools:**
+
 - **Version Control:** Git (GitHub or GitLab)
 - **Code Quality:** ESLint (linting) + Prettier (formatting)
 - **Pre-Commit Hooks:** Husky (runs linting, type-checking, tests before commit)
@@ -1573,23 +1668,27 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 ### Browser/Device Support
 
 **Desktop Browsers (Primary):**
+
 - Google Chrome: Last 2 versions
 - Mozilla Firefox: Last 2 versions
 - Microsoft Edge: Last 2 versions
 - Safari (macOS): Last 2 versions
 
 **Mobile Browsers (Secondary – responsive web, not native apps):**
+
 - iOS Safari: Last 2 versions
 - Chrome Mobile (Android): Last 2 versions
 - Responsive design for tablets: iPad, Android tablets (optimized for 10-13" screens)
 
 **Operating Systems:**
+
 - Windows 10+
 - macOS 11+ (Big Sur and later)
 - Chrome OS (common in schools – must support!)
 - Linux (not primary target but should work)
 
 **Screen Resolutions:**
+
 - **Minimum Supported:** 1280x720 (720p) – small laptops, older devices
 - **Optimized For:** 1920x1080 (1080p) – most common desktop, 1440x900 (common MacBook Pro)
 - **Responsive Breakpoints:**
@@ -1598,9 +1697,11 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
   - Desktop: 1024px+ (laptops, desktops – fully featured)
 
 **Accessibility:**
+
 - See "Non-Functional Requirements > Accessibility" section above
 
 **Network Conditions:**
+
 - **Design for Low Bandwidth:** Many schools have slow/limited internet (rural areas, overcrowded networks)
 - **Graceful Degradation:** On slow connections (<1 Mbps), show simplified UI, defer non-critical assets
 - **Offline Detection:** Detect offline state and show user-friendly message (not broken page)
@@ -1648,6 +1749,7 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 **Current Status:** Wireframes to be created during Designer Phase
 
 **Required Mockups (Designer Phase Deliverables):**
+
 1. **Teacher Dashboard:** Student list with filters, completion status, quick actions
 2. **Student Detail Page:** Analysis history timeline, compare analyses, start new analysis
 3. **Analysis Session UI:** Conversational AI interface, progress indicator, save/resume
@@ -1657,6 +1759,7 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 7. **Mobile Views:** Responsive layouts for tablet and smartphone (key screens only)
 
 **Design Deliverables:**
+
 - High-fidelity mockups in Figma or similar
 - Interactive prototypes for core user flows (clickable prototypes for user testing)
 - Design system documentation (colors, typography, spacing, components)
@@ -1718,18 +1821,18 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 
 ### External Dependencies
 
-| Dependency | Type | Status | Risk Level | Mitigation |
-|------------|------|--------|------------|-----------|
-| **OpenAI API (ChatGPT-4)** | Third-Party Service | Production-ready | **High** | Critical dependency; implement retry logic, queue fallback, monitor quota, budget alerts, consider alternative AI providers (Anthropic Claude) as backup |
-| **Google Workspace (SSO)** | Authentication Provider | Production-ready | **Medium** | Primary SSO for K-12; also support Microsoft 365 as alternative; email/password as fallback |
-| **Microsoft 365 / Azure AD (SSO)** | Authentication Provider | Production-ready | **Medium** | Secondary SSO option; also support Google as primary; email/password fallback |
-| **PostgreSQL (Managed)** | Database | Production-ready | **Low** | Use managed service (RDS, Cloud SQL) with automated backups and failover; well-established technology |
-| **Redis (Managed)** | Caching & Queue | Production-ready | **Low** | Use managed service (ElastiCache, Memorystore); graceful degradation if cache unavailable (slower but functional) |
-| **SendGrid or Amazon SES** | Email Delivery | Production-ready | **Low** | Transactional email; have backup provider configured; emails queued for retry if service unavailable |
-| **AWS S3 / GCS / Azure Blob** | Object Storage | Production-ready | **Low** | Highly reliable; cross-region replication for critical files |
-| **Cloud Provider (AWS/GCP/Azure)** | Infrastructure | Production-ready | **Medium** | Vendor lock-in risk; use abstraction layers (Terraform, Docker) for portability; multi-cloud not realistic but avoid deep vendor-specific features |
-| **School Internet Infrastructure** | Network | Varies by School | **Medium** | Some schools have limited bandwidth or strict firewalls; design for low bandwidth, test in real school environments during pilot |
-| **Modern Web Browsers** | Client Platform | Production-ready | **Low** | Target last 2 versions of major browsers; progressive enhancement for older browsers |
+| Dependency                         | Type                    | Status           | Risk Level | Mitigation                                                                                                                                               |
+| ---------------------------------- | ----------------------- | ---------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **OpenAI API (ChatGPT-4)**         | Third-Party Service     | Production-ready | **High**   | Critical dependency; implement retry logic, queue fallback, monitor quota, budget alerts, consider alternative AI providers (Anthropic Claude) as backup |
+| **Google Workspace (SSO)**         | Authentication Provider | Production-ready | **Medium** | Primary SSO for K-12; also support Microsoft 365 as alternative; email/password as fallback                                                              |
+| **Microsoft 365 / Azure AD (SSO)** | Authentication Provider | Production-ready | **Medium** | Secondary SSO option; also support Google as primary; email/password fallback                                                                            |
+| **PostgreSQL (Managed)**           | Database                | Production-ready | **Low**    | Use managed service (RDS, Cloud SQL) with automated backups and failover; well-established technology                                                    |
+| **Redis (Managed)**                | Caching & Queue         | Production-ready | **Low**    | Use managed service (ElastiCache, Memorystore); graceful degradation if cache unavailable (slower but functional)                                        |
+| **SendGrid or Amazon SES**         | Email Delivery          | Production-ready | **Low**    | Transactional email; have backup provider configured; emails queued for retry if service unavailable                                                     |
+| **AWS S3 / GCS / Azure Blob**      | Object Storage          | Production-ready | **Low**    | Highly reliable; cross-region replication for critical files                                                                                             |
+| **Cloud Provider (AWS/GCP/Azure)** | Infrastructure          | Production-ready | **Medium** | Vendor lock-in risk; use abstraction layers (Terraform, Docker) for portability; multi-cloud not realistic but avoid deep vendor-specific features       |
+| **School Internet Infrastructure** | Network                 | Varies by School | **Medium** | Some schools have limited bandwidth or strict firewalls; design for low bandwidth, test in real school environments during pilot                         |
+| **Modern Web Browsers**            | Client Platform         | Production-ready | **Low**    | Target last 2 versions of major browsers; progressive enhancement for older browsers                                                                     |
 
 ### Risks & Mitigation
 
@@ -1740,6 +1843,7 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 **Description:** Growth Engine's core value proposition depends on ChatGPT API. If OpenAI experiences outages, rate limits, or pricing changes, product is severely impacted. Costs could spiral if usage exceeds projections.
 
 **Mitigation Strategies:**
+
 - **Quota Management:** Implement school-level and teacher-level quotas (e.g., 1000 analyses/month/school)
 - **Cost Monitoring:** Real-time cost tracking dashboards with alerts at 80% of monthly budget
 - **Rate Limiting:** Max 5 analyses/hour/teacher, max 50 concurrent sessions platform-wide
@@ -1761,6 +1865,7 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 **Description:** Mishandling student data could violate FERPA (federal law protecting student records) or COPPA (protecting children under 13), resulting in lawsuits, fines, customer loss, and reputational damage.
 
 **Mitigation Strategies:**
+
 - **Legal Counsel:** Engage education law attorney to review product, privacy policy, DPA before launch
 - **Privacy Impact Assessment (PIA):** Conduct formal PIA with checklist for FERPA, COPPA compliance
 - **Data Protection by Design:** Build privacy into architecture from day one (encryption, access controls, audit logs)
@@ -1783,6 +1888,7 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 **Description:** Teachers may resist using Growth Engine due to change fatigue, perceived complexity, lack of trust in AI, or insufficient value demonstration. If <50% of pilot teachers actively use platform, product-market fit is questionable.
 
 **Mitigation Strategies:**
+
 - **Extremely Simple Onboarding:** <30 minutes from signup to first analysis completed; interactive tour with hand-holding
 - **Immediate Value Demonstration:** Show time savings and actionable insights in first analysis (wow moment)
 - **Minimal Disruption:** Integrate into existing workflow (SSO with school accounts, CSV import from SIS)
@@ -1805,6 +1911,7 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 **Description:** ChatGPT may generate inappropriate, inaccurate, biased, or nonsensical recommendations. Teachers may lose trust if AI outputs are low-quality or offensive.
 
 **Mitigation Strategies:**
+
 - **Extensive Prompt Engineering:** Iterative testing and refinement of system prompts (education domain experts involved)
 - **Human-in-the-Loop:** Teachers review and approve all analyses before saving (AI is assistant, not decision-maker)
 - **Bias Detection & Mitigation:** Prompts explicitly instruct AI to avoid stereotypes, biases (e.g., gender, race, socioeconomic)
@@ -1827,6 +1934,7 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 **Description:** As student data grows to 100k+ students and 500k+ analyses, database queries (especially analytics/aggregations) may slow significantly, degrading user experience and increasing infrastructure costs.
 
 **Mitigation Strategies:**
+
 - **Proper Indexing from Day One:** Index all columns used in filters, sorts, joins (student_id, grade, analysis_date, teacher_id)
 - **Query Optimization:** EXPLAIN ANALYZE all complex queries; optimize N+1 queries, unnecessary joins
 - **Caching Layer:** Redis caching for dashboard aggregations (30-second to 5-minute TTL)
@@ -1849,6 +1957,7 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 **Description:** Stakeholders request additional features, delaying MVP launch and increasing complexity beyond what users actually need. "Wouldn't it be nice if…" syndrome.
 
 **Mitigation Strategies:**
+
 - **Clear PRD with "Non-Goals":** This document explicitly lists out-of-scope features (see Section 3)
 - **Empowered Product Owner:** Product owner can say no to feature requests without escalation
 - **Ruthless Prioritization:** MoSCoW method (Must-Have, Should-Have, Could-Have, Won't-Have) rigorously applied
@@ -1870,6 +1979,7 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 **Description:** Schools have limited EdTech budgets and lengthy procurement processes (6-12 months). Even if product is excellent, sales cycle may be long, delaying revenue.
 
 **Mitigation Strategies:**
+
 - **Competitive Pricing:** Price competitively (<$10/teacher/month ideal) to fit school budgets
 - **Clear ROI Demonstration:** Quantify teacher time savings, student outcome improvements (data from pilot)
 - **Flexible Pricing:** Offer school-level pricing (flat fee per school) vs. per-teacher pricing (accommodate different budgets)
@@ -1891,6 +2001,7 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 **Description:** Project requires expertise in multiple domains (Next.js, NestJS, AI, education, security). If team lacks expertise or bandwidth, quality/timeline suffers.
 
 **Mitigation Strategies:**
+
 - **Skill Assessment:** Audit team skills early; identify gaps (e.g., AI prompt engineering, PostgreSQL optimization)
 - **Upfront Training:** Invest in training for critical skills (NestJS course, PostgreSQL performance workshop)
 - **Specialist Hiring:** If gaps can't be filled via training, hire specialists (e.g., DevOps engineer, security consultant)
@@ -1959,15 +2070,16 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 
 ## 12. Approval & Sign-Off
 
-| Role | Name | Date | Status |
-|------|------|------|--------|
-| **Product Owner** | Educational Technology Director | TBD | ⏳ Pending |
-| **Tech Lead** | Senior Full-Stack Engineer | TBD | ⏳ Pending |
-| **Architect** | Solutions Architect | TBD | ⏳ Pending |
-| **Legal Counsel** | Education Law Attorney (FERPA Review) | TBD | ⏳ Pending |
-| **Stakeholder (School Principal)** | Pilot School Representative | TBD | ⏳ Pending |
+| Role                               | Name                                  | Date | Status     |
+| ---------------------------------- | ------------------------------------- | ---- | ---------- |
+| **Product Owner**                  | Educational Technology Director       | TBD  | ⏳ Pending |
+| **Tech Lead**                      | Senior Full-Stack Engineer            | TBD  | ⏳ Pending |
+| **Architect**                      | Solutions Architect                   | TBD  | ⏳ Pending |
+| **Legal Counsel**                  | Education Law Attorney (FERPA Review) | TBD  | ⏳ Pending |
+| **Stakeholder (School Principal)** | Pilot School Representative           | TBD  | ⏳ Pending |
 
 **Approval Process:**
+
 1. Product team reviews PRD (internal review)
 2. Tech lead and architect review for technical feasibility
 3. Legal counsel reviews for FERPA/COPPA compliance
@@ -1975,6 +2087,7 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 5. Final sign-off by Product Owner
 
 **Next Steps After Approval:**
+
 - [ ] Architect Phase: Populate ARCHITECTURE.md with system design
 - [ ] Designer Phase: Create wireframes and design system
 - [ ] Product Phase: Generate tickets from PRD for all features
@@ -1997,8 +2110,8 @@ The Growth Engine platform serves Hebrew-speaking educators in Israel. All UI el
 
 ### Revision History
 
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
+| Version | Date              | Author                    | Changes                                                                                                                                                     |
+| ------- | ----------------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **1.0** | December 30, 2025 | Product Agent (Claude AI) | Initial comprehensive PRD created from project context, requirements, discovery notes, and decisions. Populated all sections with production-ready content. |
 
 ### Glossary

@@ -10,6 +10,7 @@
 ## 1. Overview
 
 This document specifies all UI components for the Growth Engine platform, building on the foundational design system (`/docs/design/DESIGN_SYSTEM.md`). Each component includes:
+
 - **Purpose** - What problem it solves
 - **Anatomy** - Visual structure and parts
 - **States** - All interaction states (default, hover, focus, disabled, error, etc.)
@@ -39,6 +40,7 @@ Border radius: 4px
 #### Variants
 
 **Primary Button** (Main action)
+
 - Background: `primary-700` (#10507E)
 - Text: `white`
 - Hover: `primary-600` (#1366A0)
@@ -47,6 +49,7 @@ Border radius: 4px
 - Disabled: `gray-300` background, `gray-500` text
 
 **Secondary Button** (Alternative action)
+
 - Background: `white`
 - Border: 1px solid `gray-300`
 - Text: `gray-700`
@@ -56,6 +59,7 @@ Border radius: 4px
 - Disabled: `gray-100` background, `gray-400` text
 
 **Danger Button** (Destructive action)
+
 - Background: `error-600` (#DC2626)
 - Text: `white`
 - Hover: `error-700` (#991B1B)
@@ -64,6 +68,7 @@ Border radius: 4px
 - Disabled: `error-200` background, `error-400` text
 
 **Ghost Button** (Subtle action)
+
 - Background: `transparent`
 - Text: `primary-700`
 - Hover: `primary-50` background
@@ -72,6 +77,7 @@ Border radius: 4px
 - Disabled: `gray-400` text
 
 **Link Button** (Text-only action)
+
 - Background: `transparent`
 - Text: `primary-700`, underline on hover
 - Hover: `primary-600`, underline
@@ -80,11 +86,11 @@ Border radius: 4px
 
 #### Sizes
 
-| Size | Height | Padding (Vertical) | Padding (Horizontal) | Font Size | Icon Size |
-|------|--------|-------------------|---------------------|-----------|-----------|
-| **Small** | 32px | 8px | 16px | 14px (`body-sm`) | 16px (`icon-xs`) |
-| **Medium** | 40px | 12px | 24px | 16px (`body-md`) | 20px (`icon-sm`) |
-| **Large** | 48px | 14px | 32px | 18px (`body-lg`) | 24px (`icon-md`) |
+| Size       | Height | Padding (Vertical) | Padding (Horizontal) | Font Size        | Icon Size        |
+| ---------- | ------ | ------------------ | -------------------- | ---------------- | ---------------- |
+| **Small**  | 32px   | 8px                | 16px                 | 14px (`body-sm`) | 16px (`icon-xs`) |
+| **Medium** | 40px   | 12px               | 24px                 | 16px (`body-md`) | 20px (`icon-sm`) |
+| **Large**  | 48px   | 14px               | 32px                 | 18px (`body-lg`) | 24px (`icon-md`) |
 
 **Default:** Medium
 
@@ -131,16 +137,19 @@ Border radius: 4px
 #### Usage Guidelines
 
 **When to use:**
+
 - Primary actions: "Save Analysis", "Start Analysis", "Submit"
 - Secondary actions: "Cancel", "Back", "Skip"
 - Destructive actions: "Delete Student", "Remove Class"
 
 **When NOT to use:**
+
 - Navigation to another page (use Link component)
 - Inline actions in text (use Link Button)
 - Toggle states (use Toggle Switch)
 
 **Best practices:**
+
 - Use Primary button for main action (only one per section)
 - Label buttons with verbs ("Save", not "Okay")
 - Confirm destructive actions (modal or confirmation dialog)
@@ -149,13 +158,13 @@ Border radius: 4px
 #### Examples
 
 **Primary Action:**
+
 ```html
-<button class="btn-primary btn-medium">
-  Save Analysis
-</button>
+<button class="btn-primary btn-medium">Save Analysis</button>
 ```
 
 **With Icon:**
+
 ```html
 <button class="btn-primary btn-medium">
   <svg class="icon-sm"><!-- Heroicon: plus --></svg>
@@ -164,6 +173,7 @@ Border radius: 4px
 ```
 
 **Loading State:**
+
 ```html
 <button class="btn-primary btn-medium" disabled>
   <svg class="icon-sm spinner"><!-- Heroicon: spinner --></svg>
@@ -191,6 +201,7 @@ Border radius: 4px
 #### Variants
 
 **Text Input** (Single-line text)
+
 - Border: 1px solid `gray-300`
 - Background: `white`
 - Text: `gray-900`
@@ -200,27 +211,32 @@ Border radius: 4px
 - Font size: 16px (`body-md`)
 
 **Textarea** (Multi-line text)
+
 - Same as text input
 - Min height: 80px (5 rows)
 - Resizable vertically (not horizontally)
 
 **Email Input** (Email addresses)
+
 - Same as text input
 - Input type: `email`
 - Browser validation enabled
 
 **Password Input** (Password with show/hide toggle)
+
 - Same as text input
 - Input type: `password`
 - "Show/Hide" toggle icon on right (eye icon)
 - Toggle changes input type between `password` and `text`
 
 **Number Input** (Numeric values)
+
 - Same as text input
 - Input type: `number`
 - Optional: Up/down arrows (browser default) or custom spinners
 
 **Search Input** (Search queries)
+
 - Same as text input
 - Input type: `search`
 - Search icon on left (magnifying glass)
@@ -266,19 +282,22 @@ Border radius: 4px
 #### Label & Helper Text
 
 **Label:**
+
 - Font size: 14px (`body-sm`)
 - Font weight: 600 (semibold)
 - Color: `gray-700`
 - Margin bottom: 8px (`space-2`)
-- Required indicator: Red asterisk (*) after label text
+- Required indicator: Red asterisk (\*) after label text
 
 **Helper Text:**
+
 - Font size: 12px (`body-xs`)
 - Color: `gray-600`
 - Margin top: 4px (`space-1`)
 - Position: Below input
 
 **Error Message:**
+
 - Font size: 12px (`body-xs`)
 - Color: `error-700`
 - Icon: Error icon (X in circle) before text
@@ -296,39 +315,39 @@ Border radius: 4px
 #### Usage Guidelines
 
 **When to use:**
+
 - Collecting user input (name, email, password, notes)
 - Search functionality
 - Filters and form fields
 
 **When NOT to use:**
+
 - Selecting from predefined options (use Select, Radio, or Checkbox)
 - Dates (use Date Picker)
 - Large amounts of formatted text (use Rich Text Editor)
 
 **Best practices:**
+
 - Always provide label (not just placeholder)
 - Use helper text for additional context
 - Validate on blur, not on every keystroke (less annoying)
 - Show error message below field, not in modal
-- Required fields: Mark with asterisk (*) in label
+- Required fields: Mark with asterisk (\*) in label
 
 #### Examples
 
 **Text Input:**
+
 ```html
 <div class="form-field">
   <label for="student-name">Student Name *</label>
-  <input
-    type="text"
-    id="student-name"
-    placeholder="Enter student's full name"
-    required
-  />
+  <input type="text" id="student-name" placeholder="Enter student's full name" required />
   <p class="helper-text">First and last name</p>
 </div>
 ```
 
 **Email Input with Error:**
+
 ```html
 <div class="form-field">
   <label for="email">Email Address *</label>
@@ -347,6 +366,7 @@ Border radius: 4px
 ```
 
 **Password Input with Toggle:**
+
 ```html
 <div class="form-field">
   <label for="password">Password *</label>
@@ -384,16 +404,19 @@ Border radius: 4px
 #### Variants
 
 **Single Select** (Choose one)
+
 - Dropdown list appears below (or above if space limited)
 - Selected option shown in field
 - Checkmark next to selected option in dropdown
 
 **Native Select** (Browser default)
+
 - Use `<select>` element
 - Faster, more accessible on mobile
 - Limited styling options
 
 **Custom Select** (Styled dropdown)
+
 - Built with Radix UI or Headless UI
 - Full design control
 - Better UX for complex options (icons, descriptions)
@@ -432,6 +455,7 @@ Border radius: 4px
 #### Dropdown Menu
 
 **Appearance:**
+
 - Background: `white`
 - Border: 1px solid `gray-200`
 - Border radius: 4px
@@ -439,12 +463,14 @@ Border radius: 4px
 - Max height: 300px (scrollable if more options)
 
 **Option Styling:**
+
 - Padding: 12px vertical, 16px horizontal
 - Hover: `primary-50` background
 - Selected: `primary-700` text, checkmark icon
 - Disabled: `gray-400` text, cursor `not-allowed`
 
 **Option States:**
+
 1. Default: `gray-900` text
 2. Hover: `primary-50` background, `primary-700` text
 3. Selected: `primary-700` text, checkmark icon on right
@@ -463,16 +489,19 @@ Border radius: 4px
 #### Usage Guidelines
 
 **When to use:**
+
 - Choosing from 5-20 options (if <5, use Radio buttons; if >20, use Autocomplete/Search)
 - Grade level, class selection, role selection
 - Filter dropdowns
 
 **When NOT to use:**
+
 - Yes/No or binary choices (use Toggle or Radio)
 - Dates (use Date Picker)
 - Searchable lists with many options (use Autocomplete)
 
 **Best practices:**
+
 - Sort options logically (alphabetical or most common first)
 - Use placeholder text ("Select a class...") for initial state
 - Don't use "Select..." as first option if required field
@@ -481,6 +510,7 @@ Border radius: 4px
 #### Examples
 
 **Native Select:**
+
 ```html
 <div class="form-field">
   <label for="grade">Grade Level *</label>
@@ -495,6 +525,7 @@ Border radius: 4px
 ```
 
 **Custom Select (Radix UI):**
+
 ```tsx
 <Select.Root>
   <Select.Trigger>
@@ -579,15 +610,18 @@ Border radius: 4px
 #### Usage Guidelines
 
 **When to use:**
+
 - Multiple selections from a list
 - Single toggle option ("Remember me", "I agree to terms")
 - Nested lists (parent checkbox for "Select all")
 
 **When NOT to use:**
+
 - Mutually exclusive options (use Radio buttons)
 - Binary on/off state with immediate effect (use Toggle Switch)
 
 **Best practices:**
+
 - Label should be next to checkbox (on the right)
 - Label should be clickable (expands touch target)
 - Group related checkboxes with fieldset + legend
@@ -596,6 +630,7 @@ Border radius: 4px
 #### Examples
 
 **Single Checkbox:**
+
 ```html
 <div class="checkbox-field">
   <input type="checkbox" id="remember" />
@@ -604,6 +639,7 @@ Border radius: 4px
 ```
 
 **Checkbox List:**
+
 ```html
 <fieldset>
   <legend>Select Classes</legend>
@@ -677,16 +713,19 @@ Border radius: 4px
 #### Usage Guidelines
 
 **When to use:**
+
 - 2-5 mutually exclusive options
 - User must see all options at once
 - Examples: Role selection (Teacher, Principal), Analysis type
 
 **When NOT to use:**
-- >5 options (use Select dropdown)
+
+- > 5 options (use Select dropdown)
 - Multiple selections allowed (use Checkbox)
 - Binary on/off (use Toggle Switch or single Checkbox)
 
 **Best practices:**
+
 - Vertical list preferred (easier to scan)
 - Horizontal only if 2-3 short options
 - One option pre-selected by default (if appropriate)
@@ -695,6 +734,7 @@ Border radius: 4px
 #### Examples
 
 **Vertical Radio Group:**
+
 ```html
 <fieldset>
   <legend>User Role *</legend>
@@ -732,6 +772,7 @@ Border radius: 4px
 ```
 
 **Dimensions:**
+
 - Track: 44px wide × 24px tall
 - Knob: 20px diameter (4px margin from track edge)
 - Border radius: `rounded-full`
@@ -781,16 +822,19 @@ Border radius: 4px
 #### Usage Guidelines
 
 **When to use:**
+
 - Enable/disable features (e.g., "Enable email notifications")
 - Settings with immediate effect (no "Save" button needed)
 - Binary on/off states
 
 **When NOT to use:**
+
 - Mutually exclusive options (use Radio)
 - Form submission required (use Checkbox)
 - Actions that require confirmation (use Button)
 
 **Best practices:**
+
 - Label describes what the toggle controls ("Email Notifications")
 - Label should be next to switch (left or right)
 - Default state should be safe (e.g., notifications OFF)
@@ -799,15 +843,11 @@ Border radius: 4px
 #### Examples
 
 **Toggle Switch:**
+
 ```html
 <div class="toggle-field">
   <label for="email-notifications">Email Notifications</label>
-  <button
-    role="switch"
-    aria-checked="false"
-    id="email-notifications"
-    class="toggle-switch"
-  >
+  <button role="switch" aria-checked="false" id="email-notifications" class="toggle-switch">
     <span class="toggle-knob"></span>
   </button>
 </div>
@@ -836,6 +876,7 @@ Border radius: 4px
 #### Variants
 
 **Basic Card** (Non-interactive)
+
 - Background: `white`
 - Border: 1px solid `gray-200` (optional, for subtle separation)
 - Border radius: 8px (`rounded-lg`)
@@ -843,17 +884,20 @@ Border radius: 4px
 - Shadow: `shadow-sm` (subtle lift)
 
 **Interactive Card** (Clickable)
+
 - Same as basic card
 - Hover: `shadow-md` (lift on hover)
 - Cursor: `pointer`
 - Transition: 200ms ease-out
 
 **Highlighted Card** (Important or selected)
+
 - Border: 2px solid `primary-500`
 - Background: `primary-50` (very light blue)
 - Shadow: `shadow-md`
 
 **Student Card** (Specific to student roster)
+
 - Includes: Student name, grade, class, analysis status
 - Actions: "Analyze" button, "View History" link
 - Status badge: "Analyzed", "Pending", "Flagged"
@@ -906,17 +950,20 @@ Border radius: 4px
 #### Usage Guidelines
 
 **When to use:**
+
 - Student roster items
 - Dashboard metric cards
 - Analysis result summaries
 - Settings sections
 
 **When NOT to use:**
+
 - Single piece of content (no grouping needed)
 - Navigation menus (use Nav component)
 - Modal dialogs (use Modal component)
 
 **Best practices:**
+
 - Keep card content focused (one purpose per card)
 - Use consistent padding (24px)
 - Limit actions in card (2-3 max)
@@ -925,6 +972,7 @@ Border radius: 4px
 #### Examples
 
 **Basic Card:**
+
 ```html
 <div class="card">
   <div class="card-header">
@@ -942,6 +990,7 @@ Border radius: 4px
 ```
 
 **Interactive Student Card:**
+
 ```html
 <button class="card card-interactive">
   <div class="card-header">
@@ -980,22 +1029,26 @@ Border radius: 4px
 #### Variants
 
 **Basic Table** (Read-only data)
+
 - Background: `white`
 - Border: 1px solid `gray-200` (outer border)
 - Border radius: 8px (`rounded-lg`)
 - Cell borders: 1px solid `gray-200`
 
 **Sortable Table** (Column sorting)
+
 - Header has sort icon (up/down arrows)
 - Click header to sort ascending/descending
 - Active sort column: Bold header text, visible sort icon
 
 **Interactive Table** (Row actions)
+
 - Row hover: `gray-50` background
 - Clickable rows: Cursor `pointer`
 - Action buttons in last column (Edit, Delete, View)
 
 **Striped Table** (Alternate row colors)
+
 - Odd rows: `white`
 - Even rows: `gray-50`
 - Improves scannability for large tables
@@ -1003,11 +1056,13 @@ Border radius: 4px
 #### Styling
 
 **Table Container:**
+
 - Overflow: `auto` (horizontal scroll on mobile)
 - Border radius: 8px
 - Shadow: `shadow-sm`
 
 **Header Row:**
+
 - Background: `gray-50`
 - Font size: 14px (`body-sm`)
 - Font weight: 600 (semibold)
@@ -1018,39 +1073,47 @@ Border radius: 4px
 - Border bottom: 2px solid `gray-300`
 
 **Body Rows:**
+
 - Font size: 14px (`body-sm`)
 - Color: `gray-900`
 - Padding: 12px vertical, 16px horizontal
 - Border bottom: 1px solid `gray-200`
 
 **Hover State (Row):**
+
 - Background: `gray-50`
 - Transition: 100ms ease-out
 
 **Selected Row:**
+
 - Background: `primary-50`
 - Border left: 3px solid `primary-500`
 
 #### Column Types
 
 **Text Column:**
+
 - Left-aligned
 - Truncate long text with ellipsis (...) if needed
 - Tooltip shows full text on hover
 
 **Numeric Column:**
+
 - Right-aligned
 - Monospace font (for alignment)
 
 **Date Column:**
+
 - Left-aligned or center-aligned
 - Format: "Oct 15, 2025" or "2 days ago" (relative)
 
 **Status Column:**
+
 - Badge component (colored pill)
 - Icons + text (e.g., checkmark + "Complete")
 
 **Actions Column:**
+
 - Right-aligned
 - Icon buttons or text links
 - Max 2-3 actions (more → dropdown menu)
@@ -1058,12 +1121,14 @@ Border radius: 4px
 #### Sorting
 
 **Sort Icon:**
+
 - Default (unsorted): Up/down arrow icon (`gray-400`)
 - Ascending: Up arrow only (`gray-900`)
 - Descending: Down arrow only (`gray-900`)
 - Position: Right of header text
 
 **Interaction:**
+
 - Click header to sort ascending (first click)
 - Click again to sort descending
 - Click third time to remove sort (back to default)
@@ -1071,11 +1136,13 @@ Border radius: 4px
 #### Pagination
 
 **Pagination Controls:**
+
 - Position: Below table
 - Layout: Total count, page numbers, Next/Previous buttons
 - Example: "Showing 1-20 of 150 students"
 
 **Pagination Buttons:**
+
 - Previous/Next: Ghost buttons with icons
 - Page numbers: Ghost buttons, current page is Primary button
 - Mobile: Show only Previous/Next (no page numbers)
@@ -1093,17 +1160,20 @@ Border radius: 4px
 #### Usage Guidelines
 
 **When to use:**
+
 - Student rosters (20-500 students)
 - Analysis history (multiple analyses per student)
 - Reports and exports
 - Admin user management
 
 **When NOT to use:**
+
 - <10 rows (use simple list or cards)
 - Complex nested data (use expandable rows or separate pages)
 - Mobile-first views (use cards on mobile, table on desktop)
 
 **Best practices:**
+
 - Limit columns (5-8 max for desktop, 3-4 for mobile)
 - Use sticky headers for long tables
 - Provide filters (search, status, date range)
@@ -1113,9 +1183,12 @@ Border radius: 4px
 #### Examples
 
 **Basic Table:**
+
 ```html
 <table class="table">
-  <caption>Student Roster - 4th Grade Room 201</caption>
+  <caption>
+    Student Roster - 4th Grade Room 201
+  </caption>
   <thead>
     <tr>
       <th>Student Name</th>
@@ -1168,18 +1241,22 @@ Border radius: 4px
 #### Variants
 
 **Small Modal** (Confirmations, alerts)
+
 - Width: 400px (max)
 - Use for: Simple confirmations, short messages
 
 **Medium Modal** (Default, forms)
+
 - Width: 600px (max)
 - Use for: Forms, student details, analysis results
 
 **Large Modal** (Complex content)
+
 - Width: 800px (max)
 - Use for: Multi-step wizards, detailed reports
 
 **Full Screen Modal** (Mobile or immersive)
+
 - Width: 100vw
 - Height: 100vh
 - Use for: Mobile views, image galleries
@@ -1187,11 +1264,13 @@ Border radius: 4px
 #### Styling
 
 **Overlay:**
+
 - Background: `rgba(0, 0, 0, 0.5)` (50% black)
 - Backdrop filter: `blur(4px)` (optional, for glassmorphism effect)
 - Z-index: 30 (modal layer)
 
 **Modal Container:**
+
 - Background: `white`
 - Border radius: 12px (`rounded-xl`)
 - Shadow: `shadow-2xl`
@@ -1199,6 +1278,7 @@ Border radius: 4px
 - Max height: 90vh (scrollable if content overflows)
 
 **Modal Header:**
+
 - Padding: 24px (`space-6`)
 - Border bottom: 1px solid `gray-200`
 - Font size: 24px (`heading-lg`)
@@ -1207,11 +1287,13 @@ Border radius: 4px
 - Close button: Top-right corner, icon button (X)
 
 **Modal Body:**
+
 - Padding: 24px (`space-6`)
 - Overflow: `auto` (if content is tall)
 - Max height: calc(90vh - header - footer)
 
 **Modal Footer:**
+
 - Padding: 24px (`space-6`)
 - Border top: 1px solid `gray-200`
 - Layout: Flexbox, buttons right-aligned
@@ -1236,12 +1318,14 @@ Border radius: 4px
 #### Close Interactions
 
 **Methods to close:**
+
 1. Click "X" button (top-right)
 2. Click "Cancel" or secondary button (footer)
 3. Click overlay (background) - only for non-critical modals
 4. Press Escape key
 
 **Destructive modals:**
+
 - Require explicit confirmation (don't close on overlay click)
 - Example: "Are you sure you want to delete this student?"
 
@@ -1261,17 +1345,20 @@ Border radius: 4px
 #### Usage Guidelines
 
 **When to use:**
+
 - Confirmations (delete, cancel, discard changes)
 - Forms (add student, edit analysis)
 - Detailed views (analysis results, student history)
 - Alerts (errors, warnings, success messages)
 
 **When NOT to use:**
+
 - Non-critical messages (use Toast notification)
 - Navigation (use page transitions)
 - Large amounts of content (use separate page)
 
 **Best practices:**
+
 - Keep modals focused (one task per modal)
 - Provide clear close mechanism (X button, Cancel, Escape)
 - Limit modal depth (avoid modal → modal → modal)
@@ -1281,6 +1368,7 @@ Border radius: 4px
 #### Examples
 
 **Confirmation Modal:**
+
 ```html
 <div class="modal-overlay">
   <div class="modal modal-small" role="dialog" aria-labelledby="modal-title">
@@ -1310,39 +1398,46 @@ Border radius: 4px
 #### Variants
 
 **Inline Alerts** (Context-specific)
+
 - Positioned near relevant content
 - Persist until dismissed or action taken
 
 **Toast Notifications** (Global)
+
 - Fixed position (top-right corner)
 - Auto-dismiss after 5 seconds
 - Multiple toasts stack vertically
 
 **Banner Alerts** (Page-level)
+
 - Full-width at top of page
 - For critical system messages (maintenance, errors)
 
 #### Alert Types
 
 **Success** (Action completed)
+
 - Background: `secondary-100` (light green)
 - Border left: 4px solid `secondary-600`
 - Icon: Checkmark circle (`secondary-600`)
 - Text color: `secondary-700`
 
 **Error** (Something went wrong)
+
 - Background: `error-100` (light red)
 - Border left: 4px solid `error-600`
 - Icon: X circle (`error-600`)
 - Text color: `error-700`
 
 **Warning** (Caution needed)
+
 - Background: `warning-100` (light orange)
 - Border left: 4px solid `warning-600`
 - Icon: Exclamation triangle (`warning-600`)
 - Text color: `warning-700`
 
 **Info** (Helpful information)
+
 - Background: `info-100` (light blue)
 - Border left: 4px solid `info-600`
 - Icon: Info circle (`info-600`)
@@ -1363,6 +1458,7 @@ Border radius: 4px
 #### Styling
 
 **Container:**
+
 - Padding: 16px (`space-4`)
 - Border radius: 8px (`rounded-lg`)
 - Border left: 4px solid (semantic color)
@@ -1370,49 +1466,58 @@ Border radius: 4px
 - Shadow: None (inline), `shadow-lg` (toast)
 
 **Icon:**
+
 - Size: 24px (`icon-md`)
 - Color: Semantic color (600 shade)
 - Position: Top-left, aligned with title
 
 **Title:**
+
 - Font size: 16px (`body-md`)
 - Font weight: 600 (semibold)
 - Color: Semantic color (700 shade)
 - Margin bottom: 4px (`space-1`)
 
 **Message:**
+
 - Font size: 14px (`body-sm`)
 - Color: Semantic color (700 shade)
 - Line height: 1.5
 
 **Close Button:**
+
 - Position: Top-right
 - Icon: X (`icon-sm`)
 - Color: Semantic color (600 shade)
 - Hover: Semantic color (700 shade)
 
 **Action Button (optional):**
+
 - Margin top: 12px (`space-3`)
 - Use Ghost button (matches semantic color)
 
 #### Toast Notifications
 
 **Position:**
+
 - Fixed: Top-right corner
 - Offset: 24px from top, 24px from right
 - Multiple toasts: Stack vertically with 12px gap
 
 **Animation:**
+
 - Enter: Slide in from right + fade in (300ms)
 - Exit: Slide out to right + fade out (200ms)
 
 **Auto-Dismiss:**
+
 - Default: 5 seconds
 - Error: 7 seconds (more time to read)
 - Success: 3 seconds (quick confirmation)
 - Hover: Pause auto-dismiss
 
 **Interaction:**
+
 - Click anywhere on toast to dismiss
 - Click action button (performs action + dismisses)
 - Hover pauses auto-dismiss timer
@@ -1429,21 +1534,25 @@ Border radius: 4px
 #### Usage Guidelines
 
 **When to use Inline Alerts:**
+
 - Form validation errors (below form)
 - Section-specific warnings (above section)
 - Contextual information (related to specific content)
 
 **When to use Toast Notifications:**
+
 - Global actions (save, delete, update)
 - Background task completion (CSV import finished)
 - System notifications (session expiring soon)
 
 **When to use Banner Alerts:**
+
 - System-wide issues (maintenance mode, API outage)
 - Critical updates (new features, policy changes)
 - Emergency messages (security breach, immediate action required)
 
 **Best practices:**
+
 - Be specific ("Student saved successfully", not "Success")
 - Provide actionable next steps ("Click here to view analysis")
 - Limit simultaneous toasts (max 3 stacked)
@@ -1453,6 +1562,7 @@ Border radius: 4px
 #### Examples
 
 **Success Toast:**
+
 ```html
 <div class="toast toast-success" role="status">
   <svg class="icon-md"><!-- Checkmark icon --></svg>
@@ -1467,6 +1577,7 @@ Border radius: 4px
 ```
 
 **Error Inline Alert:**
+
 ```html
 <div class="alert alert-error" role="alert">
   <svg class="icon-md"><!-- Error icon --></svg>
@@ -1490,55 +1601,66 @@ Border radius: 4px
 #### Variants
 
 **Spinner** (Circular loading indicator)
+
 - Size: 24px (default), 16px (small), 32px (large)
 - Color: `primary-600` (default), `white` (on dark backgrounds)
 - Animation: Rotate 360° continuously (1s linear infinite)
 
 **Skeleton Loader** (Content placeholder)
+
 - Gray blocks in shape of content
 - Shimmer animation (left to right)
 - Use for: Cards, tables, text blocks
 
 **Progress Bar** (Determinate progress)
+
 - Linear bar showing % complete
 - Use for: File uploads, multi-step processes
 
 **Loading Overlay** (Full-screen or section)
+
 - Semi-transparent overlay with spinner
 - Blocks interaction during loading
 
 #### Spinner
 
 **Styling:**
+
 ```css
 .spinner {
   width: 24px;
   height: 24px;
-  border: 3px solid #E5E7EB; /* gray-200 */
-  border-top: 3px solid #10507E; /* primary-700 */
+  border: 3px solid #e5e7eb; /* gray-200 */
+  border-top: 3px solid #10507e; /* primary-700 */
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 ```
 
 **Accessibility:**
+
 - `role="status"`, `aria-live="polite"`, `aria-label="Loading"`
 
 #### Skeleton Loader
 
 **Styling:**
+
 ```css
 .skeleton {
   background: linear-gradient(
     90deg,
-    #F3F4F6 25%,  /* gray-100 */
-    #E5E7EB 50%,  /* gray-200 */
-    #F3F4F6 75%
+    #f3f4f6 25%,
+    /* gray-100 */ #e5e7eb 50%,
+    /* gray-200 */ #f3f4f6 75%
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
@@ -1546,23 +1668,30 @@ Border radius: 4px
 }
 
 @keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 ```
 
 **Usage:**
+
 - Matches content layout (same dimensions as real content)
 - Example: Skeleton for student card = card-shaped block with name, grade placeholders
 
 #### Progress Bar
 
 **Styling:**
+
 - Track: `gray-200`, 8px tall, `rounded-full`
 - Fill: `primary-600`, same height, `rounded-full`
 - Width: Fill width = percentage × total width
 
 **With Percentage Label:**
+
 ```html
 <div class="progress-bar">
   <div class="progress-track">
@@ -1573,16 +1702,19 @@ Border radius: 4px
 ```
 
 **Accessibility:**
+
 - `role="progressbar"`, `aria-valuenow`, `aria-valuemin`, `aria-valuemax`
 
 #### Loading Overlay
 
 **Styling:**
+
 - Overlay: `rgba(255, 255, 255, 0.8)` (80% white) for light backgrounds
 - Spinner: Centered (horizontally and vertically)
 - Z-index: 10 (above content, below modals)
 
 **Usage:**
+
 - Full-page loading (initial page load)
 - Section loading (table refreshing, dashboard updating)
 
@@ -1595,21 +1727,25 @@ Border radius: 4px
 #### Usage Guidelines
 
 **When to use Spinner:**
+
 - Quick actions (<2 seconds)
 - Button loading state (inline with button text)
 - Small sections loading
 
 **When to use Skeleton:**
+
 - Page load (dashboard, student list)
 - Perceived performance (show layout immediately)
 - Long loading times (>2 seconds)
 
 **When to use Progress Bar:**
+
 - File uploads
 - Multi-step wizards (step 2 of 5)
 - Known duration processes
 
 **Best practices:**
+
 - Always provide loading feedback (never leave user guessing)
 - Use skeleton for initial load (better perceived performance)
 - Use spinner for actions triggered by user (button click)
@@ -1618,6 +1754,7 @@ Border radius: 4px
 #### Examples
 
 **Button with Spinner:**
+
 ```html
 <button class="btn-primary" disabled>
   <svg class="spinner icon-sm"><!-- Spinner --></svg>
@@ -1626,6 +1763,7 @@ Border radius: 4px
 ```
 
 **Skeleton for Student Card:**
+
 ```html
 <div class="card">
   <div class="skeleton skeleton-text" style="width: 60%; height: 24px;"></div>
@@ -1658,52 +1796,61 @@ Border radius: 4px
 #### Styling
 
 **Container:**
+
 - Centered (horizontally and vertically) in parent
 - Padding: 48px (`space-12`)
 - Text align: Center
 
 **Icon/Illustration:**
+
 - Size: 64px or 128px (depending on space)
 - Color: `gray-400` (subtle)
 - Margin bottom: 24px (`space-6`)
 
 **Title:**
+
 - Font size: 20px (`heading-md`)
 - Font weight: 600 (semibold)
 - Color: `gray-900`
 - Margin bottom: 8px (`space-2`)
 
 **Message:**
+
 - Font size: 16px (`body-md`)
 - Color: `gray-600`
 - Max width: 400px (for readability)
 - Margin bottom: 24px (`space-6`)
 
 **Action Button:**
+
 - Primary button (guides user to create content)
 - Examples: "Add Your First Student", "Start Analysis"
 
 #### Variants
 
 **No Students Yet** (Teacher dashboard)
+
 - Icon: User icon with plus sign
 - Title: "No students yet"
 - Message: "Add your first student to start analyzing and tracking progress."
 - Action: "Add Student" button
 
 **No Analyses Yet** (Student detail page)
+
 - Icon: Document icon with magnifying glass
 - Title: "No analyses for this student"
 - Message: "Start your first analysis to identify strengths and areas for improvement."
 - Action: "Start Analysis" button
 
 **No Results** (Search or filter)
+
 - Icon: Magnifying glass with X
 - Title: "No students found"
 - Message: "Try adjusting your filters or search term."
 - Action: "Clear Filters" button
 
 **No Data** (Principal dashboard)
+
 - Icon: Chart icon with question mark
 - Title: "No data available yet"
 - Message: "Analyses will appear here as teachers complete them."
@@ -1718,15 +1865,18 @@ Border radius: 4px
 #### Usage Guidelines
 
 **When to use:**
+
 - Zero state (first-time user, no data created yet)
 - Filtered state (search results empty)
 - Error state (data failed to load, show error + retry action)
 
 **When NOT to use:**
+
 - Loading state (use Loading component)
 - Temporary empty (data is loading, show skeleton)
 
 **Best practices:**
+
 - Be encouraging, not discouraging ("No students yet" vs. "Error: No students")
 - Provide clear next step (action button)
 - Use friendly, conversational tone
@@ -1735,6 +1885,7 @@ Border radius: 4px
 #### Examples
 
 **No Students Empty State:**
+
 ```html
 <div class="empty-state">
   <svg class="icon-xl text-gray-400"><!-- User + icon --></svg>
@@ -1753,16 +1904,19 @@ Border radius: 4px
 #### Variants
 
 **Sidebar Navigation** (Desktop)
+
 - Fixed left sidebar (240px width)
 - Vertical list of nav items
 - Persistent across pages
 
 **Top Navigation** (Mobile)
+
 - Fixed top bar (60px height)
 - Horizontal nav items (scrollable if needed)
 - Collapses to hamburger menu on small screens
 
 **Hamburger Menu** (Mobile)
+
 - Slide-in sidebar from left
 - Overlay covers main content
 - Close button or click overlay to dismiss
@@ -1772,6 +1926,7 @@ Border radius: 4px
 **Sidebar Navigation:**
 
 Container:
+
 - Width: 240px (desktop), 280px (tablet)
 - Background: `gray-900` (dark theme) or `white` (light theme)
 - Border right: 1px solid `gray-200` (light theme)
@@ -1780,6 +1935,7 @@ Container:
 - Position: Fixed
 
 Nav Item (Default):
+
 - Padding: 12px vertical, 16px horizontal
 - Font size: 16px (`body-md`)
 - Color: `gray-300` (dark theme), `gray-700` (light theme)
@@ -1787,16 +1943,19 @@ Nav Item (Default):
 - Margin bottom: 4px
 
 Nav Item (Hover):
+
 - Background: `gray-800` (dark theme), `gray-100` (light theme)
 - Color: `white` (dark theme), `gray-900` (light theme)
 
 Nav Item (Active):
+
 - Background: `primary-600`
 - Color: `white`
 - Font weight: 600 (semibold)
 - Border left: 4px solid `primary-400` (optional accent)
 
 Icon + Text:
+
 - Icon size: 20px (`icon-sm`)
 - Icon position: Left of text, 12px margin right
 - Vertical alignment: Center
@@ -1804,6 +1963,7 @@ Icon + Text:
 **Top Navigation Bar:**
 
 Container:
+
 - Height: 60px
 - Background: `white`
 - Border bottom: 1px solid `gray-200`
@@ -1811,10 +1971,12 @@ Container:
 - Position: Fixed (sticky at top)
 
 Logo:
+
 - Height: 32px
 - Position: Left side
 
 Nav Items:
+
 - Layout: Horizontal (flexbox)
 - Font size: 16px (`body-md`)
 - Color: `gray-700`
@@ -1822,6 +1984,7 @@ Nav Items:
 - Border bottom: 3px solid transparent (active: `primary-600`)
 
 User Menu:
+
 - Position: Right side
 - Avatar + dropdown menu
 - Click to reveal profile, settings, logout options
@@ -1829,16 +1992,19 @@ User Menu:
 #### Sections
 
 **Primary Navigation** (Main sections)
+
 - Dashboard
 - Students
 - Analytics
 - Settings
 
 **Secondary Navigation** (Sub-sections)
+
 - Appears below primary nav (in sidebar) or as tabs (in top nav)
 - Example: Students → Roster, Archived
 
 **Footer Navigation** (Help, legal)
+
 - Position: Bottom of sidebar
 - Links: Help, Privacy Policy, Terms
 
@@ -1856,16 +2022,19 @@ User Menu:
 #### Usage Guidelines
 
 **When to use Sidebar:**
+
 - Desktop/tablet views
 - Many navigation items (5+)
 - Persistent navigation needed
 
 **When to use Top Nav:**
+
 - Mobile views
 - Few navigation items (3-5)
 - Marketing or public pages
 
 **Best practices:**
+
 - Highlight active page clearly
 - Limit primary nav items (5-7 max)
 - Use icons + text (not icons alone)
@@ -1875,6 +2044,7 @@ User Menu:
 #### Examples
 
 **Sidebar Navigation:**
+
 ```html
 <nav class="sidebar" aria-label="Main navigation">
   <div class="nav-section">
@@ -1917,36 +2087,44 @@ User Menu:
 #### Chart Types
 
 **Bar Chart** (Compare categories)
+
 - Use for: Class comparisons, grade-level metrics
 - Orientation: Vertical (default), horizontal (long labels)
 
 **Line Chart** (Show trends over time)
+
 - Use for: Student progress, analysis frequency, trend tracking
 - Multiple lines: Compare students or classes
 
 **Pie Chart** (Show proportions)
+
 - Use for: Status distribution (Analyzed vs. Pending)
 - Limit slices: 5-7 max (more → combine into "Other")
 
 **Donut Chart** (Variant of pie)
+
 - Same as pie chart, with center label
 - Use for: Completion percentage (e.g., "75% analyzed")
 
 **Area Chart** (Show volume over time)
+
 - Use for: Cumulative analyses, stacked categories
 
 #### Styling
 
 **Colors:**
+
 - Use chart palette (colorblind-safe): `chart-1` through `chart-8`
 - Avoid red/green only (add patterns if needed)
 
 **Axes:**
+
 - Font size: 12px (`body-xs`)
 - Color: `gray-600`
 - Grid lines: `gray-200` (subtle)
 
 **Tooltips:**
+
 - Background: `gray-900`
 - Text: `white`
 - Font size: 14px (`body-sm`)
@@ -1954,6 +2132,7 @@ User Menu:
 - Shadow: `shadow-lg`
 
 **Legend:**
+
 - Position: Below chart (horizontal) or right (vertical)
 - Font size: 14px (`body-sm`)
 - Color: `gray-700`
@@ -1969,12 +2148,14 @@ User Menu:
 #### Usage Guidelines
 
 **When to use charts:**
+
 - Visualize trends (line chart)
 - Compare categories (bar chart)
 - Show proportions (pie/donut chart)
 - Dashboard metrics (small inline charts - sparklines)
 
 **Best practices:**
+
 - Keep charts simple (don't overwhelm with data)
 - Label axes clearly
 - Provide legend for multi-series charts
@@ -1988,11 +2169,13 @@ User Menu:
 ### Component Library Framework
 
 **Radix UI + Tailwind CSS**
+
 - Radix UI: Unstyled, accessible primitives
 - Tailwind CSS: Utility-first styling
 - Custom components built on top
 
 **File Structure:**
+
 ```
 /apps/web/src/components/
   /ui/
@@ -2013,6 +2196,7 @@ User Menu:
 ### Design Handoff Checklist
 
 For each component, designer provides:
+
 - [ ] Figma mockup (all states: default, hover, focus, error, disabled)
 - [ ] Spacing annotations (multiples of 8px)
 - [ ] Color tokens (CSS variable names, not hex codes)
@@ -2034,6 +2218,7 @@ For each component, designer provides:
 ---
 
 **Questions or Feedback?**
+
 - Contact: Designer Agent
 - Slack: #design-system
 - Figma: [Growth Engine Component Library](https://figma.com/growth-engine-components)

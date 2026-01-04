@@ -1,7 +1,3 @@
-
-
-<!-- RDA_SYSTEM_START -->
-
 # Claude Multi-Agent R&D OS – growth-engine
 
 This repo represents an R&D department for the project:
@@ -23,19 +19,57 @@ This repo represents an R&D department for the project:
 
 Work is **role-based** and **ticket-driven**.
 
-Agents:
+**Core Agents:**
 - Product
 - Architect
 - Designer
 - Backend
 - Frontend
 - E2E Test Engineer
-- Optional specialist agents (DevOps, Data, ML, Security, etc.)
+
+**Quality Gate Agents:**
+- Code Reviewer (`.claude/agents/code-reviewer.md`)
+- Team Lead (`.claude/agents/team-lead.md`)
+
+**Optional Specialist Agents:**
+- DevOps, Data Engineer, ML Engineer, Security Engineer, QA Engineer, etc.
 
 Claude must:
-- Activate **only ONE agent at a time**.
-- Respect ticket ownership and dependencies.
-- Avoid mixing roles in a single run.
+- **Run agents in parallel when tasks are independent** (use multiple Task tool calls in a single message)
+- Run agents sequentially only when there are dependencies between tasks
+- Respect ticket ownership and dependencies
+- Avoid mixing roles in a single run (one ticket = one owner role)
+
+**Parallel vs Sequential Execution:**
+
+✅ **Run in PARALLEL** (single message with multiple Task calls):
+- Designer + Backend + Frontend all working on different tickets in same epic
+- Code reviewer reviewing multiple independent files
+- Multiple E2E test agents running different test suites
+- Exploring multiple parts of codebase simultaneously
+
+❌ **Run SEQUENTIALLY** (wait for one to finish before starting next):
+- Backend must finish API before Frontend can integrate
+- Architect must design before Backend/Frontend can implement
+- Code must be written before Code Reviewer can review
+- Code Reviewer must approve before Team Lead can verify
+
+**Example - Parallel:**
+```
+User: "Implement the login feature"
+Claude: [Sends ONE message with THREE Task calls]:
+  1. Task(subagent_type='designer', prompt='Design login UI')
+  2. Task(subagent_type='backend', prompt='Implement login API')
+  3. Task(subagent_type='e2e', prompt='Plan login E2E tests')
+```
+
+**Example - Sequential:**
+```
+User: "Add authentication endpoint"
+Claude: [Task(subagent_type='backend')] → waits for completion
+Claude: [Task(subagent_type='code-reviewer')] → waits for approval
+Claude: [Task(subagent_type='team-lead')] → waits for final approval
+```
 
 Tickets live in `/tickets` and are the **source of truth** for work.
 
@@ -56,6 +90,82 @@ Tickets live in `/tickets` and are the **source of truth** for work.
 - `/.claude/agents` → agent definitions for this project
 
 Agents should always read from these before making changes.
+
+---
+
+## 🎨 Universal Code Standards
+
+**These rules apply to ALL agents (Designer, Backend, Frontend, E2E, Specialists):**
+
+### 1. Minimal Code Changes Only
+- **Only modify code that is directly necessary** to meet the ticket requirements
+- Do NOT make "improvements" or "optimizations" outside the scope of the task
+- Do NOT refactor existing code unless:
+  - The user explicitly requests it, OR
+  - Refactoring is required to complete the ticket, OR
+  - Code reviewer identifies a blocking issue that requires refactoring
+- Three similar lines of code is better than a premature abstraction
+- If existing code works, leave it alone
+
+### 2. No Refactoring Without Approval
+- **Never refactor code "while you're there"** - this introduces unnecessary risk
+- Do NOT:
+  - Rename variables or functions in unrelated code
+  - Extract helpers or utilities for one-time operations
+  - Simplify or reorganize code that isn't part of the ticket
+  - Add type annotations or comments to code you didn't change
+  - "Clean up" or "modernize" surrounding code
+- **Exception:** Code reviewer or user explicitly approves the refactoring
+
+### 3. No Dead Code
+- **Remove all unused code** - do NOT leave commented-out code or unused imports
+- If removing a feature, delete the code completely:
+  - Remove unused functions, classes, components
+  - Remove unused imports
+  - Remove unused variables and constants
+  - Remove unused CSS/styles
+  - Remove unused test files
+- Do NOT use backwards-compatibility hacks like:
+  - Renaming unused vars to `_unusedVar`
+  - Adding `// removed` comments for deleted code
+  - Re-exporting types that are no longer used
+  - Keeping old code "just in case"
+- **Exception:** If uncertain whether code is unused, ask the user before deleting
+
+### 4. Surgical Changes
+- Make targeted, surgical changes to accomplish the task
+- Minimize the diff - fewer lines changed = lower risk
+- If you must touch a file, touch as few lines as possible
+- Preserve existing code formatting, style, and patterns
+- Match the existing codebase conventions exactly
+
+**Example - GOOD:**
+```diff
+  function calculatePrice(item: Item): number {
+-   return item.price;
++   return item.price * (1 - item.discount);
+  }
+```
+
+**Example - BAD (unnecessary refactoring):**
+```diff
+- function calculatePrice(item: Item): number {
+-   return item.price;
+- }
++ // Calculate the final price after applying discount
++ const calculateDiscountedPrice = (item: Item): number => {
++   const basePrice = item.price;
++   const discountAmount = basePrice * item.discount;
++   return basePrice - discountAmount;
++ };
+```
+
+**Why These Rules Matter:**
+- Reduces merge conflicts and review overhead
+- Minimizes bugs introduced by unnecessary changes
+- Keeps git history clean and focused
+- Makes code reviews faster and more effective
+- Reduces risk of breaking existing functionality
 
 ---
 
@@ -304,6 +414,11 @@ Claude must never:
 - Ignore ticket dependencies.
 - Silently change PRD or architecture without updating tickets and documenting decisions.
 - Mark a feature as production-ready without checking acceptance criteria and (where applicable) E2E status.
+- **Violate Universal Code Standards:**
+  - Make unnecessary code changes outside ticket scope
+  - Refactor code without user approval
+  - Leave dead code or commented-out code
+  - Make non-surgical changes that create large diffs
 
 ---
 
@@ -342,7 +457,7 @@ rda gen-agents
 - Saves to `project.brief.json` with `requiredAgents` field
 
 **During `rda gen-agents`:**
-- Generates core agents (always): product, architect, designer, backend, frontend, e2e
+- Generates core agents (always): product, architect, designer, backend, frontend, e2e, code-reviewer, team-lead
 - Generates specialist agents (only if in `requiredAgents`): devops, data-engineer, ml-engineer, etc.
 - Creates `.claude/agents/` with project-specific context
 

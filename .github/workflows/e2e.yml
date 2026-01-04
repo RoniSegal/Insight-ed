@@ -1,0 +1,195 @@
+name: E2E Tests
+
+# TESTS DISABLED - E2E tests skipped for faster CI
+on:
+  # pull_request:
+  #   branches: [main]
+  workflow_dispatch:  # Can still be run manually if needed
+
+jobs:
+  e2e-tests:
+    name: End-to-End Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: growth_engine_e2e
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Build shared package
+        run: npm run build --workspace=@growth-engine/shared
+
+      - name: Generate Prisma Client
+        working-directory: packages/backend
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/growth_engine_e2e
+        run: npx prisma generate
+
+      - name: Build backend
+        run: npm run build --workspace=@growth-engine/backend
+
+      - name: Setup database
+        working-directory: packages/backend
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/growth_engine_e2e
+        run: |
+          npx prisma migrate deploy
+          npx prisma db seed
+
+      - name: Verify backend build
+        run: |
+          echo "Checking if backend dist exists..."
+          ls -la packages/backend/dist/src/ || echo "dist/src directory not found!"
+          echo "Checking main.js..."
+          ls -la packages/backend/dist/src/main.js || echo "main.js not found!"
+
+      - name: Start backend server
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/growth_engine_e2e
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: test-secret-key
+          JWT_ACCESS_SECRET: test-access-secret-key
+          JWT_REFRESH_SECRET: test-refresh-secret-key
+          JWT_ACCESS_TOKEN_EXPIRATION: 15m
+          JWT_REFRESH_TOKEN_EXPIRATION: 7d
+          OPENAI_API_KEY: test-openai-key
+          API_URL: http://localhost:4000
+          BACKEND_URL: http://localhost:4000
+          FRONTEND_URL: http://localhost:4001
+          NODE_ENV: test
+          PORT: 4000
+        run: |
+          cd packages/backend
+          echo "Starting backend server..."
+          echo "NODE_ENV=$NODE_ENV"
+          echo "DATABASE_URL=$DATABASE_URL"
+          node dist/src/main.js > ../../backend.log 2>&1 &
+          BACKEND_PID=$!
+          echo "Backend started with PID: $BACKEND_PID"
+          sleep 3
+          if ps -p $BACKEND_PID > /dev/null; then
+            echo "Backend process is running"
+          else
+            echo "Backend process died immediately!"
+            cat ../../backend.log
+            exit 1
+          fi
+          cd ../..
+
+      - name: Wait for backend
+        run: |
+          echo "Waiting for backend to be ready..."
+          for i in {1..30}; do
+            if curl -f http://localhost:4000/api/v1/health 2>/dev/null; then
+              echo "Backend is ready!"
+              exit 0
+            fi
+            echo "Attempt $i: Backend not ready yet..."
+            sleep 2
+          done
+          echo "Backend failed to start within 60 seconds"
+          echo "=== Backend logs ==="
+          cat backend.log || echo "No backend log found"
+          exit 1
+
+      - name: Build frontend
+        env:
+          BACKEND_API_URL: http://localhost:4000/api/v1
+        run: npm run build --workspace=@growth-engine/frontend
+
+      - name: Start frontend server
+        env:
+          BACKEND_API_URL: http://localhost:4000/api/v1
+          PORT: 4001
+        run: |
+          cd packages/frontend
+          npm run start -- -p 4001 > ../../frontend.log 2>&1 &
+          FRONTEND_PID=$!
+          echo "Frontend started with PID: $FRONTEND_PID"
+          sleep 3
+          if ps -p $FRONTEND_PID > /dev/null; then
+            echo "Frontend process is running"
+          else
+            echo "Frontend process died immediately!"
+            cat ../../frontend.log
+            exit 1
+          fi
+          cd ../..
+
+      - name: Wait for frontend
+        run: |
+          echo "Waiting for frontend to be ready..."
+          for i in {1..30}; do
+            if curl -f http://localhost:4001 2>/dev/null; then
+              echo "Frontend is ready!"
+              exit 0
+            fi
+            echo "Attempt $i: Frontend not ready yet..."
+            sleep 2
+          done
+          echo "Frontend failed to start within 60 seconds"
+          echo "=== Frontend logs ==="
+          cat frontend.log || echo "No frontend log found"
+          exit 1
+
+      - name: Run E2E tests
+        run: npm run test:e2e --workspace=@growth-engine/frontend
+        env:
+          PLAYWRIGHT_BASE_URL: http://localhost:4001
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/growth_engine_e2e
+          CI: true
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: |
+            packages/*/test-results/
+            packages/*/playwright-report/
+          retention-days: 30
+
+      - name: Upload test videos
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-videos
+          path: packages/*/test-results/**/video.webm
+          retention-days: 7

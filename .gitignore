@@ -43,3 +43,7 @@ yarn-error.log*
 .tmp/
 tickets/
 *node_modules/
+
+# Root-level markdown files (keep locally but don't track)
+/*.md
+!CLAUDE.md
