@@ -93,11 +93,7 @@ describe('Alert', () => {
     });
 
     it('should render custom icon when provided', () => {
-      render(
-        <Alert icon={<span data-testid="custom-icon">🎉</span>}>
-          Custom icon message
-        </Alert>
-      );
+      render(<Alert icon={<span data-testid="custom-icon">🎉</span>}>Custom icon message</Alert>);
       expect(screen.getByTestId('custom-icon')).toBeInTheDocument();
     });
 
@@ -323,11 +319,7 @@ describe('Alert', () => {
     });
 
     it('should render title and children together', () => {
-      render(
-        <Alert title="Important">
-          Please read this carefully.
-        </Alert>
-      );
+      render(<Alert title="Important">Please read this carefully.</Alert>);
       expect(screen.getByText('Important')).toBeInTheDocument();
       expect(screen.getByText('Please read this carefully.')).toBeInTheDocument();
     });

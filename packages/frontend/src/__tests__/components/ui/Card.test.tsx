@@ -229,9 +229,7 @@ describe('CardHeader', () => {
 
   describe('Layout', () => {
     it('should have correct layout structure', () => {
-      const { container } = render(
-        <CardHeader title="Title" action={<button>Action</button>} />
-      );
+      const { container } = render(<CardHeader title="Title" action={<button>Action</button>} />);
       const header = container.querySelector('.flex.items-start.justify-between');
       expect(header).toBeInTheDocument();
     });

@@ -303,11 +303,7 @@ describe('Input', () => {
 
     it('should prioritize error over helper text', () => {
       render(
-        <Input
-          label="Password"
-          error="Password is required"
-          helperText="At least 8 characters"
-        />
+        <Input label="Password" error="Password is required" helperText="At least 8 characters" />
       );
 
       expect(screen.getByRole('alert')).toHaveTextContent('Password is required');

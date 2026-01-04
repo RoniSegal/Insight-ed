@@ -1,4 +1,12 @@
-import { cn, formatDate, formatDateTime, truncate, getInitials, sleep, debounce } from '@/lib/utils';
+import {
+  cn,
+  formatDate,
+  formatDateTime,
+  truncate,
+  getInitials,
+  sleep,
+  debounce,
+} from '@/lib/utils';
 
 describe('utils', () => {
   describe('cn', () => {

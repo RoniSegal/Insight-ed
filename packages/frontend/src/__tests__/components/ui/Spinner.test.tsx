@@ -147,14 +147,7 @@ describe('Spinner', () => {
 
   describe('Combinations', () => {
     it('should render all props together correctly', () => {
-      render(
-        <Spinner
-          size="lg"
-          color="white"
-          label="Loading content"
-          className="custom-class"
-        />
-      );
+      render(<Spinner size="lg" color="white" label="Loading content" className="custom-class" />);
 
       const spinner = screen.getByRole('status');
 

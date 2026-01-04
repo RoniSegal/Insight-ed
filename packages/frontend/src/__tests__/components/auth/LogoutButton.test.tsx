@@ -73,10 +73,7 @@ describe('LogoutButton', () => {
       await userEvent.click(button);
 
       await waitFor(() => {
-        expect(consoleErrorSpy).toHaveBeenCalledWith(
-          'Logout error:',
-          expect.any(Error)
-        );
+        expect(consoleErrorSpy).toHaveBeenCalledWith('Logout error:', expect.any(Error));
       });
 
       consoleErrorSpy.mockRestore();

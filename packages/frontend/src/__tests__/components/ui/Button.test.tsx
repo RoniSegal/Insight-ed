@@ -142,20 +142,12 @@ describe('Button', () => {
 
   describe('Icons', () => {
     it('should render left icon', () => {
-      render(
-        <Button leftIcon={<span data-testid="left-icon">←</span>}>
-          With Left Icon
-        </Button>
-      );
+      render(<Button leftIcon={<span data-testid="left-icon">←</span>}>With Left Icon</Button>);
       expect(screen.getByTestId('left-icon')).toBeInTheDocument();
     });
 
     it('should render right icon', () => {
-      render(
-        <Button rightIcon={<span data-testid="right-icon">→</span>}>
-          With Right Icon
-        </Button>
-      );
+      render(<Button rightIcon={<span data-testid="right-icon">→</span>}>With Right Icon</Button>);
       expect(screen.getByTestId('right-icon')).toBeInTheDocument();
     });
 
@@ -173,21 +165,13 @@ describe('Button', () => {
     });
 
     it('should apply spacing classes to left icon', () => {
-      render(
-        <Button leftIcon={<span data-testid="left-icon">←</span>}>
-          Button
-        </Button>
-      );
+      render(<Button leftIcon={<span data-testid="left-icon">←</span>}>Button</Button>);
       const iconContainer = screen.getByTestId('left-icon').parentElement;
       expect(iconContainer).toHaveClass('me-2');
     });
 
     it('should apply spacing classes to right icon', () => {
-      render(
-        <Button rightIcon={<span data-testid="right-icon">→</span>}>
-          Button
-        </Button>
-      );
+      render(<Button rightIcon={<span data-testid="right-icon">→</span>}>Button</Button>);
       const iconContainer = screen.getByTestId('right-icon').parentElement;
       expect(iconContainer).toHaveClass('ms-2');
     });
@@ -300,7 +284,14 @@ describe('Button', () => {
 
       const button = screen.getByRole('button');
 
-      expect(button).toHaveClass('bg-success-600', 'px-6', 'py-3', 'text-lg', 'w-full', 'custom-class');
+      expect(button).toHaveClass(
+        'bg-success-600',
+        'px-6',
+        'py-3',
+        'text-lg',
+        'w-full',
+        'custom-class'
+      );
       expect(screen.getByTestId('icon')).toBeInTheDocument();
       expect(button).toHaveTextContent('Save Changes');
     });

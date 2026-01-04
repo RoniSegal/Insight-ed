@@ -40,7 +40,7 @@ export async function GET(request: Request) {
     const response = await fetch(`${BACKEND_URL}/auth/me`, {
       method: 'GET',
       headers: {
-        'Authorization': authHeader,
+        Authorization: authHeader,
       },
     });
 

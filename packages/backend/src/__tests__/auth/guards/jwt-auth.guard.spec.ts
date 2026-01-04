@@ -46,7 +46,9 @@ describe('JwtAuthGuard', () => {
         }),
       } as unknown as ExecutionContext;
 
-      const getAllAndOverrideSpy = jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(false);
+      const getAllAndOverrideSpy = jest
+        .spyOn(reflector, 'getAllAndOverride')
+        .mockReturnValue(false);
 
       // Mock the parent canActivate
       const superCanActivateSpy = jest

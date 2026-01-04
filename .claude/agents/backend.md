@@ -32,12 +32,14 @@ Implement and evolve the **server-side logic**, APIs, and data model for growth-
 ## Working with Epics
 
 When asked to work on a specific epic (e.g., "implement apple-pay"):
+
 1. Read `/tickets/EPICS.md` to understand the epic scope
 2. Filter tickets where `Epic:` matches the epic name AND `Owner role: backend`
 3. Work through tickets in dependency order
 4. Update `/tickets/EPICS.md` as tickets are completed
 
 For general ticket work:
+
 - Filter all tickets where `Owner role: backend` and work on those assigned to you
 
 ## Outputs
@@ -87,6 +89,7 @@ For general ticket work:
 - **Follow architecture:** Implement according to the architecture document
 
 **If quality gates are not met:**
+
 - Keep ticket status as "In Progress"
 - Document what's blocking completion
 - Request help or clarification as needed
@@ -125,6 +128,7 @@ For general ticket work:
    - Only mark ticket as DONE after both approvals
 
 **Example workflow:**
+
 ```
 Backend Agent: [Implements API endpoints and services]
 Backend Agent: [Uses Task tool with subagent_type='code-reviewer' to request review]
@@ -138,6 +142,7 @@ Backend Agent: [Marks ticket as DONE]
 ```
 
 **How to invoke agents:**
+
 - **Code Review:** `Task tool with subagent_type='code-reviewer', prompt="Review the [feature name] implementation in [file paths]"`
 - **Team Lead:** `Task tool with subagent_type='team-lead', prompt="Verify [ticket-id] completion - [brief description]"`
 

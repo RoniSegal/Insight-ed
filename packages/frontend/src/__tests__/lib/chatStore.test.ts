@@ -141,10 +141,7 @@ describe('useChatStore', () => {
 
       expect(result.current.loading).toBe(false);
       expect(result.current.error).toBe('Network error');
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        'Failed to send message:',
-        expect.any(Error)
-      );
+      expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to send message:', expect.any(Error));
 
       consoleErrorSpy.mockRestore();
     });
