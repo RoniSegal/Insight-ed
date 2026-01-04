@@ -5,7 +5,8 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaClient, UserRole } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
+import { UserRole } from '@growth-engine/shared';
 import * as bcrypt from 'bcrypt';
 
 import { AuthService } from '../../auth/auth.service';
@@ -17,11 +18,15 @@ import { createMockPrismaClient, MockPrismaClient } from '../mocks/prisma.mock';
 jest.mock('bcrypt');
 
 // Mock crypto
-jest.mock('crypto', () => ({
-  randomBytes: jest.fn().mockReturnValue({
-    toString: jest.fn().mockReturnValue('mock-secure-token-123456789'),
-  }),
-}));
+jest.mock('crypto', () => {
+  const actualCrypto = jest.requireActual('crypto');
+  return {
+    ...actualCrypto,
+    randomBytes: jest.fn().mockReturnValue({
+      toString: jest.fn().mockReturnValue('mock-secure-token-123456789'),
+    }),
+  };
+});
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -713,7 +718,7 @@ describe('AuthService', () => {
       prisma.user.update.mockResolvedValue(mockUser as any);
       prisma.auditLog.create.mockResolvedValue({} as any);
 
-      const result = await service.handleOAuthLogin(mockProfile, 'MICROSOFT');
+      await service.handleOAuthLogin(mockProfile, 'MICROSOFT');
 
       expect(prisma.user.create).toHaveBeenCalledWith(
         expect.objectContaining({

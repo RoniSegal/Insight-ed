@@ -193,8 +193,8 @@ describe('Input', () => {
     });
 
     it('should render password type', () => {
-      render(<Input type="password" />);
-      const input = screen.getByPlaceholderText('') as HTMLInputElement;
+      const { container } = render(<Input type="password" />);
+      const input = container.querySelector('input') as HTMLInputElement;
       expect(input.type).toBe('password');
     });
 

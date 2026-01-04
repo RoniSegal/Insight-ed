@@ -12,7 +12,7 @@ describe('Card', () => {
 
     it('should render with custom className', () => {
       render(<Card className="custom-class">Content</Card>);
-      const card = screen.getByText('Content').parentElement;
+      const card = screen.getByText('Content');
       expect(card).toHaveClass('custom-class');
     });
 
@@ -26,25 +26,25 @@ describe('Card', () => {
   describe('Variants', () => {
     it('should render default variant by default', () => {
       render(<Card>Content</Card>);
-      const card = screen.getByText('Content').parentElement;
+      const card = screen.getByText('Content');
       expect(card).toHaveClass('shadow');
     });
 
     it('should render bordered variant', () => {
       render(<Card variant="bordered">Content</Card>);
-      const card = screen.getByText('Content').parentElement;
+      const card = screen.getByText('Content');
       expect(card).toHaveClass('border', 'border-neutral-200');
     });
 
     it('should render elevated variant', () => {
       render(<Card variant="elevated">Content</Card>);
-      const card = screen.getByText('Content').parentElement;
+      const card = screen.getByText('Content');
       expect(card).toHaveClass('shadow-md');
     });
 
     it('should render insight variant', () => {
       render(<Card variant="insight">Content</Card>);
-      const card = screen.getByText('Content').parentElement;
+      const card = screen.getByText('Content');
       expect(card).toHaveClass('card-insight');
     });
   });
@@ -52,25 +52,25 @@ describe('Card', () => {
   describe('Padding', () => {
     it('should render default padding by default', () => {
       render(<Card>Content</Card>);
-      const card = screen.getByText('Content').parentElement;
+      const card = screen.getByText('Content');
       expect(card).toHaveClass('p-6');
     });
 
     it('should render no padding', () => {
       render(<Card padding="none">Content</Card>);
-      const card = screen.getByText('Content').parentElement;
+      const card = screen.getByText('Content');
       expect(card).not.toHaveClass('p-6');
     });
 
     it('should render compact padding', () => {
       render(<Card padding="compact">Content</Card>);
-      const card = screen.getByText('Content').parentElement;
+      const card = screen.getByText('Content');
       expect(card).toHaveClass('p-4');
     });
 
     it('should render spacious padding', () => {
       render(<Card padding="spacious">Content</Card>);
-      const card = screen.getByText('Content').parentElement;
+      const card = screen.getByText('Content');
       expect(card).toHaveClass('p-8');
     });
   });
@@ -95,7 +95,7 @@ describe('Card', () => {
   describe('Base Styles', () => {
     it('should have base card styles', () => {
       render(<Card>Content</Card>);
-      const card = screen.getByText('Content').parentElement;
+      const card = screen.getByText('Content');
       expect(card).toHaveClass('bg-white', 'rounded-lg');
     });
   });
@@ -273,7 +273,7 @@ describe('CardContent', () => {
 
     it('should render with custom className', () => {
       render(<CardContent className="custom-class">Content</CardContent>);
-      const content = screen.getByText('Content').parentElement;
+      const content = screen.getByText('Content');
       expect(content).toHaveClass('custom-class');
     });
 
@@ -300,7 +300,7 @@ describe('CardFooter', () => {
 
     it('should render with custom className', () => {
       render(<CardFooter className="custom-class">Footer</CardFooter>);
-      const footer = screen.getByText('Footer').parentElement;
+      const footer = screen.getByText('Footer');
       expect(footer).toHaveClass('custom-class');
     });
 
@@ -314,7 +314,7 @@ describe('CardFooter', () => {
   describe('Styling', () => {
     it('should have correct footer styles', () => {
       render(<CardFooter>Footer</CardFooter>);
-      const footer = screen.getByText('Footer').parentElement;
+      const footer = screen.getByText('Footer');
       expect(footer).toHaveClass('mt-4', 'pt-4', 'border-t', 'border-neutral-200');
     });
   });

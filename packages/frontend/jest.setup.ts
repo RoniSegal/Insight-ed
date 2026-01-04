@@ -15,14 +15,20 @@ Object.defineProperty(window, 'location', {
   writable: true,
 });
 
-// Mock localStorage
+// Mock localStorage with actual storage
+const storage = new Map<string, string>();
 const localStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn(),
-  length: 0,
-  key: jest.fn(),
+  getItem: jest.fn((key: string) => storage.get(key) || null),
+  setItem: jest.fn((key: string, value: string) => storage.set(key, value)),
+  removeItem: jest.fn((key: string) => storage.delete(key)),
+  clear: jest.fn(() => storage.clear()),
+  get length() {
+    return storage.size;
+  },
+  key: jest.fn((index: number) => {
+    const keys = Array.from(storage.keys());
+    return keys[index] || null;
+  }),
 };
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
@@ -31,10 +37,15 @@ Object.defineProperty(window, 'localStorage', {
 // Mock fetch
 global.fetch = jest.fn();
 
+// Mock scrollIntoView (not implemented in jsdom)
+Element.prototype.scrollIntoView = jest.fn();
+
 // Reset mocks between tests
 beforeEach(() => {
   jest.clearAllMocks();
-  localStorageMock.getItem.mockReset();
-  localStorageMock.setItem.mockReset();
-  localStorageMock.removeItem.mockReset();
+  storage.clear();
+  localStorageMock.getItem.mockClear();
+  localStorageMock.setItem.mockClear();
+  localStorageMock.removeItem.mockClear();
+  localStorageMock.clear.mockClear();
 });

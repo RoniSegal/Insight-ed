@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserRole } from '@prisma/client';
+import { UserRole } from '@growth-engine/shared';
 
 import { AuthController } from '../../auth/auth.controller';
 import { AuthService } from '../../auth/auth.service';

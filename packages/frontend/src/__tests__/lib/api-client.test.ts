@@ -190,6 +190,7 @@ describe('ApiClient', () => {
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 401,
+        json: async () => ({ message: 'Unauthorized' }),
       });
 
       // Refresh token call succeeds
@@ -219,12 +220,14 @@ describe('ApiClient', () => {
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 401,
+        json: async () => ({ message: 'Unauthorized' }),
       });
 
       // Refresh token call fails
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 401,
+        json: async () => ({ message: 'Invalid refresh token' }),
       });
 
       await expect(ApiClient.get('/protected')).rejects.toThrow('Session expired');
@@ -241,6 +244,7 @@ describe('ApiClient', () => {
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 401,
+        json: async () => ({ message: 'Unauthorized' }),
       });
 
       await expect(ApiClient.get('/protected')).rejects.toThrow('Session expired');
