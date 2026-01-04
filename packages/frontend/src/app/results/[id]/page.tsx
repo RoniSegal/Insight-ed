@@ -98,7 +98,7 @@ function ResultsPageContent() {
 
   const handleAnalyzeAgain = () => {
     if (analysisResult?.studentId) {
-      router.push(`/analyze?studentId=${analysisResult.studentId}`);
+      router.push(`/students/${analysisResult.studentId}/chat`);
     } else {
       router.push('/students');
     }

@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 // Force dynamic rendering for this API route
 export const dynamic = 'force-dynamic';
 
-import { verifyToken, getTeacherAccount } from '@/app/api/lib/auth';
+const BACKEND_URL = process.env.BACKEND_API_URL || 'http://localhost:4000/api/v1';
 
 /**
  * GET /api/auth/me
@@ -15,10 +15,13 @@ import { verifyToken, getTeacherAccount } from '@/app/api/lib/auth';
  *
  * Response:
  * {
- *   id: string;
- *   email: string;
- *   role: string;
- *   name: string;
+ *   user: {
+ *     id: string;
+ *     email: string;
+ *     role: string;
+ *     firstName: string;
+ *     lastName: string;
+ *   }
  * }
  */
 export async function GET(request: Request) {
@@ -33,25 +36,24 @@ export async function GET(request: Request) {
       );
     }
 
-    // Extract token (remove "Bearer " prefix)
-    const token = authHeader.substring(7);
+    // Forward request to backend API
+    const response = await fetch(`${BACKEND_URL}/auth/me`, {
+      method: 'GET',
+      headers: {
+        'Authorization': authHeader,
+      },
+    });
 
-    // Verify token
-    const decoded = verifyToken(token);
-
-    if (!decoded) {
-      return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ error: 'Authentication failed' }));
+      return NextResponse.json(
+        { error: errorData.message || errorData.error || 'Authentication failed' },
+        { status: response.status }
+      );
     }
 
-    // Return user info
-    const user = getTeacherAccount();
-    return NextResponse.json({
-      id: user.id,
-      email: user.email,
-      role: user.role,
-      firstName: user.name.split(' ')[0],
-      lastName: user.name.split(' ')[1] || '',
-    });
+    const data = await response.json();
+    return NextResponse.json(data);
   } catch (error) {
     console.error('Get current user error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

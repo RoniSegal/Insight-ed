@@ -78,29 +78,4 @@ export class AuthController {
       `${process.env.FRONTEND_URL}/auth/callback?accessToken=${accessToken}&refreshToken=${refreshToken}`
     );
   }
-
-  // Microsoft OAuth routes
-  @Public()
-  @Get('microsoft')
-  @UseGuards(AuthGuard('microsoft'))
-  async microsoftAuth() {
-    // Initiates Microsoft OAuth flow
-  }
-
-  @Public()
-  @Get('microsoft/callback')
-  @UseGuards(AuthGuard('microsoft'))
-  async microsoftAuthCallback(@Req() req: any, @Res() res: any) {
-    // User authenticated via Microsoft
-    const user = req.user;
-
-    // Generate JWT tokens
-    const accessToken = this.authService['generateAccessToken'](user);
-    const refreshToken = await this.authService['generateRefreshToken'](user);
-
-    // Redirect to frontend with tokens
-    res.redirect(
-      `${process.env.FRONTEND_URL}/auth/callback?accessToken=${accessToken}&refreshToken=${refreshToken}`
-    );
-  }
 }

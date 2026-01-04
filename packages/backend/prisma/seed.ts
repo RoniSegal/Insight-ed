@@ -1,9 +1,13 @@
 import { PrismaClient } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log('🌱 Seeding database...');
+
+  // Hash password for all demo users: "Demo123!"
+  const passwordHash = await bcrypt.hash('Demo123!', 12);
 
   // Create a district
   const district = await prisma.district.upsert({
@@ -37,6 +41,7 @@ async function main() {
     update: {},
     create: {
       email: 'admin@tlv-hs.edu',
+      passwordHash,
       role: 'ADMIN',
       firstName: 'Admin',
       lastName: 'User',
@@ -52,6 +57,7 @@ async function main() {
     update: {},
     create: {
       email: 'teacher@tlv-hs.edu',
+      passwordHash,
       role: 'TEACHER',
       firstName: 'John',
       lastName: 'Doe',
@@ -67,6 +73,7 @@ async function main() {
     update: {},
     create: {
       email: 'principal@tlv-hs.edu',
+      passwordHash,
       role: 'PRINCIPAL',
       firstName: 'Jane',
       lastName: 'Smith',
@@ -128,7 +135,12 @@ async function main() {
   });
   console.log('✅ Students enrolled in class');
 
-  console.log('🎉 Seeding completed successfully!');
+  console.log('\n🎉 Seeding completed successfully!');
+  console.log('\n📋 Login Credentials (All users):');
+  console.log('   Password: Demo123!');
+  console.log('\n   Admin:     admin@tlv-hs.edu');
+  console.log('   Teacher:   teacher@tlv-hs.edu');
+  console.log('   Principal: principal@tlv-hs.edu\n');
 }
 
 main()

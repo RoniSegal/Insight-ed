@@ -7,7 +7,6 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
-// import { MicrosoftStrategy } from './strategies/microsoft.strategy';
 
 const providers: Provider[] = [AuthService, JwtStrategy, PrismaClient];
 
@@ -15,9 +14,6 @@ const providers: Provider[] = [AuthService, JwtStrategy, PrismaClient];
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   providers.push(GoogleStrategy);
 }
-// if (process.env.MICROSOFT_CLIENT_ID && process.env.MICROSOFT_CLIENT_SECRET) {
-//   providers.push(MicrosoftStrategy);
-// }
 
 @Module({
   imports: [
