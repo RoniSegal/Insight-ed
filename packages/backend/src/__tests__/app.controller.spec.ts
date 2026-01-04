@@ -29,12 +29,12 @@ describe('AppController', () => {
         service: 'growth-engine-backend',
       };
 
-      jest.spyOn(service, 'getHealth').mockReturnValue(mockHealthResponse);
+      const getHealthSpy = jest.spyOn(service, 'getHealth').mockReturnValue(mockHealthResponse);
 
       const result = controller.getHealth();
 
       expect(result).toEqual(mockHealthResponse);
-      expect(service.getHealth).toHaveBeenCalled();
+      expect(getHealthSpy).toHaveBeenCalled();
     });
   });
 });

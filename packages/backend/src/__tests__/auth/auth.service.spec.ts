@@ -1,3 +1,4 @@
+import { UserRole } from '@growth-engine/shared';
 import {
   BadRequestException,
   ConflictException,
@@ -6,7 +7,6 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaClient } from '@prisma/client';
-import { UserRole } from '@growth-engine/shared';
 import * as bcrypt from 'bcrypt';
 
 import { AuthService } from '../../auth/auth.service';
@@ -353,13 +353,13 @@ describe('AuthService', () => {
         isActive: true,
       };
 
-      (jwtService.verify as jest.Mock).mockReturnValue({ sub: 'user-123' });
+      const verifyMock = (jwtService.verify as jest.Mock).mockReturnValue({ sub: 'user-123' });
       prisma.user.findUnique.mockResolvedValue(mockUser as any);
       (jwtService.sign as jest.Mock).mockReturnValue('new-access-token');
 
       const result = await service.refreshAccessToken('valid-refresh-token');
 
-      expect(jwtService.verify).toHaveBeenCalledWith('valid-refresh-token', {
+      expect(verifyMock).toHaveBeenCalledWith('valid-refresh-token', {
         secret: process.env.JWT_REFRESH_SECRET,
       });
       expect(prisma.user.findUnique).toHaveBeenCalledWith({

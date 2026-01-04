@@ -68,7 +68,7 @@ describe('Shared Utils', () => {
     it('should resolve after specified time', async () => {
       const callback = jest.fn();
 
-      sleep(1000).then(callback);
+      void sleep(1000).then(callback);
 
       expect(callback).not.toHaveBeenCalled();
 

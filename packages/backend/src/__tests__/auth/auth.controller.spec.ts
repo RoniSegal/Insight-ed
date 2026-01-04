@@ -1,5 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { UserRole } from '@growth-engine/shared';
+import { Test, TestingModule } from '@nestjs/testing';
 
 import { AuthController } from '../../auth/auth.controller';
 import { AuthService } from '../../auth/auth.service';
@@ -11,7 +11,6 @@ import { ResetPasswordDto } from '../../auth/dto/reset-password.dto';
 
 describe('AuthController', () => {
   let controller: AuthController;
-  let authService: AuthService;
 
   const mockAuthService = {
     register: jest.fn(),
@@ -36,7 +35,6 @@ describe('AuthController', () => {
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
-    authService = module.get<AuthService>(AuthService);
   });
 
   afterEach(() => {
@@ -73,7 +71,7 @@ describe('AuthController', () => {
 
       const result = await controller.register(registerDto);
 
-      expect(authService.register).toHaveBeenCalledWith(registerDto);
+      expect(mockAuthService.register).toHaveBeenCalledWith(registerDto);
       expect(result).toEqual(expectedResult);
     });
   });
@@ -98,7 +96,7 @@ describe('AuthController', () => {
 
       const result = await controller.login(loginDto);
 
-      expect(authService.login).toHaveBeenCalledWith(loginDto);
+      expect(mockAuthService.login).toHaveBeenCalledWith(loginDto);
       expect(result).toEqual(expectedResult);
     });
   });
@@ -117,7 +115,7 @@ describe('AuthController', () => {
 
       const result = await controller.refreshToken(refreshTokenDto);
 
-      expect(authService.refreshAccessToken).toHaveBeenCalledWith('refresh-token');
+      expect(mockAuthService.refreshAccessToken).toHaveBeenCalledWith('refresh-token');
       expect(result).toEqual(expectedResult);
     });
   });
@@ -138,7 +136,7 @@ describe('AuthController', () => {
 
       const result = await controller.logout(mockUser);
 
-      expect(authService.logout).toHaveBeenCalledWith('user-123');
+      expect(mockAuthService.logout).toHaveBeenCalledWith('user-123');
       expect(result).toEqual(expectedResult);
     });
   });
@@ -157,7 +155,7 @@ describe('AuthController', () => {
 
       const result = await controller.forgotPassword(forgotPasswordDto);
 
-      expect(authService.forgotPassword).toHaveBeenCalledWith('test@example.com');
+      expect(mockAuthService.forgotPassword).toHaveBeenCalledWith('test@example.com');
       expect(result).toEqual(expectedResult);
     });
   });
@@ -177,7 +175,7 @@ describe('AuthController', () => {
 
       const result = await controller.resetPassword(resetPasswordDto);
 
-      expect(authService.resetPassword).toHaveBeenCalledWith('reset-token', 'NewPass@123');
+      expect(mockAuthService.resetPassword).toHaveBeenCalledWith('reset-token', 'NewPass@123');
       expect(result).toEqual(expectedResult);
     });
   });
