@@ -8,10 +8,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaClient, UserRole } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
-import { AuthService } from '../../../auth/auth.service';
-import { LoginDto } from '../../../auth/dto/login.dto';
-import { RegisterDto } from '../../../auth/dto/register.dto';
-import { createMockPrismaClient, MockPrismaClient } from '../../mocks/prisma.mock';
+import { AuthService } from '../../auth/auth.service';
+import { LoginDto } from '../../auth/dto/login.dto';
+import { RegisterDto } from '../../auth/dto/register.dto';
+import { createMockPrismaClient, MockPrismaClient } from '../mocks/prisma.mock';
 
 // Mock bcrypt
 jest.mock('bcrypt');

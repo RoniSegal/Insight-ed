@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserRole } from '@prisma/client';
 
-import { AuthController } from '../../../auth/auth.controller';
-import { AuthService } from '../../../auth/auth.service';
-import { ForgotPasswordDto } from '../../../auth/dto/forgot-password.dto';
-import { LoginDto } from '../../../auth/dto/login.dto';
-import { RefreshTokenDto } from '../../../auth/dto/refresh-token.dto';
-import { RegisterDto } from '../../../auth/dto/register.dto';
-import { ResetPasswordDto } from '../../../auth/dto/reset-password.dto';
+import { AuthController } from '../../auth/auth.controller';
+import { AuthService } from '../../auth/auth.service';
+import { ForgotPasswordDto } from '../../auth/dto/forgot-password.dto';
+import { LoginDto } from '../../auth/dto/login.dto';
+import { RefreshTokenDto } from '../../auth/dto/refresh-token.dto';
+import { RegisterDto } from '../../auth/dto/register.dto';
+import { ResetPasswordDto } from '../../auth/dto/reset-password.dto';
 
 describe('AuthController', () => {
   let controller: AuthController;
