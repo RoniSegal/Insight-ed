@@ -73,6 +73,66 @@ This file tracks all epics/features and their associated tickets for the Growth 
 
 ## Active Epics
 
+### Epic: analysis-backend-migration
+**Epic ID:** analysis-backend-migration
+**Status:** TODO (Ready to Start)
+**Priority:** P0 (critical - architecture fix)
+**Target Release:** v1.0 (MVP)
+**Description:** Move OpenAI integration from Next.js frontend to NestJS backend. Critical architectural fix that addresses security risks, enables scalability, and establishes proper separation of concerns. Frontend will call backend REST API instead of using local API routes.
+**E2E Status:** Not Started
+
+**Related Tickets (5 tickets):**
+- [ ] GE-071 (backend) - Analysis Backend - OpenAI Service Migration
+- [ ] GE-072 (backend) - Analysis Backend - REST API Endpoints
+- [ ] GE-073 (frontend) - Analysis Frontend - API Client Migration
+- [ ] GE-074 (backend) - Analysis Migration - Cleanup Next.js Routes & Remove Unused Code
+- [ ] GE-075 (team-lead) - Analysis Migration - Epic Coordination & Verification
+
+**Why This is Critical:**
+- **Security Risk:** API keys currently in frontend environment (even if server-side)
+- **Architecture Violation:** Business logic in presentation layer
+- **Can't Scale:** Frontend and backend can't be deployed independently
+- **Wrong Pattern:** NestJS backend exists but isn't being used for core logic
+
+**Before (Current - WRONG ❌):**
+```
+Frontend (Next.js)
+  └── /app/api/analysis/* (API Routes)
+      └── openai.ts (OpenAI SDK)
+          └── Calls OpenAI directly
+```
+
+**After (Target - CORRECT ✅):**
+```
+Frontend (Next.js)
+  └── API Client
+      └── Calls → Backend REST API
+
+Backend (NestJS)
+  └── AnalysisModule
+      ├── OpenAIService (OpenAI SDK)
+      ├── PromptsService
+      └── AnalysisController/Service
+          └── Calls OpenAI
+```
+
+**Notes:**
+- **Root Cause:** 3-day MVP sprint shortcut - built in Next.js for speed
+- **Impact:** Affects all student analysis functionality (core feature)
+- **Benefits After Fix:**
+  - ✓ API keys secure in backend only
+  - ✓ Proper separation of concerns
+  - ✓ Frontend/backend independently scalable
+  - ✓ Backend API reusable by other clients (mobile, CLI)
+  - ✓ Production-ready architecture
+- **Testing:** Full end-to-end testing required
+- **Risk:** Medium - core functionality affected, but API contracts stay similar
+
+**Dependencies:**
+- GE-066 (backend) - PromptsService exists
+
+---
+
 ### Epic: prompt-management
 **Epic ID:** prompt-management
 **Status:** COMPLETE ✅ (Phase 1 Done - 2026-01-04)
@@ -393,7 +453,8 @@ No standalone tickets for MVP. All work is organized by epics.
 | 3-day-mvp-demo | 3-Day MVP Demo | P0 | 16 | In Progress | v0.1 |
 | project-setup | Project Setup | P0 | 5 | Complete | v1.0 |
 | authentication | Authentication | P0 | 6 | In Progress | v1.0 |
-| prompt-management | Prompt Management | P1 | 5 | TODO | v1.0 |
+| prompt-management | Prompt Management | P1 | 5 | Complete | v1.0 |
+| analysis-backend-migration | Analysis Backend Migration | P0 | 5 | TODO | v1.0 |
 | user-management | User Management | P1 | 4 | Not Started | v1.0 |
 | student-management | Student Management | P0 | 4 | Not Started | v1.0 |
 | ai-analysis | AI Analysis | P0 | 5 | Not Started | v1.0 |
@@ -402,7 +463,7 @@ No standalone tickets for MVP. All work is organized by epics.
 | principal-dashboard | Principal Dashboard | P1 | 4 | Not Started | v1.0 |
 | search-filter | Search & Filter | P2 | 4 | Not Started | v1.0 |
 | security-compliance | Security & Compliance | P0 | 2 | Not Started | v1.0 |
-| **TOTAL** | **12 Epics** | | **59 Tickets** | | |
+| **TOTAL** | **13 Epics** | | **64 Tickets** | | |
 
 ---
 
@@ -412,11 +473,11 @@ No standalone tickets for MVP. All work is organized by epics.
 |------|--------------|------------------|
 | Architect | 3 | project-setup, authentication, ai-analysis |
 | Designer | 8 | authentication, user-mgmt, student-mgmt, ai-analysis, analysis-results, teacher-dash, principal-dash, search-filter |
-| Backend | 17 | project-setup, authentication, prompt-management, user-mgmt, student-mgmt, ai-analysis, analysis-results, teacher-dash, principal-dash, search-filter, security |
-| Frontend | 9 | authentication, prompt-management, user-mgmt, student-mgmt, ai-analysis, analysis-results, teacher-dash, principal-dash, search-filter |
+| Backend | 20 | project-setup, authentication, prompt-management, analysis-backend-migration, user-mgmt, student-mgmt, ai-analysis, analysis-results, teacher-dash, principal-dash, search-filter, security |
+| Frontend | 10 | authentication, prompt-management, analysis-backend-migration, user-mgmt, student-mgmt, ai-analysis, analysis-results, teacher-dash, principal-dash, search-filter |
 | E2E | 8 | project-setup, authentication, user-mgmt, student-mgmt, ai-analysis, analysis-results, teacher-dash, principal-dash, search-filter, security |
-| Team Lead | 1 | prompt-management |
-| **TOTAL** | **46** | **11 epics** |
+| Team Lead | 2 | prompt-management, analysis-backend-migration |
+| **TOTAL** | **51** | **12 epics** |
 
 ---
 

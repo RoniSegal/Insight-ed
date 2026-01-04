@@ -1,14 +1,21 @@
 import OpenAI from 'openai';
 
-// Initialize OpenAI client
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || 'sk-proj-PLACEHOLDER',
-});
-
 // Configuration from environment
 const MODEL = process.env.OPENAI_MODEL || 'gpt-4-turbo-preview';
 const MAX_TOKENS = parseInt(process.env.OPENAI_MAX_TOKENS || '2000', 10);
 const TEMPERATURE = parseFloat(process.env.OPENAI_TEMPERATURE || '0.7');
+
+// Lazy-load OpenAI client to avoid initialization errors with placeholder keys
+let openaiClient: OpenAI | null = null;
+
+function getOpenAIClient(): OpenAI {
+  if (!openaiClient) {
+    openaiClient = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY || 'sk-proj-PLACEHOLDER',
+    });
+  }
+  return openaiClient;
+}
 
 export interface ChatMessage {
   role: 'system' | 'user' | 'assistant';
@@ -31,11 +38,28 @@ export interface ChatResponse {
 }
 
 /**
- * Check if OpenAI API is configured
+ * Check if OpenAI API is configured with a real (non-placeholder) key
  */
 export function isOpenAIConfigured(): boolean {
   const apiKey = process.env.OPENAI_API_KEY;
-  return !!(apiKey && apiKey !== 'sk-proj-PLACEHOLDER' && apiKey.startsWith('sk-'));
+
+  // Check if API key exists and starts with 'sk-'
+  if (!apiKey || !apiKey.startsWith('sk-')) {
+    return false;
+  }
+
+  // Exclude placeholder keys (case-insensitive check for 'placeholder', 'replace', 'here', etc.)
+  const placeholderPatterns = /placeholder|replace|here|your-|example|test-key/i;
+  if (placeholderPatterns.test(apiKey)) {
+    return false;
+  }
+
+  // Check if key has reasonable length (real OpenAI keys are ~50+ characters)
+  if (apiKey.length < 40) {
+    return false;
+  }
+
+  return true;
 }
 
 /**
@@ -47,6 +71,7 @@ export async function chat(options: ChatOptions): Promise<ChatResponse> {
   }
 
   try {
+    const openai = getOpenAIClient();
     const completion = await openai.chat.completions.create({
       model: MODEL,
       messages: options.messages,
