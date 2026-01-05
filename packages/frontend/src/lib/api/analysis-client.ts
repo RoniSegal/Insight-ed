@@ -13,8 +13,7 @@ import {
   StartAnalysisResponse,
 } from '@/types/analysis';
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1';
 
 /**
  * Get access token from localStorage
@@ -27,10 +26,7 @@ function getAccessToken(): string | null {
 /**
  * Make an authenticated API request
  */
-async function apiRequest<T>(
-  endpoint: string,
-  options: RequestInit = {}
-): Promise<T> {
+async function apiRequest<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
   const accessToken = getAccessToken();
 
@@ -97,10 +93,7 @@ export const analysisClient = {
   /**
    * Start a new analysis conversation for a student
    */
-  async startAnalysis(
-    studentId: string,
-    studentName?: string
-  ): Promise<StartAnalysisResponse> {
+  async startAnalysis(studentId: string, studentName?: string): Promise<StartAnalysisResponse> {
     const dto: StartAnalysisDto = { studentId, studentName };
     return apiRequest<StartAnalysisResponse>('/analysis/start', {
       method: 'POST',
@@ -111,10 +104,7 @@ export const analysisClient = {
   /**
    * Send a message in an ongoing analysis conversation
    */
-  async sendMessage(
-    conversationId: string,
-    message: string
-  ): Promise<ChatResponse> {
+  async sendMessage(conversationId: string, message: string): Promise<ChatResponse> {
     const dto: ChatMessageDto = { conversationId, message };
     return apiRequest<ChatResponse>('/analysis/chat', {
       method: 'POST',
@@ -125,9 +115,7 @@ export const analysisClient = {
   /**
    * Complete an analysis and generate the final report
    */
-  async completeAnalysis(
-    conversationId: string
-  ): Promise<CompleteAnalysisResponse> {
+  async completeAnalysis(conversationId: string): Promise<CompleteAnalysisResponse> {
     const dto: CompleteAnalysisDto = { conversationId };
     return apiRequest<CompleteAnalysisResponse>('/analysis/complete', {
       method: 'POST',
@@ -157,11 +145,8 @@ export const analysisClient = {
    * Get the latest analysis for a specific student
    */
   async getLatestAnalysis(studentId: string): Promise<Analysis | null> {
-    return apiRequest<Analysis | null>(
-      `/analysis/student/${studentId}/latest`,
-      {
-        method: 'GET',
-      }
-    );
+    return apiRequest<Analysis | null>(`/analysis/student/${studentId}/latest`, {
+      method: 'GET',
+    });
   },
 };

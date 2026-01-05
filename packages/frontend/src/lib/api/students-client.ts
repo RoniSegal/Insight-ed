@@ -5,8 +5,7 @@
 
 import type { Student } from '@growth-engine/shared';
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1';
 
 /**
  * Get access token from localStorage
@@ -19,10 +18,7 @@ function getAccessToken(): string | null {
 /**
  * Make an authenticated API request
  */
-async function apiRequest<T>(
-  endpoint: string,
-  options: RequestInit = {}
-): Promise<T> {
+async function apiRequest<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
   const accessToken = getAccessToken();
 

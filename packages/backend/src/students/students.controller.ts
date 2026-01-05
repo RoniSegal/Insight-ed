@@ -9,15 +9,10 @@ import {
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiParam,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+
 import { CreateStudentDto } from './dto/create-student.dto';
 import { StudentDto } from './dto/student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';

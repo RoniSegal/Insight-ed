@@ -41,7 +41,7 @@ describe('analysisClient', () => {
     it('should start analysis successfully', async () => {
       const mockResponse: StartAnalysisResponse = {
         conversationId: 'conv-123',
-        message: 'Hello! Let\'s analyze the student.',
+        message: "Hello! Let's analyze the student.",
       };
 
       (global.fetch as jest.Mock).mockResolvedValueOnce({
@@ -52,20 +52,17 @@ describe('analysisClient', () => {
 
       const result = await analysisClient.startAnalysis('student-1', 'John Doe');
 
-      expect(global.fetch).toHaveBeenCalledWith(
-        `${API_BASE_URL}/analysis/start`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${mockAccessToken}`,
-          },
-          body: JSON.stringify({
-            studentId: 'student-1',
-            studentName: 'John Doe',
-          }),
-        }
-      );
+      expect(global.fetch).toHaveBeenCalledWith(`${API_BASE_URL}/analysis/start`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${mockAccessToken}`,
+        },
+        body: JSON.stringify({
+          studentId: 'student-1',
+          studentName: 'John Doe',
+        }),
+      });
       expect(result).toEqual(mockResponse);
     });
 
@@ -111,25 +108,19 @@ describe('analysisClient', () => {
         json: async () => mockResponse,
       });
 
-      const result = await analysisClient.sendMessage(
-        'conv-123',
-        'User message'
-      );
+      const result = await analysisClient.sendMessage('conv-123', 'User message');
 
-      expect(global.fetch).toHaveBeenCalledWith(
-        `${API_BASE_URL}/analysis/chat`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${mockAccessToken}`,
-          },
-          body: JSON.stringify({
-            conversationId: 'conv-123',
-            message: 'User message',
-          }),
-        }
-      );
+      expect(global.fetch).toHaveBeenCalledWith(`${API_BASE_URL}/analysis/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${mockAccessToken}`,
+        },
+        body: JSON.stringify({
+          conversationId: 'conv-123',
+          message: 'User message',
+        }),
+      });
       expect(result).toEqual(mockResponse);
     });
   });
@@ -150,19 +141,16 @@ describe('analysisClient', () => {
 
       const result = await analysisClient.completeAnalysis('conv-123');
 
-      expect(global.fetch).toHaveBeenCalledWith(
-        `${API_BASE_URL}/analysis/complete`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${mockAccessToken}`,
-          },
-          body: JSON.stringify({
-            conversationId: 'conv-123',
-          }),
-        }
-      );
+      expect(global.fetch).toHaveBeenCalledWith(`${API_BASE_URL}/analysis/complete`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${mockAccessToken}`,
+        },
+        body: JSON.stringify({
+          conversationId: 'conv-123',
+        }),
+      });
       expect(result).toEqual(mockResponse);
     });
   });
@@ -185,16 +173,13 @@ describe('analysisClient', () => {
 
       const result = await analysisClient.getAnalysis('analysis-42');
 
-      expect(global.fetch).toHaveBeenCalledWith(
-        `${API_BASE_URL}/analysis/analysis-42`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${mockAccessToken}`,
-          },
-        }
-      );
+      expect(global.fetch).toHaveBeenCalledWith(`${API_BASE_URL}/analysis/analysis-42`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${mockAccessToken}`,
+        },
+      });
       expect(result).toEqual(mockResponse);
     });
   });
@@ -226,16 +211,13 @@ describe('analysisClient', () => {
 
       const result = await analysisClient.getStudentAnalyses('student-1');
 
-      expect(global.fetch).toHaveBeenCalledWith(
-        `${API_BASE_URL}/analysis/student/student-1`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${mockAccessToken}`,
-          },
-        }
-      );
+      expect(global.fetch).toHaveBeenCalledWith(`${API_BASE_URL}/analysis/student/student-1`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${mockAccessToken}`,
+        },
+      });
       expect(result).toEqual(mockResponse);
     });
   });
@@ -291,9 +273,9 @@ describe('analysisClient', () => {
         status: 401,
       });
 
-      await expect(
-        analysisClient.startAnalysis('student-1')
-      ).rejects.toThrow('Session expired. Please log in again.');
+      await expect(analysisClient.startAnalysis('student-1')).rejects.toThrow(
+        'Session expired. Please log in again.'
+      );
 
       expect(localStorageMock.removeItem).toHaveBeenCalledWith('accessToken');
       expect(localStorageMock.removeItem).toHaveBeenCalledWith('refreshToken');
@@ -306,9 +288,9 @@ describe('analysisClient', () => {
         status: 429,
       });
 
-      await expect(
-        analysisClient.sendMessage('conv-123', 'message')
-      ).rejects.toThrow('Too many requests. Please slow down and try again.');
+      await expect(analysisClient.sendMessage('conv-123', 'message')).rejects.toThrow(
+        'Too many requests. Please slow down and try again.'
+      );
     });
 
     it('should handle 500 Server errors', async () => {
@@ -330,9 +312,9 @@ describe('analysisClient', () => {
         json: async () => ({ message: errorMessage }),
       });
 
-      await expect(
-        analysisClient.sendMessage('conv-123', 'x'.repeat(10000))
-      ).rejects.toThrow(errorMessage);
+      await expect(analysisClient.sendMessage('conv-123', 'x'.repeat(10000))).rejects.toThrow(
+        errorMessage
+      );
     });
 
     it('should handle validation errors without error message', async () => {
@@ -342,19 +324,13 @@ describe('analysisClient', () => {
         json: async () => ({}),
       });
 
-      await expect(
-        analysisClient.sendMessage('conv-123', 'message')
-      ).rejects.toThrow('HTTP 400');
+      await expect(analysisClient.sendMessage('conv-123', 'message')).rejects.toThrow('HTTP 400');
     });
 
     it('should handle network errors', async () => {
-      (global.fetch as jest.Mock).mockRejectedValueOnce(
-        new TypeError('Failed to fetch')
-      );
+      (global.fetch as jest.Mock).mockRejectedValueOnce(new TypeError('Failed to fetch'));
 
-      await expect(
-        analysisClient.startAnalysis('student-1')
-      ).rejects.toThrow(
+      await expect(analysisClient.startAnalysis('student-1')).rejects.toThrow(
         'Network error. Please check your connection and ensure the backend is running.'
       );
     });
@@ -363,9 +339,7 @@ describe('analysisClient', () => {
       const error = new Error('Unknown error');
       (global.fetch as jest.Mock).mockRejectedValueOnce(error);
 
-      await expect(analysisClient.startAnalysis('student-1')).rejects.toThrow(
-        'Unknown error'
-      );
+      await expect(analysisClient.startAnalysis('student-1')).rejects.toThrow('Unknown error');
     });
   });
 
@@ -395,9 +369,7 @@ describe('analysisClient', () => {
       await analysisClient.startAnalysis('student-1');
 
       const callArgs = (global.fetch as jest.Mock).mock.calls[0];
-      expect(callArgs[1].headers.Authorization).toBe(
-        `Bearer ${mockAccessToken}`
-      );
+      expect(callArgs[1].headers.Authorization).toBe(`Bearer ${mockAccessToken}`);
     });
   });
 });

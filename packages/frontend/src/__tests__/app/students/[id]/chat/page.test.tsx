@@ -76,10 +76,7 @@ describe('ChatPage', () => {
 
       await waitFor(() => {
         expect(studentsClient.getStudent).toHaveBeenCalledWith(mockStudentId);
-        expect(analysisClient.startAnalysis).toHaveBeenCalledWith(
-          mockStudentId,
-          mockStudentName
-        );
+        expect(analysisClient.startAnalysis).toHaveBeenCalledWith(mockStudentId, mockStudentName);
       });
     });
 
@@ -94,18 +91,21 @@ describe('ChatPage', () => {
     it('should display student name in header', async () => {
       render(<ChatPage />);
 
-      await waitFor(() => {
-        expect(screen.getByText(/ניתוח למידה:/)).toBeInTheDocument();
-        expect(screen.getByText(new RegExp(`ניתוח למידה:.*${mockStudentName}`))).toBeInTheDocument();
-      }, { timeout: 3000 });
+      await waitFor(
+        () => {
+          expect(screen.getByText(/ניתוח למידה:/)).toBeInTheDocument();
+          expect(
+            screen.getByText(new RegExp(`ניתוח למידה:.*${mockStudentName}`))
+          ).toBeInTheDocument();
+        },
+        { timeout: 3000 }
+      );
     });
   });
 
   describe('Error Handling - Initialization', () => {
     it('should show error when student fetch fails', async () => {
-      (studentsClient.getStudent as jest.Mock).mockRejectedValue(
-        new Error('Student not found')
-      );
+      (studentsClient.getStudent as jest.Mock).mockRejectedValue(new Error('Student not found'));
 
       render(<ChatPage />);
 
@@ -134,9 +134,7 @@ describe('ChatPage', () => {
       render(<ChatPage />);
 
       await waitFor(() => {
-        expect(
-          screen.getByText(/Network error. Please check your connection/)
-        ).toBeInTheDocument();
+        expect(screen.getByText(/Network error. Please check your connection/)).toBeInTheDocument();
       });
     });
   });
@@ -179,11 +177,18 @@ describe('ChatPage', () => {
     it('should show loading indicator while sending', async () => {
       // Mock slow response
       (analysisClient.sendMessage as jest.Mock).mockImplementation(
-        () => new Promise((resolve) => setTimeout(() => resolve({
-          message: 'Response',
-          isComplete: false,
-          metadata: { questionCount: 2, messageCount: 5 },
-        }), 100))
+        () =>
+          new Promise((resolve) =>
+            setTimeout(
+              () =>
+                resolve({
+                  message: 'Response',
+                  isComplete: false,
+                  metadata: { questionCount: 2, messageCount: 5 },
+                }),
+              100
+            )
+          )
       );
 
       const input = screen.getByPlaceholderText(/הקלד הודעה/);
@@ -205,11 +210,18 @@ describe('ChatPage', () => {
     it('should disable input while sending', async () => {
       // Mock slow response
       (analysisClient.sendMessage as jest.Mock).mockImplementation(
-        () => new Promise((resolve) => setTimeout(() => resolve({
-          message: 'Response',
-          isComplete: false,
-          metadata: { questionCount: 2, messageCount: 5 },
-        }), 100))
+        () =>
+          new Promise((resolve) =>
+            setTimeout(
+              () =>
+                resolve({
+                  message: 'Response',
+                  isComplete: false,
+                  metadata: { questionCount: 2, messageCount: 5 },
+                }),
+              100
+            )
+          )
       );
 
       const input = screen.getByPlaceholderText(/הקלד הודעה/);
@@ -253,9 +265,7 @@ describe('ChatPage', () => {
     });
 
     it('should remove user message on error', async () => {
-      (analysisClient.sendMessage as jest.Mock).mockRejectedValue(
-        new Error('API Error')
-      );
+      (analysisClient.sendMessage as jest.Mock).mockRejectedValue(new Error('API Error'));
 
       const input = screen.getByPlaceholderText(/הקלד הודעה/);
       const sendButton = screen.getByLabelText(/שלח הודעה/);
@@ -289,9 +299,7 @@ describe('ChatPage', () => {
       await userEvent.click(sendButton);
 
       await waitFor(() => {
-        expect(
-          screen.getByText(/Too many requests. Please slow down/)
-        ).toBeInTheDocument();
+        expect(screen.getByText(/Too many requests. Please slow down/)).toBeInTheDocument();
       });
     });
   });
@@ -423,9 +431,7 @@ describe('ChatPage', () => {
       await userEvent.click(completeButton);
 
       await waitFor(() => {
-        expect(
-          screen.getByText(/Server error. Please try again later/)
-        ).toBeInTheDocument();
+        expect(screen.getByText(/Server error. Please try again later/)).toBeInTheDocument();
       });
     });
   });

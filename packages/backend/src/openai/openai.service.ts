@@ -66,7 +66,7 @@ export class OpenAIService implements OnModuleInit {
   /**
    * Initialize the service and validate configuration
    */
-  async onModuleInit() {
+  onModuleInit() {
     this.validateConfiguration();
     this.logger.log('OpenAI Service initialized successfully');
   }
@@ -148,7 +148,7 @@ export class OpenAIService implements OnModuleInit {
             }
           : undefined,
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Record failure for circuit breaker
       this.recordFailure();
 
@@ -156,7 +156,8 @@ export class OpenAIService implements OnModuleInit {
       this.handleOpenAIError(error);
 
       // This line should never be reached due to handleOpenAIError always throwing
-      throw new OpenAIException(`OpenAI API error: ${error.message}`);
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      throw new OpenAIException(`OpenAI API error: ${message}`);
     }
   }
 
@@ -165,12 +166,12 @@ export class OpenAIService implements OnModuleInit {
    * @private
    */
   private async executeWithRetry<T>(fn: () => Promise<T>): Promise<T> {
-    let lastError: any;
+    let lastError: unknown;
 
     for (let attempt = 0; attempt <= this.maxRetries; attempt++) {
       try {
         return await fn();
-      } catch (error: any) {
+      } catch (error: unknown) {
         lastError = error;
 
         // Don't retry on authentication errors, configuration errors, or circuit breaker
@@ -188,10 +189,7 @@ export class OpenAIService implements OnModuleInit {
         }
 
         // Calculate exponential backoff delay
-        const delay = Math.min(
-          this.initialRetryDelay * Math.pow(2, attempt),
-          this.maxRetryDelay
-        );
+        const delay = Math.min(this.initialRetryDelay * Math.pow(2, attempt), this.maxRetryDelay);
 
         this.logger.warn(
           `OpenAI request failed (attempt ${attempt + 1}/${this.maxRetries + 1}). Retrying in ${delay}ms...`
@@ -210,9 +208,11 @@ export class OpenAIService implements OnModuleInit {
    * Handle OpenAI-specific errors and throw appropriate exceptions
    * @private
    */
-  private handleOpenAIError(error: any): never {
-    const status = error.status || error.response?.status;
-    const message = error.message || 'Unknown OpenAI error';
+  private handleOpenAIError(error: unknown): never {
+    const status =
+      (error as { status?: number }).status ||
+      (error as { response?: { status?: number } }).response?.status;
+    const message = error instanceof Error ? error.message : 'Unknown OpenAI error';
 
     if (status === 401) {
       throw new OpenAIAuthenticationException('Invalid OpenAI API key configuration');

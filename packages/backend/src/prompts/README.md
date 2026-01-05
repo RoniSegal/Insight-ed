@@ -13,12 +13,14 @@ The Prompts module manages three types of prompts:
 ## Architecture
 
 ### Phase 1 (Current): Hardcoded Prompts
+
 - Prompts are stored as constants in the service
 - Quick deployment with no database dependencies
 - Easy to version control and review
 - Variable substitution support (e.g., `{studentName}`)
 
 ### Phase 2 (Future): Database-Backed Prompts
+
 - Store prompts in PostgreSQL via Prisma
 - Support versioning and A/B testing
 - Enable runtime prompt updates
@@ -72,11 +74,13 @@ export class AnalysisModule {}
 Returns the system prompt with the student's name interpolated.
 
 **Parameters:**
+
 - `studentName`: The name of the student being analyzed
 
 **Returns:** System prompt string defining the AI's role and process
 
 **Example:**
+
 ```typescript
 const prompt = promptsService.getSystemPrompt('דוד כהן');
 ```
@@ -88,6 +92,7 @@ Returns an array of 6 Hebrew question templates.
 **Returns:** Array of question strings to ask about the student
 
 **Example:**
+
 ```typescript
 const questions = promptsService.getQuestionTemplates();
 // Returns: ['מה הביצועים האקדמיים...', ...]
@@ -100,6 +105,7 @@ Returns the analysis prompt template for final report generation.
 **Returns:** Hebrew prompt string with structured analysis requirements
 
 **Example:**
+
 ```typescript
 const analysisPrompt = promptsService.getAnalysisPrompt();
 ```
@@ -107,6 +113,7 @@ const analysisPrompt = promptsService.getAnalysisPrompt();
 ## Prompt Structure
 
 ### System Prompt
+
 - Defines role as educational psychologist
 - Specifies 6-question process
 - Outlines analysis structure
@@ -114,6 +121,7 @@ const analysisPrompt = promptsService.getAnalysisPrompt();
 - Requires Hebrew output
 
 ### Question Templates (6 questions)
+
 1. Academic performance and subject strengths/weaknesses
 2. Learning style and class engagement
 3. Homework habits and behavior
@@ -122,7 +130,9 @@ const analysisPrompt = promptsService.getAnalysisPrompt();
 6. Unique strengths and additional observations
 
 ### Analysis Prompt
+
 Structured output with:
+
 - 📊 Summary (2-3 sentences)
 - 💪 Strengths (academic + behavioral/social)
 - 🎯 Areas for improvement (academic + behavioral/emotional)
@@ -133,11 +143,13 @@ Structured output with:
 ## Testing
 
 Run unit tests:
+
 ```bash
 npm test -- prompts.service.spec.ts
 ```
 
 Check coverage (currently 100%):
+
 ```bash
 npm test -- prompts.service.spec.ts --coverage
 ```
@@ -147,6 +159,7 @@ npm test -- prompts.service.spec.ts --coverage
 ### From File-Based to Service-Based
 
 **Before (Frontend file loading):**
+
 ```typescript
 // Old approach in frontend/src/app/api/lib/openai.ts
 const promptPath = path.join(process.cwd(), 'context', 'chat-prompt-simple.txt');
@@ -154,12 +167,14 @@ const systemPrompt = fs.readFileSync(promptPath, 'utf-8');
 ```
 
 **After (Backend service):**
+
 ```typescript
 // New approach
 const systemPrompt = promptsService.getSystemPrompt(studentName);
 ```
 
 **Benefits:**
+
 - ✅ Centralized prompt management
 - ✅ Type-safe API
 - ✅ Easy to test and mock
@@ -170,6 +185,7 @@ const systemPrompt = promptsService.getSystemPrompt(studentName);
 ### Original Prompt Reference
 
 The original prompt file (`/context/chat-prompt-simple.txt`) is preserved as reference during migration. All prompt content has been accurately transferred to the service with:
+
 - ✅ Exact Hebrew phrasing maintained
 - ✅ All emojis preserved
 - ✅ Same structure and tone

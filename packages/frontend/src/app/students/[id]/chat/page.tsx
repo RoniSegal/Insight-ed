@@ -41,43 +41,44 @@ function ChatPageContent() {
 
   // Initialize conversation on mount
   useEffect(() => {
+    const initializeChat = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Fetch student info
+        const studentResponse = await studentsClient.getStudent(studentId as string);
+        setStudentName(studentResponse.student.name);
+
+        // Start conversation - get first AI message from backend
+        const analysisResponse = await analysisClient.startAnalysis(
+          studentId as string,
+          studentResponse.student.name
+        );
+
+        setConversationId(analysisResponse.conversationId);
+
+        // Add first AI message
+        if (analysisResponse.message) {
+          const firstMessage: Message = {
+            id: crypto.randomUUID(),
+            role: 'assistant',
+            content: analysisResponse.message,
+            timestamp: new Date(),
+          };
+          setMessages([firstMessage]);
+        }
+      } catch (err: unknown) {
+        const error = err as { message?: string };
+        console.error('Failed to initialize chat:', err);
+        setError(error.message || 'Failed to start conversation');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     initializeChat();
   }, [studentId]);
-
-  const initializeChat = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      // Fetch student info
-      const studentResponse = await studentsClient.getStudent(studentId as string);
-      setStudentName(studentResponse.student.name);
-
-      // Start conversation - get first AI message from backend
-      const analysisResponse = await analysisClient.startAnalysis(
-        studentId as string,
-        studentResponse.student.name
-      );
-
-      setConversationId(analysisResponse.conversationId);
-
-      // Add first AI message
-      if (analysisResponse.message) {
-        const firstMessage: Message = {
-          id: crypto.randomUUID(),
-          role: 'assistant',
-          content: analysisResponse.message,
-          timestamp: new Date(),
-        };
-        setMessages([firstMessage]);
-      }
-    } catch (err: any) {
-      console.error('Failed to initialize chat:', err);
-      setError(err.message || 'Failed to start conversation');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const sendMessage = async (content: string) => {
     if (!conversationId) {

@@ -15,14 +15,9 @@ describe('AnalysisService', () => {
 
   const mockPromptsService = {
     getSystemPrompt: jest.fn().mockReturnValue('You are an educational psychologist...'),
-    getQuestionTemplates: jest.fn().mockReturnValue([
-      'שאלה 1',
-      'שאלה 2',
-      'שאלה 3',
-      'שאלה 4',
-      'שאלה 5',
-      'שאלה 6',
-    ]),
+    getQuestionTemplates: jest
+      .fn()
+      .mockReturnValue(['שאלה 1', 'שאלה 2', 'שאלה 3', 'שאלה 4', 'שאלה 5', 'שאלה 6']),
     getAnalysisPrompt: jest.fn().mockReturnValue('בהתבסס על כל המידע...'),
   };
 
@@ -98,10 +93,7 @@ describe('AnalysisService', () => {
         message: 'תודה על המידע. ספר לי עוד...',
       });
 
-      const result = await service.continueConversation(
-        conversationId,
-        'התלמידה מצטיינת במתמטיקה'
-      );
+      const result = await service.continueConversation(conversationId, 'התלמידה מצטיינת במתמטיקה');
 
       expect(result).toBeDefined();
       expect(result.message).toBe('תודה על המידע. ספר לי עוד...');
@@ -111,9 +103,9 @@ describe('AnalysisService', () => {
     });
 
     it('should throw NotFoundException for invalid conversation ID', async () => {
-      await expect(
-        service.continueConversation('invalid-id', 'some message')
-      ).rejects.toThrow(NotFoundException);
+      await expect(service.continueConversation('invalid-id', 'some message')).rejects.toThrow(
+        NotFoundException
+      );
     });
 
     it('should mark conversation as complete after 6 questions', async () => {
@@ -195,9 +187,9 @@ describe('AnalysisService', () => {
     });
 
     it('should throw BadRequestException if user does not own conversation', async () => {
-      await expect(
-        service.completeAnalysis(conversationId, 'different-teacher')
-      ).rejects.toThrow(BadRequestException);
+      await expect(service.completeAnalysis(conversationId, 'different-teacher')).rejects.toThrow(
+        BadRequestException
+      );
     });
 
     it('should store analysis result', async () => {
@@ -214,7 +206,7 @@ describe('AnalysisService', () => {
 
       const analysis = await service.getAnalysisById(result.analysisId);
       expect(analysis.conversationHistory).toBeDefined();
-      expect(analysis.conversationHistory!.length).toBeGreaterThan(0);
+      expect(analysis.conversationHistory.length).toBeGreaterThan(0);
     });
 
     it('should generate unique analysis IDs', async () => {
@@ -341,7 +333,7 @@ describe('AnalysisService', () => {
       const latest = await service.getLatestAnalysisByStudentId('student-1');
 
       expect(latest).not.toBeNull();
-      expect(latest!.id).toBe(result2.analysisId);
+      expect(latest.id).toBe(result2.analysisId);
     });
   });
 

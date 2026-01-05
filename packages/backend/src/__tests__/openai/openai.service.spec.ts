@@ -64,7 +64,7 @@ describe('OpenAIService', () => {
     configService = module.get<ConfigService>(ConfigService);
 
     // Initialize the service
-    await service.onModuleInit();
+    service.onModuleInit();
   });
 
   afterEach(() => {
@@ -81,8 +81,8 @@ describe('OpenAIService', () => {
       expect(service).toBeDefined();
     });
 
-    it('should initialize successfully with valid configuration', async () => {
-      await expect(service.onModuleInit()).resolves.not.toThrow();
+    it('should initialize successfully with valid configuration', () => {
+      expect(() => service.onModuleInit()).not.toThrow();
     });
 
     it('should log warning if API key is not configured', async () => {
@@ -102,7 +102,7 @@ describe('OpenAIService', () => {
       const invalidService = invalidModule.get<OpenAIService>(OpenAIService);
       const loggerSpy = jest.spyOn((invalidService as any).logger, 'warn');
 
-      await invalidService.onModuleInit();
+      invalidService.onModuleInit();
 
       expect(loggerSpy).toHaveBeenCalledWith(expect.stringContaining('not configured'));
     });
@@ -129,7 +129,7 @@ describe('OpenAIService', () => {
 
       return newModule.then(async (module) => {
         const testService = module.get<OpenAIService>(OpenAIService);
-        await testService.onModuleInit();
+        testService.onModuleInit();
         expect(testService.isConfigured()).toBe(false);
       });
     });
@@ -149,7 +149,7 @@ describe('OpenAIService', () => {
 
       return newModule.then(async (module) => {
         const testService = module.get<OpenAIService>(OpenAIService);
-        await testService.onModuleInit();
+        testService.onModuleInit();
         expect(testService.isConfigured()).toBe(false);
       });
     });
@@ -177,7 +177,7 @@ describe('OpenAIService', () => {
         }).compile();
 
         const testService = newModule.get<OpenAIService>(OpenAIService);
-        await testService.onModuleInit();
+        testService.onModuleInit();
         expect(testService.isConfigured()).toBe(false);
       });
     });
@@ -197,7 +197,7 @@ describe('OpenAIService', () => {
 
       return newModule.then(async (module) => {
         const testService = module.get<OpenAIService>(OpenAIService);
-        await testService.onModuleInit();
+        testService.onModuleInit();
         expect(testService.isConfigured()).toBe(false);
       });
     });
@@ -319,7 +319,7 @@ describe('OpenAIService', () => {
       }).compile();
 
       const testService = newModule.get<OpenAIService>(OpenAIService);
-      await testService.onModuleInit();
+      testService.onModuleInit();
 
       await expect(testService.chat(mockMessages)).rejects.toThrow(OpenAIConfigurationException);
     });
@@ -474,9 +474,7 @@ describe('OpenAIService', () => {
       (service as any).circuitBreakerOpenUntil = Date.now() + 1000; // Open for 1 second
 
       // Circuit breaker should be open
-      expect(() => (service as any).checkCircuitBreaker()).toThrow(
-        OpenAICircuitBreakerException
-      );
+      expect(() => (service as any).checkCircuitBreaker()).toThrow(OpenAICircuitBreakerException);
 
       // Simulate time passing
       (service as any).circuitBreakerOpenUntil = Date.now() - 1000; // 1 second in the past

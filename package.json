@@ -15,7 +15,7 @@
     "test": "npm run test --workspaces --if-present",
     "test:cov": "npm run test:cov --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format": "prettier  \"**/*.{ts,tsx,js,jsx,json,md}\" --write",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "type-check": "npm run type-check --workspaces --if-present",
     "clean": "rm -rf node_modules packages/*/node_modules packages/*/.next packages/*/dist",

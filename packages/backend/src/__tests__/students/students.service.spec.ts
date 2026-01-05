@@ -13,7 +13,7 @@ describe('StudentsService', () => {
     service = module.get<StudentsService>(StudentsService);
 
     // Initialize service (seeds data)
-    await service.onModuleInit();
+    service.onModuleInit();
   });
 
   it('should be defined', () => {

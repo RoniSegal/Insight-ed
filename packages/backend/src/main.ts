@@ -1,5 +1,5 @@
-import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
+import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app.module';
 
@@ -10,9 +10,9 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   // Enable CORS
-  const corsOrigins = configService.get('CORS_ORIGINS', 'http://localhost:4001');
+  const corsOrigins = configService.get<string>('CORS_ORIGINS', 'http://localhost:4001');
   app.enableCors({
-    origin: corsOrigins.split(',').map((origin: string) => origin.trim()),
+    origin: corsOrigins.split(',').map((origin) => origin.trim()),
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],

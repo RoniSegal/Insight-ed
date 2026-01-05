@@ -46,6 +46,7 @@ Base URL: `http://localhost:4000/api/v1/analysis`
 Initialize a new analysis conversation for a student.
 
 **Request:**
+
 ```json
 {
   "studentId": "1",
@@ -54,6 +55,7 @@ Initialize a new analysis conversation for a student.
 ```
 
 **Response:**
+
 ```json
 {
   "conversationId": "550e8400-e29b-41d4-a716-446655440000",
@@ -68,6 +70,7 @@ Initialize a new analysis conversation for a student.
 Continue an analysis conversation by sending a user message.
 
 **Request:**
+
 ```json
 {
   "conversationId": "550e8400-e29b-41d4-a716-446655440000",
@@ -76,6 +79,7 @@ Continue an analysis conversation by sending a user message.
 ```
 
 **Response:**
+
 ```json
 {
   "message": "תודה על המידע. ספר לי יותר על התנהגות התלמידה בכיתה...",
@@ -94,6 +98,7 @@ Continue an analysis conversation by sending a user message.
 Generate the final analysis report and save it.
 
 **Request:**
+
 ```json
 {
   "conversationId": "550e8400-e29b-41d4-a716-446655440000"
@@ -101,6 +106,7 @@ Generate the final analysis report and save it.
 ```
 
 **Response:**
+
 ```json
 {
   "analysisId": "42",
@@ -116,6 +122,7 @@ Generate the final analysis report and save it.
 Retrieve a saved analysis result by ID.
 
 **Response:**
+
 ```json
 {
   "id": "42",
@@ -134,6 +141,7 @@ Retrieve a saved analysis result by ID.
 Retrieve all analyses for a specific student (sorted by date, newest first).
 
 **Response:**
+
 ```json
 [
   {
@@ -161,13 +169,13 @@ Retrieve the most recent analysis for a student.
 const startResponse = await fetch('http://localhost:4000/api/v1/analysis/start', {
   method: 'POST',
   headers: {
-    'Authorization': 'Bearer <jwt-token>',
-    'Content-Type': 'application/json'
+    Authorization: 'Bearer <jwt-token>',
+    'Content-Type': 'application/json',
   },
   body: JSON.stringify({
     studentId: '1',
-    studentName: 'Sarah Cohen'
-  })
+    studentName: 'Sarah Cohen',
+  }),
 });
 const { conversationId, message } = await startResponse.json();
 
@@ -175,31 +183,31 @@ const { conversationId, message } = await startResponse.json();
 const chatResponse = await fetch('http://localhost:4000/api/v1/analysis/chat', {
   method: 'POST',
   headers: {
-    'Authorization': 'Bearer <jwt-token>',
-    'Content-Type': 'application/json'
+    Authorization: 'Bearer <jwt-token>',
+    'Content-Type': 'application/json',
   },
   body: JSON.stringify({
     conversationId,
-    message: 'התלמידה מצטיינת במתמטיקה'
-  })
+    message: 'התלמידה מצטיינת במתמטיקה',
+  }),
 });
 
 // 3. Complete analysis
 const completeResponse = await fetch('http://localhost:4000/api/v1/analysis/complete', {
   method: 'POST',
   headers: {
-    'Authorization': 'Bearer <jwt-token>',
-    'Content-Type': 'application/json'
+    Authorization: 'Bearer <jwt-token>',
+    'Content-Type': 'application/json',
   },
-  body: JSON.stringify({ conversationId })
+  body: JSON.stringify({ conversationId }),
 });
 const { analysisId } = await completeResponse.json();
 
 // 4. Get saved analysis
 const analysisResponse = await fetch(`http://localhost:4000/api/v1/analysis/${analysisId}`, {
   headers: {
-    'Authorization': 'Bearer <jwt-token>'
-  }
+    Authorization: 'Bearer <jwt-token>',
+  },
 });
 ```
 
@@ -260,6 +268,7 @@ See `/packages/backend/src/analysis/__tests__/` for:
 - 85%+ code coverage
 
 Run tests:
+
 ```bash
 npm test -- analysis
 ```
@@ -280,6 +289,7 @@ npm test -- analysis
 ## Migration from Next.js API Routes
 
 This module replaces:
+
 - `/packages/frontend/src/app/api/analysis/start/route.ts`
 - `/packages/frontend/src/app/api/analysis/chat/route.ts`
 - `/packages/frontend/src/app/api/analysis/complete/route.ts`
@@ -292,6 +302,7 @@ Frontend should update API calls to use `http://localhost:4000/api/v1/analysis/*
 ## Swagger Documentation
 
 View interactive API documentation at:
+
 ```
 http://localhost:4000/api/docs
 ```

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { OpenAIModule } from '../openai/openai.module';
 import { PromptsModule } from '../prompts/prompts.module';
+
 import { AnalysisController } from './analysis.controller';
 import { AnalysisService } from './analysis.service';
 

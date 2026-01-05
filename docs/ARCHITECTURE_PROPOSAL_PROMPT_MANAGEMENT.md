@@ -1,9 +1,11 @@
 # Architecture Proposal: Backend Prompt Management
 
 ## Overview
+
 Move prompt management from file-based to backend-managed system with proper separation between system prompts and conversation messages.
 
 ## Current State
+
 - System prompt loaded from `/context/chat-prompt-simple.txt`
 - File read at runtime in API routes
 - No versioning or prompt management
@@ -15,6 +17,7 @@ Move prompt management from file-based to backend-managed system with proper sep
 **Location:** `/packages/backend/src/modules/prompts/prompts.service.ts`
 
 **Responsibilities:**
+
 - Store and manage system prompts
 - Provide prompt templates
 - Support prompt versioning
@@ -49,7 +52,7 @@ OUTPUT FORMAT:
       'שאלה 3 מתוך 6: תאר/י את ההתנהגות החברתית של {studentName} בכיתה.',
       'שאלה 4 מתוך 6: מהן נקודות החוזק הבולטות של {studentName}?',
       'שאלה 5 מתוך 6: באילו תחומים {studentName} זקוק/ה לתמיכה נוספת?',
-      'שאלה 6 מתוך 6: האם יש משהו נוסף שחשוב לציין לגבי {studentName}?'
+      'שאלה 6 מתוך 6: האם יש משהו נוסף שחשוב לציין לגבי {studentName}?',
     ];
   }
 
@@ -78,6 +81,7 @@ OUTPUT FORMAT:
 **Location:** `/packages/backend/src/modules/analysis/analysis.service.ts`
 
 **Responsibilities:**
+
 - Construct OpenAI message arrays
 - Separate system vs user/assistant messages
 - Manage conversation history
@@ -97,12 +101,12 @@ export class AnalysisService {
     const messages: ChatMessage[] = [
       {
         role: 'system',
-        content: systemPrompt
+        content: systemPrompt,
       },
       {
         role: 'user',
-        content: `התחל את השיחה עם המורה של ${studentName}`
-      }
+        content: `התחל את השיחה עם המורה של ${studentName}`,
+      },
     ];
 
     // Call OpenAI
@@ -117,10 +121,10 @@ export class AnalysisService {
         ...messages,
         {
           role: 'assistant',
-          content: response.content
-        }
+          content: response.content,
+        },
       ],
-      questionCount: 1
+      questionCount: 1,
     };
   }
 
@@ -134,18 +138,18 @@ export class AnalysisService {
     // Add teacher message
     conversation.messages.push({
       role: 'user',
-      content: teacherMessage
+      content: teacherMessage,
     });
 
     // Get next response
     const response = await this.openaiService.chat({
-      messages: conversation.messages
+      messages: conversation.messages,
     });
 
     // Update conversation
     conversation.messages.push({
       role: 'assistant',
-      content: response.content
+      content: response.content,
     });
     conversation.questionCount++;
 
@@ -156,18 +160,19 @@ export class AnalysisService {
     const conversation = await this.getConversation(conversationId);
 
     // Add analysis request to messages
-    const analysisPrompt = this.promptsService.getAnalysisPrompt()
+    const analysisPrompt = this.promptsService
+      .getAnalysisPrompt()
       .replace('{studentName}', conversation.studentName);
 
     conversation.messages.push({
       role: 'user',
-      content: analysisPrompt
+      content: analysisPrompt,
     });
 
     // Get final analysis
     const response = await this.openaiService.chat({
       messages: conversation.messages,
-      temperature: 0.5 // Lower for more consistent analysis
+      temperature: 0.5, // Lower for more consistent analysis
     });
 
     // Save analysis
@@ -177,8 +182,8 @@ export class AnalysisService {
       content: response.content,
       metadata: {
         questionCount: conversation.questionCount,
-        tokensUsed: response.tokensUsed
-      }
+        tokensUsed: response.tokensUsed,
+      },
     });
   }
 }
@@ -250,7 +255,7 @@ export class OpenAIService {
 
   constructor() {
     this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY
+      apiKey: process.env.OPENAI_API_KEY,
     });
   }
 
@@ -263,12 +268,12 @@ export class OpenAIService {
       model: 'gpt-4-turbo-preview',
       messages: options.messages,
       temperature: options.temperature || 0.7,
-      max_tokens: options.maxTokens || 2000
+      max_tokens: options.maxTokens || 2000,
     });
 
     return {
       content: completion.choices[0].message.content,
-      tokensUsed: completion.usage?.total_tokens || 0
+      tokensUsed: completion.usage?.total_tokens || 0,
     };
   }
 }
@@ -277,6 +282,7 @@ export class OpenAIService {
 ## Message Structure
 
 ### System Prompt (Sent Once at Start)
+
 ```typescript
 {
   role: 'system',
@@ -285,6 +291,7 @@ export class OpenAIService {
 ```
 
 ### Conversation Messages
+
 ```typescript
 // Teacher's first implicit message
 {
@@ -328,26 +335,31 @@ export class OpenAIService {
 ## Benefits
 
 ### 1. **Separation of Concerns**
+
 - ✓ System prompt stored in code/database (not files)
 - ✓ Clear separation: system instructions vs conversation messages
 - ✓ Prompt management is a dedicated service
 
 ### 2. **Production Ready**
+
 - ✓ No file system dependencies
 - ✓ Works in containerized environments
 - ✓ Works with serverless deployments
 
 ### 3. **Versioning & A/B Testing**
+
 - ✓ Track which prompt version was used for each conversation
 - ✓ Test different prompt variations
 - ✓ Rollback to previous versions if needed
 
 ### 4. **Flexibility**
+
 - ✓ Update prompts without code deployment
 - ✓ Different prompts for different student types/ages
 - ✓ Multi-language support ready
 
 ### 5. **Auditability**
+
 - ✓ Know exactly what prompt was used for each analysis
 - ✓ Track prompt performance over time
 - ✓ Compliance with educational standards
@@ -355,18 +367,21 @@ export class OpenAIService {
 ## Migration Path
 
 ### Phase 1: Move to Service Layer (Immediate)
+
 1. Create `PromptsService` with hardcoded prompts
 2. Update `AnalysisService` to use it
 3. Remove file-based prompt loading
 4. Test thoroughly
 
 ### Phase 2: Add Database Storage (Week 2)
+
 1. Add `Prompt` model to Prisma schema
 2. Seed database with current prompts
 3. Update `PromptsService` to read from DB
 4. Add prompt management UI for admins
 
 ### Phase 3: Advanced Features (Future)
+
 1. Prompt versioning and history
 2. A/B testing framework
 3. Multi-language support
@@ -449,6 +464,7 @@ describe('AnalysisService', () => {
 ## Conclusion
 
 This architecture:
+
 - ✓ Moves prompt from file to backend code/database
 - ✓ Properly separates system prompt from messages
 - ✓ Production-ready and scalable

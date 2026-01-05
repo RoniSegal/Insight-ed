@@ -31,6 +31,7 @@ OPENAI_TEMPERATURE=0.7
 ```
 
 **Important**: The service validates that `OPENAI_API_KEY`:
+
 - Starts with `sk-`
 - Is at least 40 characters long
 - Does not contain placeholder text (e.g., "placeholder", "replace", "your-key")
@@ -70,9 +71,9 @@ export class AnalysisService {
 
 ```typescript
 const response = await this.openaiService.chat(messages, {
-  model: 'gpt-3.5-turbo',      // Override default model
-  maxTokens: 1000,              // Override max tokens
-  temperature: 0.5,             // More deterministic responses
+  model: 'gpt-3.5-turbo', // Override default model
+  maxTokens: 1000, // Override max tokens
+  temperature: 0.5, // More deterministic responses
 });
 
 console.log(response.message);
@@ -120,9 +121,9 @@ interface ChatMessage {
 
 ```typescript
 interface ChatOptions {
-  maxTokens?: number;      // Override default max tokens
-  temperature?: number;    // 0.0 to 2.0 (default: 0.7)
-  model?: string;          // Override default model
+  maxTokens?: number; // Override default max tokens
+  temperature?: number; // 0.0 to 2.0 (default: 0.7)
+  model?: string; // Override default model
 }
 ```
 
@@ -145,14 +146,14 @@ The service throws specific exceptions for different error scenarios:
 
 ### Exception Types
 
-| Exception | HTTP Status | When Thrown |
-|-----------|-------------|-------------|
-| `OpenAIConfigurationException` | 500 | API key not configured or invalid format |
-| `OpenAIAuthenticationException` | 401 | Invalid API key |
-| `OpenAIRateLimitException` | 429 | Rate limit exceeded |
-| `OpenAIServiceException` | 503 | OpenAI service error (500, 502, 503) |
-| `OpenAICircuitBreakerException` | 503 | Circuit breaker open due to sustained failures |
-| `OpenAIException` | 500 | Other OpenAI errors |
+| Exception                       | HTTP Status | When Thrown                                    |
+| ------------------------------- | ----------- | ---------------------------------------------- |
+| `OpenAIConfigurationException`  | 500         | API key not configured or invalid format       |
+| `OpenAIAuthenticationException` | 401         | Invalid API key                                |
+| `OpenAIRateLimitException`      | 429         | Rate limit exceeded                            |
+| `OpenAIServiceException`        | 503         | OpenAI service error (500, 502, 503)           |
+| `OpenAICircuitBreakerException` | 503         | Circuit breaker open due to sustained failures |
+| `OpenAIException`               | 500         | Other OpenAI errors                            |
 
 ### Error Handling Example
 
@@ -189,6 +190,7 @@ The service automatically retries failed requests with exponential backoff:
 - **Backoff strategy**: Exponential (100ms, 200ms, 400ms, ...)
 
 **Retries are NOT attempted for**:
+
 - Authentication errors (401)
 - Configuration errors
 - Circuit breaker open errors
@@ -223,6 +225,7 @@ npm test openai.service.spec.ts
 ```
 
 Test coverage includes:
+
 - Configuration validation
 - Successful chat completions
 - All error scenarios (401, 429, 500, 502, 503)
@@ -260,6 +263,7 @@ This service follows the architectural decision to move OpenAI integration from 
 ## Support
 
 For issues or questions, see:
+
 - [OpenAI API Documentation](https://platform.openai.com/docs)
 - [Architecture Document](/docs/ARCHITECTURE.md)
 - Project ticket: GE-071

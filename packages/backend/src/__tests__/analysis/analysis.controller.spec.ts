@@ -6,7 +6,6 @@ import { AnalysisService } from '../../analysis/analysis.service';
 
 describe('AnalysisController', () => {
   let controller: AnalysisController;
-  let service: AnalysisService;
 
   const mockAnalysisService = {
     startConversation: jest.fn(),
@@ -36,7 +35,6 @@ describe('AnalysisController', () => {
     }).compile();
 
     controller = module.get<AnalysisController>(AnalysisController);
-    service = module.get<AnalysisService>(AnalysisService);
 
     jest.clearAllMocks();
   });
@@ -64,7 +62,7 @@ describe('AnalysisController', () => {
       const result = await controller.startAnalysis(dto, mockRequest);
 
       expect(result).toEqual(expectedResult);
-      expect(service.startConversation).toHaveBeenCalledWith(
+      expect(mockAnalysisService.startConversation).toHaveBeenCalledWith(
         'student-1',
         'Sarah Cohen',
         'teacher-1'
@@ -85,7 +83,7 @@ describe('AnalysisController', () => {
 
       await controller.startAnalysis(dto, mockRequest);
 
-      expect(service.startConversation).toHaveBeenCalledWith(
+      expect(mockAnalysisService.startConversation).toHaveBeenCalledWith(
         'student-1',
         'Student student-1',
         'teacher-1'
@@ -105,7 +103,7 @@ describe('AnalysisController', () => {
 
       await controller.startAnalysis(dto, mockRequest);
 
-      expect(service.startConversation).toHaveBeenCalledWith(
+      expect(mockAnalysisService.startConversation).toHaveBeenCalledWith(
         'student-1',
         'Sarah Cohen',
         'teacher-1'
@@ -134,7 +132,10 @@ describe('AnalysisController', () => {
       const result = await controller.chat(dto);
 
       expect(result).toEqual(expectedResult);
-      expect(service.continueConversation).toHaveBeenCalledWith('conv-123', dto.message);
+      expect(mockAnalysisService.continueConversation).toHaveBeenCalledWith(
+        'conv-123',
+        dto.message
+      );
     });
 
     it('should handle conversation completion', async () => {
@@ -191,7 +192,7 @@ describe('AnalysisController', () => {
       const result = await controller.completeAnalysis(dto, mockRequest);
 
       expect(result).toEqual(expectedResult);
-      expect(service.completeAnalysis).toHaveBeenCalledWith('conv-123', 'teacher-1');
+      expect(mockAnalysisService.completeAnalysis).toHaveBeenCalledWith('conv-123', 'teacher-1');
     });
 
     it('should throw NotFoundException for invalid conversation ID', async () => {
@@ -221,7 +222,7 @@ describe('AnalysisController', () => {
 
       await controller.completeAnalysis(dto, mockRequest);
 
-      expect(service.completeAnalysis).toHaveBeenCalledWith('conv-123', 'teacher-1');
+      expect(mockAnalysisService.completeAnalysis).toHaveBeenCalledWith('conv-123', 'teacher-1');
     });
   });
 
@@ -241,7 +242,7 @@ describe('AnalysisController', () => {
       const result = await controller.getAnalysisById(analysisId);
 
       expect(result).toEqual(expectedAnalysis);
-      expect(service.getAnalysisById).toHaveBeenCalledWith('42');
+      expect(mockAnalysisService.getAnalysisById).toHaveBeenCalledWith('42');
     });
 
     it('should throw NotFoundException for invalid analysis ID', async () => {
@@ -249,9 +250,7 @@ describe('AnalysisController', () => {
         new NotFoundException('Analysis invalid-id not found')
       );
 
-      await expect(controller.getAnalysisById('invalid-id')).rejects.toThrow(
-        NotFoundException
-      );
+      await expect(controller.getAnalysisById('invalid-id')).rejects.toThrow(NotFoundException);
     });
   });
 
@@ -281,7 +280,7 @@ describe('AnalysisController', () => {
 
       expect(result).toEqual(expectedAnalyses);
       expect(result).toHaveLength(2);
-      expect(service.getAnalysesByStudentId).toHaveBeenCalledWith('student-1');
+      expect(mockAnalysisService.getAnalysesByStudentId).toHaveBeenCalledWith('student-1');
     });
 
     it('should return empty array for student with no analyses', async () => {
@@ -329,14 +328,12 @@ describe('AnalysisController', () => {
         createdBy: 'teacher-1',
       };
 
-      mockAnalysisService.getLatestAnalysisByStudentId.mockResolvedValueOnce(
-        expectedAnalysis
-      );
+      mockAnalysisService.getLatestAnalysisByStudentId.mockResolvedValueOnce(expectedAnalysis);
 
       const result = await controller.getLatestAnalysisByStudent(studentId);
 
       expect(result).toEqual(expectedAnalysis);
-      expect(service.getLatestAnalysisByStudentId).toHaveBeenCalledWith('student-1');
+      expect(mockAnalysisService.getLatestAnalysisByStudentId).toHaveBeenCalledWith('student-1');
     });
 
     it('should throw NotFoundException when no analyses exist', async () => {
@@ -366,7 +363,7 @@ describe('AnalysisController', () => {
 
       await controller.startAnalysis(startDto, mockRequest);
 
-      expect(service.startConversation).toHaveBeenCalledTimes(1);
+      expect(mockAnalysisService.startConversation).toHaveBeenCalledTimes(1);
     });
 
     it('should propagate service errors to caller', async () => {
@@ -396,7 +393,7 @@ describe('AnalysisController', () => {
 
       await controller.startAnalysis(dto, customRequest);
 
-      expect(service.startConversation).toHaveBeenCalledWith(
+      expect(mockAnalysisService.startConversation).toHaveBeenCalledWith(
         'student-1',
         'Sarah',
         'custom-teacher-id'

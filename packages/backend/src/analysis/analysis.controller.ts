@@ -8,15 +8,10 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-  ApiParam,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+
 import { AnalysisService } from './analysis.service';
 import {
   AnalysisDto,
@@ -79,11 +74,7 @@ export class AnalysisController {
     // TODO: In future, fetch student name from database if not provided
     const studentName = dto.studentName || `Student ${dto.studentId}`;
 
-    const result = await this.analysisService.startConversation(
-      dto.studentId,
-      studentName,
-      userId
-    );
+    const result = await this.analysisService.startConversation(dto.studentId, studentName, userId);
 
     return result;
   }
@@ -122,10 +113,7 @@ export class AnalysisController {
   })
   async chat(@Body() dto: ChatMessageDto): Promise<ChatResponseDto> {
     // TODO: Add rate limiting per user (current implementation uses in-memory map)
-    const result = await this.analysisService.continueConversation(
-      dto.conversationId,
-      dto.message
-    );
+    const result = await this.analysisService.continueConversation(dto.conversationId, dto.message);
 
     return result;
   }
@@ -262,9 +250,7 @@ export class AnalysisController {
     status: 404,
     description: 'No analyses found for this student',
   })
-  async getLatestAnalysisByStudent(
-    @Param('studentId') studentId: string
-  ): Promise<AnalysisDto> {
+  async getLatestAnalysisByStudent(@Param('studentId') studentId: string): Promise<AnalysisDto> {
     // TODO: Add authorization check (teachers can only view analyses for their students)
     const analysis = await this.analysisService.getLatestAnalysisByStudentId(studentId);
 

@@ -1,3 +1,5 @@
+import { randomUUID } from 'crypto';
+
 import {
   BadRequestException,
   Injectable,
@@ -5,10 +7,10 @@ import {
   NotFoundException,
   OnModuleInit,
 } from '@nestjs/common';
-import { randomUUID } from 'crypto';
 
 import { OpenAIService } from '../openai/openai.service';
 import { PromptsService } from '../prompts/prompts.service';
+
 import { AnalysisResult, ConversationState } from './entities';
 
 /**
@@ -197,9 +199,7 @@ export class AnalysisService implements OnModuleInit {
     }
 
     // Get final analysis message (last assistant message)
-    const finalMessage = conversation.messages
-      .filter((m) => m.role === 'assistant')
-      .pop();
+    const finalMessage = conversation.messages.filter((m) => m.role === 'assistant').pop();
 
     if (!finalMessage) {
       throw new BadRequestException('No analysis generated yet');
@@ -224,9 +224,7 @@ export class AnalysisService implements OnModuleInit {
     studentAnalyses.push(analysisId);
     this.studentAnalysisIndex.set(conversation.studentId, studentAnalyses);
 
-    this.logger.log(
-      `Completed analysis ${analysisId} for student ${conversation.studentId}`
-    );
+    this.logger.log(`Completed analysis ${analysisId} for student ${conversation.studentId}`);
 
     return {
       analysisId,
@@ -326,20 +324,23 @@ export class AnalysisService implements OnModuleInit {
    * @private
    */
   private startCleanupTask(): void {
-    setInterval(() => {
-      const now = Date.now();
-      let cleaned = 0;
+    setInterval(
+      () => {
+        const now = Date.now();
+        let cleaned = 0;
 
-      for (const [id, conversation] of this.conversationStore.entries()) {
-        if (now - conversation.createdAt.getTime() > this.conversationTTL) {
-          this.conversationStore.delete(id);
-          cleaned++;
+        for (const [id, conversation] of this.conversationStore.entries()) {
+          if (now - conversation.createdAt.getTime() > this.conversationTTL) {
+            this.conversationStore.delete(id);
+            cleaned++;
+          }
         }
-      }
 
-      if (cleaned > 0) {
-        this.logger.log(`Cleaned up ${cleaned} old conversations`);
-      }
-    }, 60 * 60 * 1000); // Run every hour
+        if (cleaned > 0) {
+          this.logger.log(`Cleaned up ${cleaned} old conversations`);
+        }
+      },
+      60 * 60 * 1000
+    ); // Run every hour
   }
 }

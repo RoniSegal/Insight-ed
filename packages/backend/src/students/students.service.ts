@@ -31,7 +31,7 @@ export class StudentsService implements OnModuleInit {
   private readonly students = new Map<string, Student>();
   private nextId = 1;
 
-  async onModuleInit() {
+  onModuleInit() {
     // Seed with demo data on startup if empty
     this.seedData();
     this.logger.log(`Students Service initialized with ${this.students.size} students`);
@@ -40,7 +40,7 @@ export class StudentsService implements OnModuleInit {
   /**
    * Create a new student
    */
-  async create(createStudentDto: CreateStudentDto): Promise<StudentDto> {
+  create(createStudentDto: CreateStudentDto): Promise<StudentDto> {
     // Trim and normalize input (Unicode-aware)
     const name = createStudentDto.name.trim().normalize('NFC');
     const grade = createStudentDto.grade.trim().normalize('NFC');
@@ -69,33 +69,33 @@ export class StudentsService implements OnModuleInit {
 
     this.logger.log(`Created student: ${id} - ${name}`);
 
-    return student;
+    return Promise.resolve(student);
   }
 
   /**
    * Get all students
    */
-  async findAll(): Promise<StudentDto[]> {
-    return Array.from(this.students.values());
+  findAll(): Promise<StudentDto[]> {
+    return Promise.resolve(Array.from(this.students.values()));
   }
 
   /**
    * Get student by ID
    */
-  async findOne(id: string): Promise<StudentDto> {
+  findOne(id: string): Promise<StudentDto> {
     const student = this.students.get(id);
 
     if (!student) {
       throw new NotFoundException(`Student ${id} not found`);
     }
 
-    return student;
+    return Promise.resolve(student);
   }
 
   /**
    * Update student by ID
    */
-  async update(id: string, updateStudentDto: UpdateStudentDto): Promise<StudentDto> {
+  update(id: string, updateStudentDto: UpdateStudentDto): Promise<StudentDto> {
     const student = this.students.get(id);
 
     if (!student) {
@@ -122,13 +122,13 @@ export class StudentsService implements OnModuleInit {
 
     this.logger.log(`Updated student: ${id} - ${student.name}`);
 
-    return student;
+    return Promise.resolve(student);
   }
 
   /**
    * Delete student by ID
    */
-  async remove(id: string): Promise<{ success: boolean }> {
+  remove(id: string): Promise<{ success: boolean }> {
     const student = this.students.get(id);
 
     if (!student) {
@@ -139,7 +139,7 @@ export class StudentsService implements OnModuleInit {
 
     this.logger.log(`Deleted student: ${id} - ${student.name}`);
 
-    return { success: true };
+    return Promise.resolve({ success: true });
   }
 
   /**
