@@ -9,8 +9,8 @@ import { ChatInput } from '@/components/chat/ChatInput';
 import { ChatMessage, type Message } from '@/components/chat/ChatMessage';
 import { Alert } from '@/components/ui/Alert';
 import { LoadingContent } from '@/components/ui/Spinner';
-import { ApiClient } from '@/lib/api-client';
 import { analysisClient } from '@/lib/api/analysis-client';
+import { studentsClient } from '@/lib/api/students-client';
 
 export default function ChatPage() {
   return (
@@ -50,23 +50,23 @@ function ChatPageContent() {
       setError(null);
 
       // Fetch student info
-      const student = (await ApiClient.get(`/students/${studentId}`)) as { name: string };
-      setStudentName(student.name);
+      const studentResponse = await studentsClient.getStudent(studentId as string);
+      setStudentName(studentResponse.student.name);
 
       // Start conversation - get first AI message from backend
-      const response = await analysisClient.startAnalysis(
+      const analysisResponse = await analysisClient.startAnalysis(
         studentId as string,
-        student.name
+        studentResponse.student.name
       );
 
-      setConversationId(response.conversationId);
+      setConversationId(analysisResponse.conversationId);
 
       // Add first AI message
-      if (response.message) {
+      if (analysisResponse.message) {
         const firstMessage: Message = {
           id: crypto.randomUUID(),
           role: 'assistant',
-          content: response.message,
+          content: analysisResponse.message,
           timestamp: new Date(),
         };
         setMessages([firstMessage]);

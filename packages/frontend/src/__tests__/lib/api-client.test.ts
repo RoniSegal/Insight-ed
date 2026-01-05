@@ -46,7 +46,7 @@ describe('ApiClient', () => {
       const result = await ApiClient.get('/test');
 
       expect(mockFetch).toHaveBeenCalledWith(
-        '/api/test',
+        'http://localhost:4000/api/v1/test',
         expect.objectContaining({
           method: 'GET',
           headers: expect.objectContaining({
@@ -90,7 +90,7 @@ describe('ApiClient', () => {
       const result = await ApiClient.post('/auth/login', postData);
 
       expect(mockFetch).toHaveBeenCalledWith(
-        '/api/auth/login',
+        'http://localhost:4000/api/v1/auth/login',
         expect.objectContaining({
           method: 'POST',
           headers: expect.objectContaining({
@@ -116,7 +116,7 @@ describe('ApiClient', () => {
       const result = await ApiClient.put('/users/1', putData);
 
       expect(mockFetch).toHaveBeenCalledWith(
-        '/api/users/1',
+        'http://localhost:4000/api/v1/users/1',
         expect.objectContaining({
           method: 'PUT',
           body: JSON.stringify(putData),
@@ -138,7 +138,7 @@ describe('ApiClient', () => {
       const result = await ApiClient.delete('/users/1');
 
       expect(mockFetch).toHaveBeenCalledWith(
-        '/api/users/1',
+        'http://localhost:4000/api/v1/users/1',
         expect.objectContaining({
           method: 'DELETE',
         })
@@ -276,7 +276,7 @@ describe('ApiClient', () => {
 
       const result = await ApiClient.refreshAccessToken();
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/auth/refresh', {
+      expect(mockFetch).toHaveBeenCalledWith('http://localhost:4000/api/v1/auth/refresh', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ refreshToken: 'refresh-token' }),

@@ -41,7 +41,7 @@ import {
  */
 @ApiTags('analysis')
 @ApiBearerAuth()
-@Controller('api/v1/analysis')
+@Controller('analysis')
 @UseGuards(JwtAuthGuard)
 export class AnalysisController {
   constructor(private readonly analysisService: AnalysisService) {}

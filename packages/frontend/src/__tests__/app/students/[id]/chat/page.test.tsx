@@ -10,11 +10,11 @@ import React from 'react';
 
 import ChatPage from '@/app/students/[id]/chat/page';
 import { analysisClient } from '@/lib/api/analysis-client';
-import { ApiClient } from '@/lib/api-client';
+import { studentsClient } from '@/lib/api/students-client';
 
 // Mock dependencies
 jest.mock('next/navigation');
-jest.mock('@/lib/api-client');
+jest.mock('@/lib/api/students-client');
 jest.mock('@/lib/api/analysis-client');
 
 // Mock ProtectedRoute to render children directly
@@ -47,9 +47,15 @@ describe('ChatPage', () => {
       id: mockStudentId,
     });
 
-    // Mock ApiClient.get for student info
-    (ApiClient.get as jest.Mock).mockResolvedValue({
-      name: mockStudentName,
+    // Mock studentsClient.getStudent for student info
+    (studentsClient.getStudent as jest.Mock).mockResolvedValue({
+      student: {
+        id: mockStudentId,
+        name: mockStudentName,
+        grade: 'כיתה ג׳',
+        class: 'גב׳ לוי',
+        createdAt: new Date().toISOString(),
+      },
     });
 
     // Mock analysisClient.startAnalysis
@@ -69,7 +75,7 @@ describe('ChatPage', () => {
       render(<ChatPage />);
 
       await waitFor(() => {
-        expect(ApiClient.get).toHaveBeenCalledWith(`/students/${mockStudentId}`);
+        expect(studentsClient.getStudent).toHaveBeenCalledWith(mockStudentId);
         expect(analysisClient.startAnalysis).toHaveBeenCalledWith(
           mockStudentId,
           mockStudentName
@@ -97,7 +103,7 @@ describe('ChatPage', () => {
 
   describe('Error Handling - Initialization', () => {
     it('should show error when student fetch fails', async () => {
-      (ApiClient.get as jest.Mock).mockRejectedValue(
+      (studentsClient.getStudent as jest.Mock).mockRejectedValue(
         new Error('Student not found')
       );
 

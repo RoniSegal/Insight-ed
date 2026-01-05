@@ -2,12 +2,12 @@ import { UserRole } from '@growth-engine/shared';
 import { BadRequestException, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 import { AuthService } from '../../auth/auth.service';
 import { LoginDto } from '../../auth/dto/login.dto';
 import { RegisterDto } from '../../auth/dto/register.dto';
+import { PrismaService } from '../../prisma/prisma.service';
 import { createMockPrismaClient, MockPrismaClient } from '../mocks/prisma.mock';
 
 // Mock bcrypt
@@ -50,7 +50,7 @@ describe('AuthService', () => {
       providers: [
         AuthService,
         {
-          provide: PrismaClient,
+          provide: PrismaService,
           useValue: prisma,
         },
         {
