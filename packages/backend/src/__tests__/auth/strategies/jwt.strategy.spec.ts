@@ -1,8 +1,9 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaClient, UserRole } from '@prisma/client';
+import { UserRole } from '@prisma/client';
 
 import { JwtStrategy } from '../../../auth/strategies/jwt.strategy';
+import { PrismaService } from '../../../prisma/prisma.service';
 import { createMockPrismaClient, MockPrismaClient } from '../../mocks/prisma.mock';
 
 describe('JwtStrategy', () => {
@@ -29,7 +30,7 @@ describe('JwtStrategy', () => {
       providers: [
         JwtStrategy,
         {
-          provide: PrismaClient,
+          provide: PrismaService,
           useValue: prisma,
         },
       ],

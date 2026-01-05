@@ -47,50 +47,53 @@ function ResultsPageContent() {
   const [error, setError] = useState<string | null>(null);
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [student, setStudent] = useState<Student | null>(null);
+  const [fetchResults, setFetchResults] = useState<(() => void) | null>(null);
 
   useEffect(() => {
-    fetchResults();
-  }, [analysisId]);
-
-  const fetchResults = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      // Fetch analysis by ID
-      const response: { analysis: AnalysisResult } = await ApiClient.get(
-        `/analysis/by-id/${analysisId}`
-      );
-
-      if (!response.analysis) {
-        throw new Error('Analysis not found');
-      }
-
-      setAnalysisResult(response.analysis);
-
-      // Fetch student details
+    const fetchResultsFunc = async () => {
       try {
-        const studentResponse: { student: Student } = await ApiClient.get(
-          `/students/${response.analysis.studentId}`
+        setLoading(true);
+        setError(null);
+
+        // Fetch analysis by ID
+        const response: { analysis: AnalysisResult } = await ApiClient.get(
+          `/analysis/by-id/${analysisId}`
         );
-        setStudent(studentResponse.student);
-      } catch (err) {
-        // If student not found, continue with just the analysis
-        console.error('Failed to fetch student details:', err);
+
+        if (!response.analysis) {
+          throw new Error('Analysis not found');
+        }
+
+        setAnalysisResult(response.analysis);
+
+        // Fetch student details
+        try {
+          const studentResponse: { student: Student } = await ApiClient.get(
+            `/students/${response.analysis.studentId}`
+          );
+          setStudent(studentResponse.student);
+        } catch (err) {
+          // If student not found, continue with just the analysis
+          console.error('Failed to fetch student details:', err);
+        }
+      } catch (err: unknown) {
+        const error = err as { message?: string };
+        console.error('Failed to load results:', err);
+        if (error.message?.includes('not found') || error.message?.includes('404')) {
+          setError('ניתוח לא נמצא. אנא ודא שהניתוח הושלם בהצלחה.');
+        } else if (error.message?.includes('session expired') || error.message?.includes('401')) {
+          setError('תקופת ההתחברות פגה. אנא התחבר מחדש.');
+        } else {
+          setError('שגיאה בטעינת תוצאות הניתוח. אנא נסה שוב.');
+        }
+      } finally {
+        setLoading(false);
       }
-    } catch (err: any) {
-      console.error('Failed to load results:', err);
-      if (err.message.includes('not found') || err.message.includes('404')) {
-        setError('ניתוח לא נמצא. אנא ודא שהניתוח הושלם בהצלחה.');
-      } else if (err.message.includes('session expired') || err.message.includes('401')) {
-        setError('תקופת ההתחברות פגה. אנא התחבר מחדש.');
-      } else {
-        setError('שגיאה בטעינת תוצאות הניתוח. אנא נסה שוב.');
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
+    setFetchResults(() => fetchResultsFunc);
+    fetchResultsFunc();
+  }, [analysisId]);
 
   const handleBackToStudents = () => {
     router.push('/students');
@@ -125,7 +128,7 @@ function ResultsPageContent() {
             <Button variant="primary" onClick={handleBackToStudents} fullWidth>
               חזרה לרשימת התלמידים
             </Button>
-            <Button variant="secondary" onClick={() => fetchResults()} fullWidth>
+            <Button variant="secondary" onClick={() => fetchResults && fetchResults()} fullWidth>
               נסה שוב
             </Button>
           </div>

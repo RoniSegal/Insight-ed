@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/Button';
 import { Card, CardHeader, CardContent } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { LoadingContent } from '@/components/ui/Spinner';
-import { ApiClient } from '@/lib/api-client';
+import { studentsClient } from '@/lib/api/students-client';
 import { useAuthStore } from '@/lib/auth/auth-store';
 
 export default function StudentsPage() {
@@ -61,12 +61,10 @@ function StudentsPageContent() {
     try {
       setLoading(true);
       setError(null);
-      const response: any = await ApiClient.get('/students');
+      const response = await studentsClient.getStudents();
 
-      // Handle both data structure possibilities
-      const studentData = response.data || response.students || response || [];
-      setStudents(studentData);
-      setFilteredStudents(studentData);
+      setStudents(response.students);
+      setFilteredStudents(response.students);
     } catch (err: any) {
       setError(err.message || 'Failed to load students');
     } finally {
@@ -83,7 +81,7 @@ function StudentsPageContent() {
     if (!confirm(`האם למחוק את ${studentName}?`)) return;
 
     try {
-      await ApiClient.delete(`/students/${id}`);
+      await studentsClient.deleteStudent(id);
       fetchStudents();
     } catch (err: any) {
       alert(`שגיאה במחיקת תלמיד: ${err.message}`);
@@ -395,7 +393,7 @@ function AddStudentForm({ onSuccess }: AddStudentFormProps) {
     setLoading(true);
 
     try {
-      await ApiClient.post('/students', {
+      await studentsClient.createStudent({
         name: name.trim(),
         grade: grade.trim(),
         class: className.trim() || undefined,
