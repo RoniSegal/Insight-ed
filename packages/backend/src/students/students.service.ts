@@ -40,7 +40,7 @@ export class StudentsService implements OnModuleInit {
   /**
    * Create a new student
    */
-  create(createStudentDto: CreateStudentDto): Promise<StudentDto> {
+  async create(createStudentDto: CreateStudentDto): Promise<StudentDto> {
     // Trim and normalize input (Unicode-aware)
     const name = createStudentDto.name.trim().normalize('NFC');
     const grade = createStudentDto.grade.trim().normalize('NFC');
@@ -69,33 +69,33 @@ export class StudentsService implements OnModuleInit {
 
     this.logger.log(`Created student: ${id} - ${name}`);
 
-    return Promise.resolve(student);
+    return student;
   }
 
   /**
    * Get all students
    */
-  findAll(): Promise<StudentDto[]> {
-    return Promise.resolve(Array.from(this.students.values()));
+  async findAll(): Promise<StudentDto[]> {
+    return Array.from(this.students.values());
   }
 
   /**
    * Get student by ID
    */
-  findOne(id: string): Promise<StudentDto> {
+  async findOne(id: string): Promise<StudentDto> {
     const student = this.students.get(id);
 
     if (!student) {
       throw new NotFoundException(`Student ${id} not found`);
     }
 
-    return Promise.resolve(student);
+    return student;
   }
 
   /**
    * Update student by ID
    */
-  update(id: string, updateStudentDto: UpdateStudentDto): Promise<StudentDto> {
+  async update(id: string, updateStudentDto: UpdateStudentDto): Promise<StudentDto> {
     const student = this.students.get(id);
 
     if (!student) {
@@ -122,13 +122,13 @@ export class StudentsService implements OnModuleInit {
 
     this.logger.log(`Updated student: ${id} - ${student.name}`);
 
-    return Promise.resolve(student);
+    return student;
   }
 
   /**
    * Delete student by ID
    */
-  remove(id: string): Promise<{ success: boolean }> {
+  async remove(id: string): Promise<{ success: boolean }> {
     const student = this.students.get(id);
 
     if (!student) {
@@ -139,7 +139,7 @@ export class StudentsService implements OnModuleInit {
 
     this.logger.log(`Deleted student: ${id} - ${student.name}`);
 
-    return Promise.resolve({ success: true });
+    return { success: true };
   }
 
   /**

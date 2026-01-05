@@ -154,10 +154,6 @@ export class OpenAIService implements OnModuleInit {
 
       // Handle OpenAI-specific errors
       this.handleOpenAIError(error);
-
-      // This line should never be reached due to handleOpenAIError always throwing
-      const message = error instanceof Error ? error.message : 'Unknown error';
-      throw new OpenAIException(`OpenAI API error: ${message}`);
     }
   }
 
