@@ -39,7 +39,7 @@ echo "====================================="
 echo "Fetching analysis ID: 1 (Sarah Cohen)..."
 RESPONSE=$(curl -s -w "\n%{http_code}" \
   -H "Authorization: Bearer $ACCESS_TOKEN" \
-  "$API_URL/analysis/by-id/1")
+  "$API_URL/analysis/1")
 
 HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
 BODY=$(echo "$RESPONSE" | sed '$d')
@@ -61,7 +61,7 @@ echo "====================================="
 echo "Fetching analysis ID: 2 (Michael David)..."
 RESPONSE=$(curl -s -w "\n%{http_code}" \
   -H "Authorization: Bearer $ACCESS_TOKEN" \
-  "$API_URL/analysis/by-id/2")
+  "$API_URL/analysis/2")
 
 HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
 BODY=$(echo "$RESPONSE" | sed '$d')
@@ -82,7 +82,7 @@ echo "====================================="
 echo "Fetching analysis ID: 999 (should not exist)..."
 RESPONSE=$(curl -s -w "\n%{http_code}" \
   -H "Authorization: Bearer $ACCESS_TOKEN" \
-  "$API_URL/analysis/by-id/999")
+  "$API_URL/analysis/999")
 
 HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
 BODY=$(echo "$RESPONSE" | sed '$d')
