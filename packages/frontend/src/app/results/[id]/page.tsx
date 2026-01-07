@@ -49,53 +49,8 @@ function ResultsPageContent() {
   const [student, setStudent] = useState<Student | null>(null);
 
   useEffect(() => {
-<<<<<<< Updated upstream
     fetchResults();
-=======
-    const fetchResultsFunc = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        // Fetch analysis by ID
-        const response: { analysis: AnalysisResult } = await ApiClient.get(
-          `/analysis/${analysisId}`
-        );
-
-        if (!response.analysis) {
-          throw new Error('Analysis not found');
-        }
-
-        setAnalysisResult(response.analysis);
-
-        // Fetch student details
-        try {
-          const studentResponse: { student: Student } = await ApiClient.get(
-            `/students/${response.analysis.studentId}`
-          );
-          setStudent(studentResponse.student);
-        } catch (err) {
-          // If student not found, continue with just the analysis
-          console.error('Failed to fetch student details:', err);
-        }
-      } catch (err: unknown) {
-        const error = err as { message?: string };
-        console.error('Failed to load results:', err);
-        if (error.message?.includes('not found') || error.message?.includes('404')) {
-          setError('ניתוח לא נמצא. אנא ודא שהניתוח הושלם בהצלחה.');
-        } else if (error.message?.includes('session expired') || error.message?.includes('401')) {
-          setError('תקופת ההתחברות פגה. אנא התחבר מחדש.');
-        } else {
-          setError('שגיאה בטעינת תוצאות הניתוח. אנא נסה שוב.');
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    setFetchResults(() => fetchResultsFunc);
-    fetchResultsFunc();
->>>>>>> Stashed changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [analysisId]);
 
   const fetchResults = async () => {
@@ -105,7 +60,7 @@ function ResultsPageContent() {
 
       // Fetch analysis by ID
       const response: { analysis: AnalysisResult } = await ApiClient.get(
-        `/analysis/by-id/${analysisId}`
+        `/analysis/${analysisId}`
       );
 
       if (!response.analysis) {
@@ -124,11 +79,12 @@ function ResultsPageContent() {
         // If student not found, continue with just the analysis
         console.error('Failed to fetch student details:', err);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as { message?: string };
       console.error('Failed to load results:', err);
-      if (err.message.includes('not found') || err.message.includes('404')) {
+      if (error.message?.includes('not found') || error.message?.includes('404')) {
         setError('ניתוח לא נמצא. אנא ודא שהניתוח הושלם בהצלחה.');
-      } else if (err.message.includes('session expired') || err.message.includes('401')) {
+      } else if (error.message?.includes('session expired') || error.message?.includes('401')) {
         setError('תקופת ההתחברות פגה. אנא התחבר מחדש.');
       } else {
         setError('שגיאה בטעינת תוצאות הניתוח. אנא נסה שוב.');
