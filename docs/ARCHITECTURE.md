@@ -1,8 +1,23 @@
 # Architecture Document – growth-engine
 
-**Version:** 1.0
-**Last Updated:** December 30, 2025
+**Version:** 1.1
+**Last Updated:** January 4, 2026
 **Status:** Approved
+
+---
+
+## Change Log
+
+### Version 1.1 (January 4, 2026)
+
+- **Migration Complete:** Removed all Next.js API routes for analysis functionality from frontend
+- **OpenAI Integration:** Consolidated OpenAI SDK to backend only (NestJS OpenAIModule)
+- **Architecture Cleanup:** Frontend now uses REST API client to communicate with backend for all analysis operations
+- **Rationale:** Improved separation of concerns, better testability, production-ready architecture
+
+### Version 1.0 (December 30, 2025)
+
+- Initial architecture documentation
 
 ---
 

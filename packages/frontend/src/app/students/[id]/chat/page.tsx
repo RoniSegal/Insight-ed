@@ -9,7 +9,8 @@ import { ChatInput } from '@/components/chat/ChatInput';
 import { ChatMessage, type Message } from '@/components/chat/ChatMessage';
 import { Alert } from '@/components/ui/Alert';
 import { LoadingContent } from '@/components/ui/Spinner';
-import { ApiClient } from '@/lib/api-client';
+import { analysisClient } from '@/lib/api/analysis-client';
+import { studentsClient } from '@/lib/api/students-client';
 
 export default function ChatPage() {
   return (
@@ -40,42 +41,44 @@ function ChatPageContent() {
 
   // Initialize conversation on mount
   useEffect(() => {
+    const initializeChat = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Fetch student info
+        const studentResponse = await studentsClient.getStudent(studentId as string);
+        setStudentName(studentResponse.student.name);
+
+        // Start conversation - get first AI message from backend
+        const analysisResponse = await analysisClient.startAnalysis(
+          studentId as string,
+          studentResponse.student.name
+        );
+
+        setConversationId(analysisResponse.conversationId);
+
+        // Add first AI message
+        if (analysisResponse.message) {
+          const firstMessage: Message = {
+            id: crypto.randomUUID(),
+            role: 'assistant',
+            content: analysisResponse.message,
+            timestamp: new Date(),
+          };
+          setMessages([firstMessage]);
+        }
+      } catch (err: unknown) {
+        const error = err as { message?: string };
+        console.error('Failed to initialize chat:', err);
+        setError(error.message || 'Failed to start conversation');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     initializeChat();
   }, [studentId]);
-
-  const initializeChat = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      // Fetch student info
-      const student = (await ApiClient.get(`/students/${studentId}`)) as { name: string };
-      setStudentName(student.name);
-
-      // Start conversation - get first AI message
-      const response = (await ApiClient.post('/analysis/start', {
-        studentId,
-      })) as { conversationId: string; message?: string };
-
-      setConversationId(response.conversationId);
-
-      // Add first AI message
-      if (response.message) {
-        const firstMessage: Message = {
-          id: crypto.randomUUID(),
-          role: 'assistant',
-          content: response.message,
-          timestamp: new Date(),
-        };
-        setMessages([firstMessage]);
-      }
-    } catch (err: any) {
-      console.error('Failed to initialize chat:', err);
-      setError(err.message || 'Failed to start conversation');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const sendMessage = async (content: string) => {
     if (!conversationId) {
@@ -96,11 +99,8 @@ function ChatPageContent() {
     setError(null);
 
     try {
-      // Send to API
-      const response = (await ApiClient.post('/analysis/chat', {
-        conversationId,
-        message: content,
-      })) as { message: string };
+      // Send to backend API
+      const response = await analysisClient.sendMessage(conversationId, content);
 
       // Add AI response
       const aiMessage: Message = {
@@ -137,9 +137,8 @@ function ChatPageContent() {
     setError(null);
 
     try {
-      const response = (await ApiClient.post('/analysis/complete', {
-        conversationId,
-      })) as { analysisId: string };
+      // Complete analysis via backend API
+      const response = await analysisClient.completeAnalysis(conversationId);
 
       // Navigate to results page with analysisId from response
       router.push(`/results/${response.analysisId}`);
