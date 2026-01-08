@@ -216,7 +216,9 @@ export class AnalysisController {
     status: 401,
     description: 'Unauthorized - Invalid or missing JWT token',
   })
-  async getAnalysesByStudent(@Param('studentId') studentId: string): Promise<{ analyses: AnalysisDto[] }> {
+  async getAnalysesByStudent(
+    @Param('studentId') studentId: string
+  ): Promise<{ analyses: AnalysisDto[] }> {
     // TODO: Add authorization check (teachers can only view analyses for their students)
     const analyses = await this.analysisService.getAnalysesByStudentId(studentId);
     return { analyses };
@@ -250,7 +252,9 @@ export class AnalysisController {
     status: 404,
     description: 'No analyses found for this student',
   })
-  async getLatestAnalysisByStudent(@Param('studentId') studentId: string): Promise<{ analysis: AnalysisDto }> {
+  async getLatestAnalysisByStudent(
+    @Param('studentId') studentId: string
+  ): Promise<{ analysis: AnalysisDto }> {
     // TODO: Add authorization check (teachers can only view analyses for their students)
     const analysis = await this.analysisService.getLatestAnalysisByStudentId(studentId);
 

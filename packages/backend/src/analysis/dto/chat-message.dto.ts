@@ -21,4 +21,3 @@ export class ChatMessageDto {
   @IsNotEmpty()
   message: string;
 }
-

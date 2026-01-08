@@ -28,4 +28,3 @@ export interface AnalysisResult {
   createdAt: string;
   createdBy: string;
 }
-

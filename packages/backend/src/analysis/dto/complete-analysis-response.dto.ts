@@ -22,4 +22,3 @@ export class CompleteAnalysisResponseDto {
   })
   completedAt: string;
 }
-

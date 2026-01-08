@@ -13,4 +13,3 @@ export class CompleteAnalysisDto {
   @IsNotEmpty()
   conversationId: string;
 }
-

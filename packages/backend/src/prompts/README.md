@@ -17,12 +17,14 @@ prompts/
 ## Editing Prompts
 
 ### For Developers
+
 1. Edit the `.txt` files in `src/prompts/templates/`
 2. Save with UTF-8 encoding (your IDE should handle this automatically)
 3. Rebuild: `npm run build`
 4. The files are automatically copied to `dist/prompts/templates/`
 
 ### For Non-Developers
+
 1. Open the `.txt` files in any text editor that supports Hebrew
 2. Make your changes
 3. Save the file
@@ -31,6 +33,7 @@ prompts/
 ## Best Practices for Hebrew Text
 
 ### In Your IDE (Cursor/VS Code)
+
 - **Encoding**: Files are saved as UTF-8 (check bottom-right corner)
 - **Font**: Use JetBrains Mono, Fira Code, or Consolas for best Hebrew rendering
 - **Settings**: Add to `.vscode/settings.json`:
@@ -42,6 +45,7 @@ prompts/
   ```
 
 ### File Format
+
 - **system-prompt.txt**: Full system instructions with placeholders like `{studentName}`
 - **questions.txt**: One question per line (6 lines total)
 - **analysis-prompt.txt**: Template for final analysis output
@@ -61,7 +65,7 @@ prompts/
 ✅ **Easy Editing**: Non-developers can edit prompts without touching code  
 ✅ **Version Control**: Changes to prompts are tracked in git  
 ✅ **IDE Friendly**: Text files render Hebrew better than TypeScript strings  
-✅ **Hot Reload**: In dev mode, changes are picked up automatically  
+✅ **Hot Reload**: In dev mode, changes are picked up automatically
 
 ## Future Enhancements (Phase 2)
 

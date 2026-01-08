@@ -22,4 +22,3 @@ export class ChatResponseDto {
   })
   metadata: any;
 }
-

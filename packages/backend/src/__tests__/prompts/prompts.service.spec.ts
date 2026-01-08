@@ -11,6 +11,8 @@ describe('PromptsService', () => {
     }).compile();
 
     service = module.get<PromptsService>(PromptsService);
+    // Load templates from files
+    service.onModuleInit();
   });
 
   it('should be defined', () => {

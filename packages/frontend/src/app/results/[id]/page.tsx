@@ -59,9 +59,7 @@ function ResultsPageContent() {
       setError(null);
 
       // Fetch analysis by ID
-      const response: { analysis: AnalysisResult } = await ApiClient.get(
-        `/analysis/${analysisId}`
-      );
+      const response: { analysis: AnalysisResult } = await ApiClient.get(`/analysis/${analysisId}`);
 
       if (!response.analysis) {
         throw new Error('Analysis not found');

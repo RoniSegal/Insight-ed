@@ -4,10 +4,7 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "assets": [
-      "**/*.md",
-      "**/*.txt"
-    ],
+    "assets": ["**/*.md", "**/*.txt"],
     "watchAssets": true
   }
 }

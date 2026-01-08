@@ -16,4 +16,3 @@ export class StartAnalysisResponseDto {
   })
   message: string;
 }
-

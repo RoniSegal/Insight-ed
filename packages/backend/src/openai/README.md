@@ -20,7 +20,7 @@ OPENAI_TEMPERATURE=0.7
 ## Future Use
 
 In future iterations, the OpenAI service will be used for:
+
 - Generating final analysis reports
 - Dynamic follow-up questions
 - Personalized recommendations
-

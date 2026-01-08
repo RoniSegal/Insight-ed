@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 
 /**
  * Service for OpenAI integration
- * 
+ *
  * Provides methods for calling OpenAI APIs
  * For MVP, this service is configured but not actively used
  * (questions come directly from files, not from AI)
@@ -62,4 +62,3 @@ export class OpenAIService implements OnModuleInit {
     return this.temperature;
   }
 }
-

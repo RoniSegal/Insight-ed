@@ -1,6 +1,7 @@
-import { Injectable, OnModuleInit, Logger } from '@nestjs/common';
 import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
+
+import { Injectable, OnModuleInit, Logger } from '@nestjs/common';
 
 /**
  * Service for managing AI prompts used in student analysis.
@@ -79,14 +80,14 @@ export class PromptsService implements OnModuleInit {
     this.logger.log('Loading prompt templates from files...');
     try {
       this.SYSTEM_PROMPT_TEMPLATE = this.loadTemplate('analysis-prompt.txt');
-      
+
       // Split questions by question number (lines starting with digit followed by period)
       const questionsContent = this.loadTemplate('questions.txt');
       this.QUESTION_TEMPLATES = questionsContent
-        .split(/(?=^\d+\.\s)/m)  // Split before lines starting with "1. ", "2. ", etc.
+        .split(/(?=^\d+\.\s)/m) // Split before lines starting with "1. ", "2. ", etc.
         .map((question) => question.trim())
         .filter((question) => question.length > 0 && /^\d+\./.test(question));
-      
+
       this.logger.log(`Successfully loaded ${this.QUESTION_TEMPLATES.length} question templates`);
     } catch (error) {
       this.logger.error('Failed to load prompt templates', error);
@@ -151,6 +152,14 @@ export class PromptsService implements OnModuleInit {
    * const analysisPrompt = promptsService.getAnalysisPrompt();
    * // Returns: "בהתבסס על כל המידע שנאסף..."
    * ```
+   */
+  getAnalysisPrompt(): string {
+    return this.SYSTEM_PROMPT_TEMPLATE;
+  }
+
+  /**
+   * Get the system prompt template (alias for getAnalysisPrompt).
+   * @returns The analysis prompt template in Hebrew
    */
   getSystemPromptTemplate(): string {
     return this.SYSTEM_PROMPT_TEMPLATE;
