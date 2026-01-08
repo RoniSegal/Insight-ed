@@ -627,5 +627,185 @@ describe('GeminiService', () => {
         })
       );
     });
+
+    it('should handle usage metadata with undefined token counts', async () => {
+      mockGeminiClient.models.generateContent.mockResolvedValue({
+        text: 'Response',
+        usageMetadata: {
+          promptTokenCount: undefined,
+          candidatesTokenCount: undefined,
+          totalTokenCount: undefined,
+        },
+      });
+
+      const result = await service.chat(mockMessages);
+
+      expect(result).toEqual({
+        message: 'Response',
+        usage: {
+          promptTokens: 0,
+          completionTokens: 0,
+          totalTokens: 0,
+        },
+      });
+    });
+
+    it('should handle usage metadata with null token counts', async () => {
+      mockGeminiClient.models.generateContent.mockResolvedValue({
+        text: 'Response',
+        usageMetadata: {
+          promptTokenCount: null,
+          candidatesTokenCount: null,
+          totalTokenCount: null,
+        },
+      });
+
+      const result = await service.chat(mockMessages);
+
+      expect(result).toEqual({
+        message: 'Response',
+        usage: {
+          promptTokens: 0,
+          completionTokens: 0,
+          totalTokens: 0,
+        },
+      });
+    });
+
+    it('should handle usage metadata with zero token counts', async () => {
+      mockGeminiClient.models.generateContent.mockResolvedValue({
+        text: 'Response',
+        usageMetadata: {
+          promptTokenCount: 0,
+          candidatesTokenCount: 0,
+          totalTokenCount: 0,
+        },
+      });
+
+      const result = await service.chat(mockMessages);
+
+      expect(result).toEqual({
+        message: 'Response',
+        usage: {
+          promptTokens: 0,
+          completionTokens: 0,
+          totalTokens: 0,
+        },
+      });
+    });
+
+    it('should handle error with httpStatusCode field', async () => {
+      mockGeminiClient.models.generateContent.mockRejectedValue({
+        httpStatusCode: 401,
+        message: 'Unauthorized',
+      });
+
+      await expect(service.chat(mockMessages)).rejects.toThrow(GeminiAuthenticationException);
+    });
+
+    it('should handle error with nested response.status field', async () => {
+      mockGeminiClient.models.generateContent.mockRejectedValue({
+        response: { status: 429 },
+        message: 'Too many requests',
+      });
+
+      await expect(service.chat(mockMessages)).rejects.toThrow(GeminiRateLimitException);
+    });
+
+    it('should handle non-Error objects in error handling', async () => {
+      mockGeminiClient.models.generateContent.mockRejectedValue('String error');
+
+      await expect(service.chat(mockMessages)).rejects.toThrow(GeminiException);
+    });
+
+    it('should handle permission error messages', async () => {
+      mockGeminiClient.models.generateContent.mockRejectedValue(
+        new Error('Permission denied for this resource')
+      );
+
+      await expect(service.chat(mockMessages)).rejects.toThrow(GeminiAuthenticationException);
+    });
+
+    it('should handle rate limit error messages', async () => {
+      mockGeminiClient.models.generateContent.mockRejectedValue(
+        new Error('Rate limit exceeded, please retry later')
+      );
+
+      await expect(service.chat(mockMessages)).rejects.toThrow(GeminiRateLimitException);
+    });
+  });
+
+  describe('Exception Classes', () => {
+    it('should create GeminiException with custom status', () => {
+      const exception = new GeminiException('Test error', 400);
+      expect(exception.message).toBe('Test error');
+      expect(exception.getStatus()).toBe(400);
+      expect(exception.name).toBe('GeminiException');
+    });
+
+    it('should create GeminiException with default status', () => {
+      const exception = new GeminiException('Test error');
+      expect(exception.getStatus()).toBe(500);
+    });
+
+    it('should create GeminiAuthenticationException with default message', () => {
+      const exception = new GeminiAuthenticationException();
+      expect(exception.message).toBe('Invalid Gemini API key configuration');
+      expect(exception.getStatus()).toBe(401);
+      expect(exception.name).toBe('GeminiAuthenticationException');
+    });
+
+    it('should create GeminiAuthenticationException with custom message', () => {
+      const exception = new GeminiAuthenticationException('Custom auth error');
+      expect(exception.message).toBe('Custom auth error');
+    });
+
+    it('should create GeminiRateLimitException with default message', () => {
+      const exception = new GeminiRateLimitException();
+      expect(exception.message).toBe('Gemini rate limit exceeded. Please try again in a moment.');
+      expect(exception.getStatus()).toBe(429);
+      expect(exception.name).toBe('GeminiRateLimitException');
+    });
+
+    it('should create GeminiRateLimitException with custom message', () => {
+      const exception = new GeminiRateLimitException('Custom rate limit error');
+      expect(exception.message).toBe('Custom rate limit error');
+    });
+
+    it('should create GeminiServiceException with default message', () => {
+      const exception = new GeminiServiceException();
+      expect(exception.message).toBe('Gemini service is temporarily unavailable. Please try again.');
+      expect(exception.getStatus()).toBe(503);
+      expect(exception.name).toBe('GeminiServiceException');
+    });
+
+    it('should create GeminiServiceException with custom message', () => {
+      const exception = new GeminiServiceException('Custom service error');
+      expect(exception.message).toBe('Custom service error');
+    });
+
+    it('should create GeminiConfigurationException with default message', () => {
+      const exception = new GeminiConfigurationException();
+      expect(exception.message).toBe('Gemini API is not properly configured');
+      expect(exception.getStatus()).toBe(500);
+      expect(exception.name).toBe('GeminiConfigurationException');
+    });
+
+    it('should create GeminiConfigurationException with custom message', () => {
+      const exception = new GeminiConfigurationException('Custom config error');
+      expect(exception.message).toBe('Custom config error');
+    });
+
+    it('should create GeminiCircuitBreakerException with default message', () => {
+      const exception = new GeminiCircuitBreakerException();
+      expect(exception.message).toBe('Gemini service is temporarily unavailable due to repeated failures');
+      expect(exception.getStatus()).toBe(503);
+      expect(exception.name).toBe('GeminiCircuitBreakerException');
+    });
+
+    it('should create GeminiCircuitBreakerException with custom message', () => {
+      const exception = new GeminiCircuitBreakerException('Custom circuit breaker error');
+      expect(exception.message).toBe('Custom circuit breaker error');
+    });
   });
 });
