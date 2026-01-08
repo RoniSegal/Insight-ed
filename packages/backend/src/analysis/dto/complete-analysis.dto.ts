@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 
 /**
- * DTO for completing an analysis and generating the final report
+ * DTO for completing an analysis
  */
 export class CompleteAnalysisDto {
   @ApiProperty({
-    description: 'The ID of the conversation to complete',
-    example: '550e8400-e29b-41d4-a716-446655440000',
+    description: 'The conversation ID',
+    example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
   })
   @IsString()
   @IsNotEmpty()

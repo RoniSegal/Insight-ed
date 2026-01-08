@@ -21,7 +21,7 @@ export class ApiClient {
     localStorage.setItem('refreshToken', refreshToken);
   }
 
-  private static clearTokens(): void {
+  static clearTokens(): void {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
   }

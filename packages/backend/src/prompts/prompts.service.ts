@@ -1,4 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { readFileSync, existsSync } from 'fs';
+import { join } from 'path';
+
+import { Injectable, OnModuleInit, Logger } from '@nestjs/common';
 
 /**
  * Service for managing AI prompts used in student analysis.
@@ -6,7 +9,7 @@ import { Injectable } from '@nestjs/common';
  * This service provides access to system prompts, question templates, and analysis prompts
  * used by the ChatGPT integration to analyze student learning profiles.
  *
- * Phase 1: Prompts are hardcoded in the service for quick deployment.
+ * Phase 1: Prompts are loaded from text files for easy editing and better Hebrew encoding.
  * Phase 2 (future): Prompts will be stored in database with versioning and A/B testing support.
  *
  * @example
@@ -17,80 +20,92 @@ import { Injectable } from '@nestjs/common';
  * ```
  */
 @Injectable()
-export class PromptsService {
+export class PromptsService implements OnModuleInit {
+  private readonly logger = new Logger(PromptsService.name);
   /**
-   * Base system prompt that defines the AI's role and process.
-   * Used to initialize the conversation with ChatGPT.
+   * Path to the templates directory
+   * Resolves to either src/prompts/templates (dev) or dist/src/prompts/templates (production)
    * @private
    */
-  private readonly SYSTEM_PROMPT_TEMPLATE = `You are an expert educational psychologist for K-12 students. Your role is to help teachers analyze individual student learning profiles.
-
-PROCESS:
-1. When given a student name, ask 6 key questions one at a time:
-   - Overall academic performance and subject strengths/weaknesses
-   - Learning style and class engagement
-   - Homework habits and behavior
-   - Social interactions and emotional patterns
-   - Main learning challenges and recent progress
-   - Unique strengths and additional observations
-
-2. After gathering responses, provide a comprehensive Hebrew analysis with:
-   - Summary (2-3 sentences)
-   - Strengths (academic + behavioral/social)
-   - Areas for improvement (academic + behavioral/emotional)
-   - Action plan (immediate + long-term recommendations)
-   - Classroom adaptations (seating, teaching style, materials)
-   - Success metrics and follow-up timeline
-
-FORMAT: Use clear Hebrew headers with emojis (📊 💪 🎯 📈 🎓 💡), bullet points, and specific actionable steps.
-
-TONE: Empathetic, strengths-first, growth-oriented, evidence-based. Focus on what the student CAN do and how to build from there.
-
-OUTPUT LANGUAGE: Hebrew only`;
+  private readonly TEMPLATES_DIR = this.resolveTemplatesDir();
 
   /**
    * Question templates used to gather information about the student.
-   * These are asked sequentially during the analysis session.
+   * Loaded from templates/questions.txt at initialization.
    * @private
    */
-  private readonly QUESTION_TEMPLATES: string[] = [
-    'מה הביצועים האקדמיים הכלליים של התלמיד/ה ומהן נקודות החוזק והחולשה בכל מקצוע?',
-    'איך התלמיד/ה לומד/ת בכיתה? מהו סגנון הלמידה שלו/ה והאם הוא/היא פעיל/ה בשיעורים?',
-    'כיצד התלמיד/ה מתנהג/ת לגבי שיעורי בית והתנהגות כללית?',
-    'כיצד התלמיד/ה מתנהג/ת בהקשר החברתי והרגשי בכיתה?',
-    'מהם האתגרים העיקריים בלמידה והאם יש התקדמות לאחרונה?',
-    'מהן נקודות החוזק הייחודיות של התלמיד/ה והאם יש משהו נוסף שחשוב לציין?',
-  ];
+  private QUESTION_TEMPLATES: string[];
 
   /**
    * Analysis prompt template used after gathering all responses.
-   * Instructs the AI to synthesize the information into a comprehensive report.
+   * Loaded from templates/analysis-prompt.txt at initialization.
    * @private
    */
-  private readonly ANALYSIS_PROMPT_TEMPLATE = `בהתבסס על כל המידע שנאסף, אנא ספק/י ניתוח מקיף בעברית עם המבנה הבא:
+  private SYSTEM_PROMPT_TEMPLATE: string;
 
-📊 **סיכום כללי** (2-3 משפטים)
+  /**
+   * Resolve the templates directory path.
+   * Works in both development (src/) and production (dist/) environments.
+   * @private
+   */
+  private resolveTemplatesDir(): string {
+    // Try compiled path first (production)
+    const compiledPath = join(__dirname, 'templates');
+    if (existsSync(compiledPath)) {
+      return compiledPath;
+    }
 
-💪 **נקודות חוזק**
-- אקדמיות:
-- התנהגותיות/חברתיות:
+    // Fall back to source path (development with ts-node or nest start --watch)
+    // __dirname in dev points to src/prompts, so templates are in ./templates
+    const devPath1 = join(__dirname, 'templates');
+    if (existsSync(devPath1)) {
+      return devPath1;
+    }
 
-🎯 **תחומים לשיפור**
-- אקדמיים:
-- התנהגותיים/רגשיים:
+    // Another fallback for different dev setups
+    const devPath2 = join(process.cwd(), 'src/prompts/templates');
+    if (existsSync(devPath2)) {
+      return devPath2;
+    }
 
-📈 **תוכנית פעולה**
-- המלצות מיידיות:
-- המלצות לטווח ארוך:
+    // If neither exists, use compiled path and let the error be descriptive
+    return compiledPath;
+  }
 
-🎓 **התאמות בכיתה**
-- סידור ישיבה:
-- סגנון הוראה:
-- חומרי לימוד:
+  /**
+   * Lifecycle hook called when the module initializes.
+   * Loads all prompt templates from text files.
+   */
+  onModuleInit() {
+    this.logger.log('Loading prompt templates from files...');
+    try {
+      this.SYSTEM_PROMPT_TEMPLATE = this.loadTemplate('analysis-prompt.txt');
 
-💡 **מדדי הצלחה ומעקב**
-- יעדים למעקב:
-- מועד מעקב מומלץ:`;
+      // Split questions by question number (lines starting with digit followed by period)
+      const questionsContent = this.loadTemplate('questions.txt');
+      this.QUESTION_TEMPLATES = questionsContent
+        .split(/(?=^\d+\.\s)/m) // Split before lines starting with "1. ", "2. ", etc.
+        .map((question) => question.trim())
+        .filter((question) => question.length > 0 && /^\d+\./.test(question));
+
+      this.logger.log(`Successfully loaded ${this.QUESTION_TEMPLATES.length} question templates`);
+    } catch (error) {
+      this.logger.error('Failed to load prompt templates', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Load a template file from the templates directory.
+   * @param filename - Name of the template file to load
+   * @returns The content of the template file as UTF-8 string
+   * @private
+   */
+  private loadTemplate(filename: string): string {
+    const filePath = join(this.TEMPLATES_DIR, filename);
+    this.logger.debug(`Loading template from: ${filePath}`);
+    return readFileSync(filePath, 'utf-8');
+  }
 
   /**
    * Get the system prompt with student name interpolated.
@@ -139,7 +154,15 @@ OUTPUT LANGUAGE: Hebrew only`;
    * ```
    */
   getAnalysisPrompt(): string {
-    return this.ANALYSIS_PROMPT_TEMPLATE;
+    return this.SYSTEM_PROMPT_TEMPLATE;
+  }
+
+  /**
+   * Get the system prompt template (alias for getAnalysisPrompt).
+   * @returns The analysis prompt template in Hebrew
+   */
+  getSystemPromptTemplate(): string {
+    return this.SYSTEM_PROMPT_TEMPLATE;
   }
 
   /**

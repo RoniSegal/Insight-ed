@@ -5,20 +5,20 @@ import { ApiProperty } from '@nestjs/swagger';
  */
 export class CompleteAnalysisResponseDto {
   @ApiProperty({
-    description: 'The unique ID of the saved analysis',
-    example: '42',
+    description: 'The analysis ID',
+    example: '1',
   })
   analysisId: string;
 
   @ApiProperty({
-    description: 'The student ID this analysis is for',
+    description: 'The student ID',
     example: '1',
   })
   studentId: string;
 
   @ApiProperty({
     description: 'Timestamp when the analysis was completed',
-    example: '2026-01-04T19:30:00.000Z',
+    example: '2026-01-07T19:30:00.000Z',
   })
   completedAt: string;
 }

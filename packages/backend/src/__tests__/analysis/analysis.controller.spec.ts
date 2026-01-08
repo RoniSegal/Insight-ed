@@ -241,7 +241,7 @@ describe('AnalysisController', () => {
 
       const result = await controller.getAnalysisById(analysisId);
 
-      expect(result).toEqual(expectedAnalysis);
+      expect(result).toEqual({ analysis: expectedAnalysis });
       expect(mockAnalysisService.getAnalysisById).toHaveBeenCalledWith('42');
     });
 
@@ -278,8 +278,8 @@ describe('AnalysisController', () => {
 
       const result = await controller.getAnalysesByStudent(studentId);
 
-      expect(result).toEqual(expectedAnalyses);
-      expect(result).toHaveLength(2);
+      expect(result).toEqual({ analyses: expectedAnalyses });
+      expect(result.analyses).toHaveLength(2);
       expect(mockAnalysisService.getAnalysesByStudentId).toHaveBeenCalledWith('student-1');
     });
 
@@ -288,7 +288,7 @@ describe('AnalysisController', () => {
 
       const result = await controller.getAnalysesByStudent('student-999');
 
-      expect(result).toEqual([]);
+      expect(result).toEqual({ analyses: [] });
     });
 
     it('should return analyses sorted by date (newest first)', async () => {
@@ -313,7 +313,7 @@ describe('AnalysisController', () => {
 
       const result = await controller.getAnalysesByStudent('student-1');
 
-      expect(result[0].createdAt > result[1].createdAt).toBe(true);
+      expect(result.analyses[0].createdAt > result.analyses[1].createdAt).toBe(true);
     });
   });
 
@@ -332,7 +332,7 @@ describe('AnalysisController', () => {
 
       const result = await controller.getLatestAnalysisByStudent(studentId);
 
-      expect(result).toEqual(expectedAnalysis);
+      expect(result).toEqual({ analysis: expectedAnalysis });
       expect(mockAnalysisService.getLatestAnalysisByStudentId).toHaveBeenCalledWith('student-1');
     });
 

@@ -44,12 +44,14 @@ export class AnalysisService implements OnModuleInit {
   private readonly conversationTTL = 24 * 60 * 60 * 1000;
 
   constructor(
+    // OpenAI service will be used for final analysis generation (future implementation)
     private readonly openaiService: OpenAIService,
     private readonly promptsService: PromptsService
   ) {}
 
   async onModuleInit() {
     this.logger.log('Analysis Service initialized');
+    this.logger.log(`OpenAI configured: ${this.openaiService.isConfigured()}`);
     // Start background cleanup task
     this.startCleanupTask();
   }
@@ -70,8 +72,9 @@ export class AnalysisService implements OnModuleInit {
     // Generate conversation ID
     const conversationId = randomUUID();
 
-    // Get system prompt from prompts service
-    const systemPrompt = this.promptsService.getSystemPrompt(studentName);
+    // Get system prompt and questions from prompts service
+    const systemPrompt = this.buildQuestioningSystemPrompt(studentName);
+    const questionTemplates = this.promptsService.getQuestionTemplates();
 
     // Initialize conversation state
     const conversation: ConversationState = {
@@ -86,11 +89,12 @@ export class AnalysisService implements OnModuleInit {
       createdBy: userId,
     };
 
-    // Generate first AI message
+    // Generate first AI message using the first question from questions.txt
+    const firstQuestionText = questionTemplates[0] || 'מהם הפרטים האישיים של התלמיד?';
     const firstMessage = `שלום! בואו ננתח את ${studentName}. כדי ליצור ניתוח מקיף, אשאל אותך מספר שאלות על התלמיד/ה.
 
-**שאלה 1 מתוך 6:**
-כיצד היית מתאר/ת את הביצועים האקדמיים הכוללים של ${studentName} במקצועות השונים? באילו מקצועות הוא/היא מצטיין/ת, ובאילו מקצועות יש קשיים?`;
+**שאלה 1 מתוך ${questionTemplates.length}:**
+${firstQuestionText}`;
 
     // Add first message to conversation
     conversation.messages.push({ role: 'assistant', content: firstMessage });
@@ -128,37 +132,19 @@ export class AnalysisService implements OnModuleInit {
     // Add user message to conversation
     conversation.messages.push({ role: 'user', content: userMessage.trim() });
 
-    let aiResponse: string;
-
-    // Check if OpenAI is configured
-    if (this.openaiService.isConfigured()) {
-      try {
-        // Truncate history to prevent token limit issues (keep system + last 15 messages)
-        const truncatedMessages = this.truncateConversationHistory(conversation.messages, 15);
-
-        // Call OpenAI
-        const response = await this.openaiService.chat(truncatedMessages);
-        aiResponse = response.message;
-
-        this.logger.log(`OpenAI response for conversation ${conversationId}`);
-      } catch (error: any) {
-        this.logger.error(`OpenAI error in conversation ${conversationId}: ${error.message}`);
-
-        // Fallback to template responses on error
-        aiResponse = this.getTemplateResponse(conversation);
-      }
-    } else {
-      // Use template responses when OpenAI is not configured
-      this.logger.warn('OpenAI not configured, using template responses');
-      aiResponse = this.getTemplateResponse(conversation);
-    }
+    // Always use questions directly from questions.txt file
+    // Don't use OpenAI for asking questions - only for final analysis
+    const aiResponse = this.getTemplateResponse(conversation);
 
     // Add AI response to conversation
     conversation.messages.push({ role: 'assistant', content: aiResponse });
     conversation.questionCount++;
 
-    // Check if conversation is complete (6+ questions)
-    if (conversation.questionCount >= 6) {
+    // Get question templates to check completion
+    const questionTemplates = this.promptsService.getQuestionTemplates();
+    
+    // Check if conversation is complete (all questions asked)
+    if (conversation.questionCount >= questionTemplates.length) {
       conversation.isComplete = true;
     }
 
@@ -278,8 +264,18 @@ export class AnalysisService implements OnModuleInit {
   }
 
   /**
-   * Get template response when OpenAI is not configured
-   * Uses question templates from prompts service
+   * Build system prompt for the questioning phase
+   * Simple prompt since questions are shown directly from questions.txt
+   * @private
+   */
+  private buildQuestioningSystemPrompt(studentName: string): string {
+    return `אתה אוסף מידע על התלמיד/ה "${studentName}" באמצעות שאלון מובנה.
+השאלות מוצגות ישירות מקובץ התבניות.`;
+  }
+
+  /**
+   * Get the next question directly from questions.txt file
+   * Shows exact text without AI modification
    * @private
    */
   private getTemplateResponse(conversation: ConversationState): string {
@@ -288,34 +284,21 @@ export class AnalysisService implements OnModuleInit {
     const questionTemplates = this.promptsService.getQuestionTemplates();
 
     if (questionIndex < questionTemplates.length) {
-      // Return next question
-      return questionTemplates[questionIndex].replace(/{studentName}/g, studentName);
+      // Get the exact question text from the file
+      const questionText = questionTemplates[questionIndex];
+      const questionNumber = questionIndex + 1;
+      
+      // Format: acknowledge answer + show next question
+      const thankYouMessage = questionIndex > 0 ? 'תודה על התשובה.\n\n' : '';
+      
+      return `${thankYouMessage}**שאלה ${questionNumber} מתוך ${questionTemplates.length}:**
+${questionText}`;
     } else {
-      // After 6 questions, suggest completing the analysis
+      // After all questions, suggest completing the analysis
       return `תודה רבה על כל המידע המפורט! יש לי תמונה ברורה של ${studentName}.
 
 לחץ/י על כפתור "השלם ניתוח" כדי לקבל ניתוח מקיף עם המלצות ספציפיות לתלמיד/ה.`;
     }
-  }
-
-  /**
-   * Truncate conversation history to prevent token limit issues
-   * Keeps system message + last N messages
-   * @private
-   */
-  private truncateConversationHistory(
-    messages: ConversationState['messages'],
-    maxMessages: number
-  ): ConversationState['messages'] {
-    if (messages.length <= maxMessages + 1) {
-      return messages;
-    }
-
-    // Keep system message (first) + last maxMessages
-    const systemMessage = messages[0];
-    const recentMessages = messages.slice(-maxMessages);
-
-    return [systemMessage, ...recentMessages];
   }
 
   /**

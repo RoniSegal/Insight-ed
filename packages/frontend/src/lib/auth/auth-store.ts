@@ -149,8 +149,18 @@ export const useAuthStore = create<AuthState>()(
       },
 
       handleOAuthCallback: async (accessToken: string, refreshToken: string) => {
-        ApiClient.setAuthTokens(accessToken, refreshToken);
-        await get().fetchCurrentUser();
+        try {
+          ApiClient.setAuthTokens(accessToken, refreshToken);
+          await get().fetchCurrentUser();
+        } catch (error: any) {
+          // If fetching user fails, clear tokens and reset state
+          ApiClient.clearTokens();
+          set({
+            user: null,
+            isAuthenticated: false,
+          });
+          throw error;
+        }
       },
     }),
     {

@@ -1,24 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsString, IsOptional } from 'class-validator';
 
 /**
- * DTO for starting a new student analysis conversation
+ * DTO for starting a new analysis conversation
  */
 export class StartAnalysisDto {
   @ApiProperty({
-    description: 'The ID of the student to analyze',
+    description: 'The student ID to analyze',
     example: '1',
   })
   @IsString()
-  @IsNotEmpty()
   studentId: string;
 
   @ApiProperty({
-    description: 'The name of the student (optional, can be fetched from DB)',
-    example: 'Sarah Cohen',
+    description: 'The student name (optional)',
+    example: 'דוד כהן',
     required: false,
   })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   studentName?: string;
 }

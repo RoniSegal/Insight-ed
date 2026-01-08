@@ -5,14 +5,14 @@ import { ApiProperty } from '@nestjs/swagger';
  */
 export class StartAnalysisResponseDto {
   @ApiProperty({
-    description: 'The unique conversation ID',
-    example: '550e8400-e29b-41d4-a716-446655440000',
+    description: 'The conversation ID',
+    example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
   })
   conversationId: string;
 
   @ApiProperty({
-    description: 'The first message from the AI assistant',
-    example: 'שלום! בואו ננתח את שרה כהן. כדי ליצור ניתוח מקיף, אשאל אותך מספר שאלות על התלמיד/ה.',
+    description: 'The first AI message',
+    example: 'שלום! בואו ננתח את דוד. כדי ליצור ניתוח מקיף...',
   })
   message: string;
 }

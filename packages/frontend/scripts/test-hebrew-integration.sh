@@ -424,7 +424,7 @@ if [ -n "$CONVERSATION_ID" ]; then
     if [ -n "$ANALYSIS_ID" ]; then
         echo ""
         echo "Retrieving analysis results..."
-        RESULTS_RESPONSE=$(curl -s -X GET "$API_URL/analysis/by-id/$ANALYSIS_ID" \
+        RESULTS_RESPONSE=$(curl -s -X GET "$API_URL/analysis/$ANALYSIS_ID" \
             -H "Authorization: Bearer $TOKEN")
 
         echo "Analysis Results:"

@@ -185,10 +185,10 @@ export class AnalysisController {
     status: 404,
     description: 'Analysis not found',
   })
-  async getAnalysisById(@Param('id') id: string): Promise<AnalysisDto> {
+  async getAnalysisById(@Param('id') id: string): Promise<{ analysis: AnalysisDto }> {
     // TODO: Add authorization check (teachers can only view their analyses, principals can view all)
     const analysis = await this.analysisService.getAnalysisById(id);
-    return analysis;
+    return { analysis };
   }
 
   /**
@@ -216,10 +216,12 @@ export class AnalysisController {
     status: 401,
     description: 'Unauthorized - Invalid or missing JWT token',
   })
-  async getAnalysesByStudent(@Param('studentId') studentId: string): Promise<AnalysisDto[]> {
+  async getAnalysesByStudent(
+    @Param('studentId') studentId: string
+  ): Promise<{ analyses: AnalysisDto[] }> {
     // TODO: Add authorization check (teachers can only view analyses for their students)
     const analyses = await this.analysisService.getAnalysesByStudentId(studentId);
-    return analyses;
+    return { analyses };
   }
 
   /**
@@ -250,7 +252,9 @@ export class AnalysisController {
     status: 404,
     description: 'No analyses found for this student',
   })
-  async getLatestAnalysisByStudent(@Param('studentId') studentId: string): Promise<AnalysisDto> {
+  async getLatestAnalysisByStudent(
+    @Param('studentId') studentId: string
+  ): Promise<{ analysis: AnalysisDto }> {
     // TODO: Add authorization check (teachers can only view analyses for their students)
     const analysis = await this.analysisService.getLatestAnalysisByStudentId(studentId);
 
@@ -258,6 +262,6 @@ export class AnalysisController {
       throw new NotFoundException(`No analyses found for student ${studentId}`);
     }
 
-    return analysis;
+    return { analysis };
   }
 }

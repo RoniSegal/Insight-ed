@@ -1,25 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 
 /**
- * DTO for sending a chat message in an ongoing analysis conversation
+ * DTO for sending a chat message
  */
 export class ChatMessageDto {
   @ApiProperty({
-    description: 'The ID of the conversation',
-    example: '550e8400-e29b-41d4-a716-446655440000',
+    description: 'The conversation ID',
+    example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
   })
   @IsString()
   @IsNotEmpty()
   conversationId: string;
 
   @ApiProperty({
-    description: 'The message content from the user',
-    example: 'התלמיד מצטיין במתמטיקה אבל מתקשה בקריאה',
-    maxLength: 5000,
+    description: 'The user message',
+    example: 'התלמיד מצטיין במתמטיקה',
   })
   @IsString()
   @IsNotEmpty()
-  @MaxLength(5000, { message: 'Message is too long (max 5000 characters)' })
   message: string;
 }
