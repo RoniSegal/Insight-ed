@@ -8,10 +8,17 @@
 
 ## Change Log
 
+### Version 1.2 (January 8, 2026)
+
+- **AI Provider Migration:** Switched from OpenAI to Google Gemini API
+- **Module Rename:** OpenAIModule → GeminiModule throughout backend
+- **Cost Optimization:** Gemini provides competitive pricing with similar capabilities
+- **Rationale:** Improved cost-efficiency, native support for Hebrew, modern API design
+
 ### Version 1.1 (January 4, 2026)
 
 - **Migration Complete:** Removed all Next.js API routes for analysis functionality from frontend
-- **OpenAI Integration:** Consolidated OpenAI SDK to backend only (NestJS OpenAIModule)
+- **AI Integration:** Consolidated AI SDK to backend only (NestJS GeminiModule)
 - **Architecture Cleanup:** Frontend now uses REST API client to communicate with backend for all analysis operations
 - **Rationale:** Improved separation of concerns, better testability, production-ready architecture
 
@@ -25,7 +32,7 @@
 
 ### Project Summary
 
-Growth Engine is an AI-powered K-12 student analysis platform that helps teachers identify individual student strengths, weaknesses, and learning needs through conversational AI analysis. The system uses ChatGPT to conduct guided assessments based on teacher observations, generates comprehensive student profiles with actionable recommendations, and provides principals with school-wide insights and trends.
+Growth Engine is an AI-powered K-12 student analysis platform that helps teachers identify individual student strengths, weaknesses, and learning needs through conversational AI analysis. The system uses Google Gemini to conduct guided assessments based on teacher observations, generates comprehensive student profiles with actionable recommendations, and provides principals with school-wide insights and trends.
 
 ### Domain
 
@@ -66,14 +73,14 @@ Education (K-12 student assessment and intervention planning)
 **Technical Constraints:**
 
 - School network environments: restrictive firewalls, limited bandwidth
-- OpenAI API dependency: costs, rate limits, availability
+- Gemini API dependency: costs, rate limits, availability
 - Must support SSO (Google Workspace, Microsoft 365) for authentication
 - Mixed tech literacy among users (design for accessibility)
 
 **Cost Constraints:**
 
 - Target pricing: <$10/teacher/month to be competitive
-- OpenAI API costs: $0.01-0.05 per analysis (must control and predict)
+- Gemini API costs: $0.005-0.02 per analysis (must control and predict)
 - Infrastructure costs must scale efficiently
 
 ### Quality Attributes (Prioritized)
@@ -140,7 +147,7 @@ Education (K-12 student assessment and intervention planning)
 
 | Service       | Purpose                     | Type             | SLA/Availability        | Data Sensitivity            |
 | ------------- | --------------------------- | ---------------- | ----------------------- | --------------------------- |
-| OpenAI API    | AI-powered student analysis | REST API         | 99.9% (OpenAI SLA)      | High (student observations) |
+| Gemini API    | AI-powered student analysis | REST API         | 99.9% (Google SLA)      | High (student observations) |
 | PostgreSQL    | Primary data store          | Managed Database | 99.95% (Cloud provider) | Critical (all student data) |
 | Redis         | Session & cache             | Managed Cache    | 99.9% (Cloud provider)  | Medium (session tokens)     |
 | Email Service | Transactional emails        | REST API         | 99.95% (SendGrid/SES)   | Low (notifications only)    |
@@ -154,7 +161,7 @@ Education (K-12 student assessment and intervention planning)
 | Teacher        | Human  | Web UI (dashboard, analysis interface)  | Own students only        |
 | Principal      | Human  | Web UI (school-wide dashboards)         | All students in school   |
 | District Admin | Human  | Web UI (district-wide analytics)        | All students in district |
-| OpenAI API     | System | Server-to-server (analysis generation)  | No direct data access    |
+| Gemini API     | System | Server-to-server (analysis generation)  | No direct data access    |
 | Email Service  | System | Server-to-server (notifications)        | Email addresses only     |
 | Cloud Storage  | System | Server-to-server (file upload/download) | Uploaded files only      |
 
@@ -249,8 +256,8 @@ Education (K-12 student assessment and intervention planning)
 │                          External Services Integration                               │
 │                                                                                      │
 │  ┌──────────────────────┐  ┌──────────────────────┐  ┌───────────────────────────┐ │
-│  │   OpenAI API         │  │  Email Service       │  │  Cloud Storage            │ │
-│  │   (ChatGPT-4)        │  │  (SendGrid/SES)      │  │  (S3/GCS/Azure Blob)      │ │
+│  │   Gemini API         │  │  Email Service       │  │  Cloud Storage            │ │
+│  │   (Google AI)        │  │  (SendGrid/SES)      │  │  (S3/GCS/Azure Blob)      │ │
 │  │                      │  │                      │  │                           │ │
 │  │  • Student Analysis  │  │  • Password Reset    │  │  • PDF Exports            │ │
 │  │  • Prompt Management │  │  • Notifications     │  │  • CSV Uploads            │ │
@@ -320,7 +327,7 @@ Education (K-12 student assessment and intervention planning)
 - RESTful API for all business logic
 - Authentication and authorization (JWT + RBAC)
 - Student and user data management (CRUD operations)
-- AI analysis orchestration (OpenAI API integration)
+- AI analysis orchestration (Gemini API integration)
 - Background job scheduling and processing
 - Email notifications
 - File upload/download management
@@ -362,7 +369,7 @@ Education (K-12 student assessment and intervention planning)
 
 4. **AnalysisModule**
    - Analysis session management
-   - OpenAI API integration
+   - Gemini API integration
    - Analysis history tracking
    - Recommendation generation
    - PDF export
@@ -383,7 +390,7 @@ Education (K-12 student assessment and intervention planning)
    - Cloud storage integration
    - File validation and sanitization
 
-8. **OpenAIModule**
+8. **GeminiModule**
    - API client wrapper
    - Prompt template management
    - Token usage tracking
@@ -395,13 +402,13 @@ Education (K-12 student assessment and intervention planning)
 - REST API endpoints (see Section 5: API Design)
 - Database via Prisma ORM
 - Redis for cache and jobs
-- External services (OpenAI, Email, Storage)
+- External services (Gemini, Email, Storage)
 
 **Dependencies:**
 
 - PostgreSQL database
 - Redis cache
-- OpenAI API
+- Gemini API
 - Email service
 - Cloud storage
 
@@ -778,7 +785,7 @@ interface Analysis {
   is_flagged: boolean; // Urgent attention needed
 
   // Cost tracking
-  tokens_used: number; // Total OpenAI tokens consumed
+  tokens_used: number; // Total Gemini tokens consumed
   estimated_cost: number; // In USD cents
 
   created_at: Date;
@@ -936,7 +943,7 @@ AnalysisService.create()
 ┌─────────────────────────────────────────┐
 │  1. Start database transaction          │
 │  2. Insert Analysis record (status: in_progress)
-│  3. Call OpenAI API (with retry logic)  │
+│  3. Call Gemini API (with retry logic)  │
 │  4. Parse AI response                   │
 │  5. Update Analysis record with results │
 │  6. Commit transaction                  │
@@ -952,7 +959,7 @@ Frontend updates UI
 
 **Error Handling:**
 
-- If OpenAI API fails: Mark analysis as `abandoned`, log error, notify user
+- If Gemini API fails: Mark analysis as `abandoned`, log error, notify user
 - If database transaction fails: Rollback, return 500 error
 - If cache invalidation fails: Log warning but don't fail request
 
@@ -1879,7 +1886,7 @@ Response (200): CSV file download
 - `409 Conflict` - Resource conflict (e.g., duplicate email)
 - `429 Too Many Requests` - Rate limit exceeded
 - `500 Internal Server Error` - Unexpected server error
-- `503 Service Unavailable` - External service (OpenAI) unavailable
+- `503 Service Unavailable` - External service (Gemini) unavailable
 
 ---
 
@@ -1890,7 +1897,7 @@ Response (200): CSV file download
 **Limits:**
 
 - **Authenticated users:** 100 requests/minute per user
-- **Analysis endpoints:** 10 concurrent sessions per user (prevent OpenAI API abuse)
+- **Analysis endpoints:** 10 concurrent sessions per user (prevent Gemini API abuse)
 - **Unauthenticated:** 10 requests/minute per IP (login, password reset)
 - **CSV import:** 3 imports/hour per user
 
@@ -1928,43 +1935,42 @@ X-RateLimit-Reset: 1704067800
 
 ---
 
-### Integration 1: OpenAI API (ChatGPT)
+### Integration 1: Google Gemini API
 
 **Type:** REST API (HTTPS)
 
 **Purpose:** Generate AI-powered student analysis and recommendations
 
-**Endpoint:** `https://api.openai.com/v1/chat/completions`
+**SDK:** `@google/genai` (Google Gen AI SDK)
 
-**Authentication:** Bearer token (API key stored in environment variable)
+**Authentication:** API key (stored in environment variable)
 
-**Model:** GPT-4 Turbo (`gpt-4-turbo-preview`)
+**Model:** Gemini 2.5 Flash (`gemini-2.5-flash`)
 
 **Request Example:**
 
-```json
-{
-  "model": "gpt-4-turbo-preview",
-  "messages": [
-    {
-      "role": "system",
-      "content": "You are an educational assessment expert helping teachers identify student strengths, weaknesses, and personalized intervention strategies. Responses should be evidence-based, actionable, and formatted as structured JSON."
-    },
-    {
-      "role": "user",
-      "content": "Student: John Doe, Grade 5. Teacher observation: John is really strong in math. He solves problems quickly and helps other students. He struggles with reading comprehension though."
-    }
+```typescript
+import { GoogleGenAI } from '@google/genai';
+
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+const response = await ai.models.generateContent({
+  model: 'gemini-2.5-flash',
+  contents: [
+    { role: 'user', parts: [{ text: 'Student: John Doe, Grade 5...' }] }
   ],
-  "temperature": 0.7,
-  "max_tokens": 1500,
-  "response_format": { "type": "json_object" }
-}
+  config: {
+    systemInstruction: 'You are an educational assessment expert...',
+    temperature: 0.7,
+    maxOutputTokens: 1500,
+  },
+});
 ```
 
 **Response Parsing:**
 
-- Extract structured JSON from AI response
-- Validate schema (strengths, weaknesses, recommendations)
+- Extract text from AI response via `response.text`
+- Parse structured data from formatted response
 - Store raw response + parsed data in database
 
 **Error Handling:**
@@ -1976,13 +1982,13 @@ X-RateLimit-Reset: 1704067800
 
 **Circuit Breaker:**
 
-- Open circuit after 5 consecutive failures
-- Half-open after 1 minute (allow 1 test request)
-- Close circuit after 3 successful requests
+- Open circuit after 10 consecutive failures
+- Reset timeout: 60 seconds
+- Reset on successful request
 
 **Cost Management:**
 
-- Track tokens per request (input + output)
+- Track tokens per request (input + output via `usageMetadata`)
 - Aggregate cost per school/month
 - Alert when approaching quota limits
 - Implement per-school quotas (configurable)
@@ -1990,7 +1996,7 @@ X-RateLimit-Reset: 1704067800
 **Token Estimate:**
 
 - Average analysis: 800 input tokens + 700 output tokens = 1500 tokens
-- Cost: ~$0.015 per analysis (GPT-4 Turbo pricing)
+- Cost: ~$0.006 per analysis (Gemini 2.5 Flash pricing)
 
 ---
 
@@ -2238,7 +2244,7 @@ export class RolesGuard implements CanActivate {
 
 **FERPA (Family Educational Rights and Privacy Act):**
 
-- **Written consent:** Required before sharing student data with third parties (OpenAI DPA in place)
+- **Written consent:** Required before sharing student data with third parties (Google DPA in place)
 - **Access logs:** Audit trail of all data access (AuditLog table)
 - **Parent rights:** Mechanism for parents to request student data (future parent portal)
 - **Data retention:** Configurable per district (default: 7 years)
@@ -2264,7 +2270,7 @@ export class RolesGuard implements CanActivate {
 
 **Data Processing Agreement (DPA):**
 
-- Signed DPA with OpenAI (FERPA-compliant)
+- Signed DPA with Google (FERPA-compliant)
 - Signed DPA with email service provider
 - Signed DPA with cloud hosting provider
 
@@ -2375,7 +2381,7 @@ Referrer-Policy: strict-origin-when-cross-origin
 2. **Business Metrics:**
    - Active users (daily, weekly)
    - Analyses completed (daily)
-   - OpenAI API costs (daily spend)
+   - Gemini API costs (daily spend)
    - User registrations (daily)
 
 3. **Infrastructure Metrics:**
@@ -2392,8 +2398,8 @@ Referrer-Policy: strict-origin-when-cross-origin
    - Replication lag (if using read replicas)
 
 5. **External Service Metrics:**
-   - OpenAI API latency
-   - OpenAI API error rate
+   - Gemini API latency
+   - Gemini API error rate
    - Email delivery rate
    - S3 upload/download success rate
 
@@ -2419,7 +2425,7 @@ Referrer-Policy: strict-origin-when-cross-origin
 
 - Frontend generates `trace-id` on initial request
 - Passed to backend in `X-Trace-Id` header
-- Propagated to all downstream services (OpenAI, email, S3)
+- Propagated to all downstream services (Gemini, email, S3)
 - Logged in all log entries
 
 **Span Structure:**
@@ -2431,7 +2437,7 @@ Request: POST /api/v1/analyses/:id/complete
 │  ├─ Validation Pipe (validate input)
 │  └─ AnalysisController.complete()
 │     ├─ AnalysisService.complete()
-│     │  ├─ OpenAIService.generateAnalysis() [External Call: 2.3s]
+│     │  ├─ GeminiService.generateAnalysis() [External Call: 2.3s]
 │     │  ├─ AnalysisRepository.update() [Database: 45ms]
 │     │  └─ CacheService.invalidate() [Redis: 5ms]
 │     └─ Response Serialization
@@ -2440,7 +2446,7 @@ Request: POST /api/v1/analyses/:id/complete
 
 **Benefits:**
 
-- Identify bottlenecks (e.g., slow OpenAI API calls)
+- Identify bottlenecks (e.g., slow Gemini API calls)
 - Debug errors across services
 - Understand request flow
 
@@ -2455,7 +2461,7 @@ Request: POST /api/v1/analyses/:id/complete
 - **Service Down:** API health check fails for 2 consecutive minutes
 - **Error Rate Spike:** Error rate >5% for 5 minutes
 - **Database Down:** Database connection failures for 1 minute
-- **OpenAI API Failures:** 10+ consecutive failures
+- **Gemini API Failures:** 10+ consecutive failures
 
 **Warning Alerts (Email/Slack notification):**
 
@@ -2463,7 +2469,7 @@ Request: POST /api/v1/analyses/:id/complete
 - **High CPU:** CPU utilization >80% for 15 minutes
 - **High Memory:** Memory utilization >85% for 15 minutes
 - **Disk Space Low:** <20% disk space remaining
-- **High OpenAI Costs:** Daily OpenAI spend exceeds budget by 20%
+- **High Gemini Costs:** Daily Gemini spend exceeds budget by 20%
 
 **Business Alerts:**
 
@@ -2491,7 +2497,7 @@ Request: POST /api/v1/analyses/:id/complete
 
 - **Page Load Time:** <2 seconds (p95)
 - **API Response Time:** <500ms standard queries (p95), <1s complex analytics (p95)
-- **ChatGPT Analysis:** <3 seconds per prompt/response exchange
+- **Gemini Analysis:** <3 seconds per prompt/response exchange
 - **Dashboard Refresh:** <1s cached, <3s fresh
 - **Search:** <300ms for 1000+ students
 
@@ -2589,7 +2595,7 @@ Request: POST /api/v1/analyses/:id/complete
 **Retry Logic:**
 
 - **Exponential backoff:** Initial delay 100ms, max delay 30s
-- **Max retries:** 3 for critical operations (OpenAI API), 1 for non-critical
+- **Max retries:** 3 for critical operations (Gemini API), 1 for non-critical
 - **Idempotency:** API operations idempotent (use idempotency keys for create operations)
 
 **Circuit Breaker (for external services):**
@@ -2609,11 +2615,11 @@ Request: POST /api/v1/analyses/:id/complete
 
 - **API requests:** 30s timeout (prevent hanging requests)
 - **Database queries:** 10s timeout (kill slow queries)
-- **OpenAI API:** 30s timeout (retry on timeout)
+- **Gemini API:** 30s timeout (retry on timeout)
 
 **Graceful Degradation:**
 
-- If OpenAI API unavailable: Queue analysis for later processing, notify user
+- If Gemini API unavailable: Queue analysis for later processing, notify user
 - If database read replica unavailable: Fallback to primary (accept higher latency)
 - If Redis cache unavailable: Fallback to database (accept slower response)
 
@@ -3114,9 +3120,9 @@ WHERE to_tsvector('hebrew', first_name || ' ' || last_name)
   @@ to_tsquery('hebrew', 'דוד');
 ```
 
-**OpenAI API with Hebrew:**
+**Gemini API with Hebrew:**
 
-- **Issue:** ChatGPT supports Hebrew but may default to English responses
+- **Issue:** Gemini supports Hebrew but may default to English responses
 - **Solution:** Explicitly specify Hebrew in system prompt
 
 ```typescript
@@ -3131,8 +3137,8 @@ const systemPrompt = `
 המורה: {teacherName}
 `;
 
-const conversation = await openai.chat.completions.create({
-  model: 'gpt-4',
+const response = await ai.models.generateContent({
+  model: 'gemini-2.5-flash',
   messages: [
     { role: 'system', content: systemPrompt },
     { role: 'assistant', content: 'ספר לי על הביצועים האקדמיים של התלמיד.' },
@@ -3205,7 +3211,7 @@ const formatted = hebrewDate.toString('h'); // e.g., "ז' טבת תשפ\"ו"
 | **Name Validation**     | Hebrew + English | Regex: /^[\u0590-\u05FFa-zA-Z\s'-]+$/        |
 | **Error Messages**      | Hebrew           | Custom exception filter with Hebrew messages |
 | **Email Templates**     | Hebrew           | HTML emails with RTL direction               |
-| **AI Prompts**          | Hebrew           | System prompts in Hebrew for OpenAI API      |
+| **AI Prompts**          | Hebrew           | System prompts in Hebrew for Gemini API      |
 | **Search**              | Hebrew collation | PostgreSQL he_IL.UTF-8 collation             |
 
 ---
@@ -3617,8 +3623,8 @@ infrastructure/
 
 **AI Service:**
 
-- **Provider:** OpenAI API
-- **Model:** GPT-4 Turbo (`gpt-4-turbo-preview`)
+- **Provider:** Google Gemini API
+- **Model:** Gemini 2.5 Flash (`gemini-2.5-flash`)
 - **Use Cases:** Student analysis generation
 
 ---
@@ -3793,7 +3799,7 @@ Reference detailed ADRs in `/context/decisions.md`
 - Add multi-factor authentication (MFA) for all users
 - Implement parent portal for student analysis sharing
 - Add LMS integrations (Google Classroom, Canvas)
-- Optimize OpenAI prompts to reduce token costs by 30%
+- Optimize Gemini prompts to reduce token costs by 30%
 
 **Long-term (6-12 months):**
 
@@ -3830,7 +3836,7 @@ Reference detailed ADRs in `/context/decisions.md`
 
 - **Database CPU >70% sustained:** Add read replica or increase instance size
 - **API latency p95 >2s:** Add application instances (horizontal scaling)
-- **OpenAI costs >$5k/month:** Optimize prompts, implement caching
+- **Gemini costs >$5k/month:** Optimize prompts, implement caching
 
 ---
 
@@ -3838,7 +3844,7 @@ Reference detailed ADRs in `/context/decisions.md`
 
 ### Architecture Risks
 
-#### Risk 1: OpenAI API Dependency
+#### Risk 1: Gemini API Dependency
 
 **Impact:** Critical (core product feature)
 **Likelihood:** Medium (external service, rate limits, costs)
@@ -3847,9 +3853,9 @@ Reference detailed ADRs in `/context/decisions.md`
 
 - Implement circuit breaker and retry logic
 - Queue failed analyses for later processing
-- Monitor OpenAI service status (status page)
-- Negotiate enterprise SLA with OpenAI
-- Explore alternative AI providers (Anthropic Claude, open-source models) as backup
+- Monitor Google Cloud service status (status page)
+- Negotiate enterprise SLA with Google
+- Explore alternative AI providers (OpenAI, Anthropic Claude) as backup
 - Implement aggressive caching of analysis results
 
 ---

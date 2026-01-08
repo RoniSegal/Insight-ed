@@ -2,13 +2,13 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { AnalysisService } from '../../analysis/analysis.service';
-import { OpenAIService } from '../../openai/openai.service';
+import { GeminiService } from '../../gemini/gemini.service';
 import { PromptsService } from '../../prompts/prompts.service';
 
 describe('AnalysisService', () => {
   let service: AnalysisService;
 
-  const mockOpenAIService = {
+  const mockGeminiService = {
     chat: jest.fn(),
     isConfigured: jest.fn().mockReturnValue(true),
   };
@@ -26,8 +26,8 @@ describe('AnalysisService', () => {
       providers: [
         AnalysisService,
         {
-          provide: OpenAIService,
-          useValue: mockOpenAIService,
+          provide: GeminiService,
+          useValue: mockGeminiService,
         },
         {
           provide: PromptsService,
@@ -88,8 +88,8 @@ describe('AnalysisService', () => {
       conversationId = result.conversationId;
     });
 
-    it('should continue conversation with OpenAI response', async () => {
-      mockOpenAIService.chat.mockResolvedValueOnce({
+    it('should continue conversation with Gemini response', async () => {
+      mockGeminiService.chat.mockResolvedValueOnce({
         message: 'תודה על המידע. ספר לי עוד...',
       });
 
@@ -99,7 +99,7 @@ describe('AnalysisService', () => {
       expect(result.message).toBe('תודה על המידע. ספר לי עוד...');
       expect(result.isComplete).toBe(false);
       expect(result.metadata.questionCount).toBe(2);
-      expect(mockOpenAIService.chat).toHaveBeenCalled();
+      expect(mockGeminiService.chat).toHaveBeenCalled();
     });
 
     it('should throw NotFoundException for invalid conversation ID', async () => {
@@ -109,7 +109,7 @@ describe('AnalysisService', () => {
     });
 
     it('should mark conversation as complete after 6 questions', async () => {
-      mockOpenAIService.chat.mockResolvedValue({ message: 'AI response' });
+      mockGeminiService.chat.mockResolvedValue({ message: 'AI response' });
 
       // Send 5 more messages (already have 1 from start)
       for (let i = 0; i < 5; i++) {
@@ -120,18 +120,18 @@ describe('AnalysisService', () => {
       expect(result.isComplete).toBe(true);
     });
 
-    it('should use template responses when OpenAI is not configured', async () => {
-      mockOpenAIService.isConfigured.mockReturnValueOnce(false);
+    it('should use template responses when Gemini is not configured', async () => {
+      mockGeminiService.isConfigured.mockReturnValueOnce(false);
 
       const result = await service.continueConversation(conversationId, 'Test message');
 
       expect(result.message).toBeDefined();
-      expect(mockOpenAIService.chat).not.toHaveBeenCalled();
+      expect(mockGeminiService.chat).not.toHaveBeenCalled();
       expect(mockPromptsService.getQuestionTemplates).toHaveBeenCalled();
     });
 
-    it('should fall back to template responses on OpenAI error', async () => {
-      mockOpenAIService.chat.mockRejectedValueOnce(new Error('OpenAI API error'));
+    it('should fall back to template responses on Gemini error', async () => {
+      mockGeminiService.chat.mockRejectedValueOnce(new Error('Gemini API error'));
 
       const result = await service.continueConversation(conversationId, 'Test message');
 
@@ -140,7 +140,7 @@ describe('AnalysisService', () => {
     });
 
     it('should increment question count correctly', async () => {
-      mockOpenAIService.chat.mockResolvedValue({ message: 'AI response' });
+      mockGeminiService.chat.mockResolvedValue({ message: 'AI response' });
 
       const result1 = await service.continueConversation(conversationId, 'Message 1');
       expect(result1.metadata.questionCount).toBe(2);
@@ -150,7 +150,7 @@ describe('AnalysisService', () => {
     });
 
     it('should track message count correctly', async () => {
-      mockOpenAIService.chat.mockResolvedValue({ message: 'AI response' });
+      mockGeminiService.chat.mockResolvedValue({ message: 'AI response' });
 
       const result = await service.continueConversation(conversationId, 'Test message');
 
@@ -167,7 +167,7 @@ describe('AnalysisService', () => {
       conversationId = result.conversationId;
 
       // Add some messages
-      mockOpenAIService.chat.mockResolvedValue({ message: 'AI response' });
+      mockGeminiService.chat.mockResolvedValue({ message: 'AI response' });
       await service.continueConversation(conversationId, 'Message 1');
     });
 
@@ -214,7 +214,7 @@ describe('AnalysisService', () => {
 
       // Start new conversation
       const newConv = await service.startConversation('student-2', 'Michael', 'teacher-1');
-      mockOpenAIService.chat.mockResolvedValue({ message: 'AI response' });
+      mockGeminiService.chat.mockResolvedValue({ message: 'AI response' });
       await service.continueConversation(newConv.conversationId, 'Message');
 
       const result2 = await service.completeAnalysis(newConv.conversationId, 'teacher-1');
@@ -227,7 +227,7 @@ describe('AnalysisService', () => {
     it('should retrieve analysis by ID', async () => {
       // Create analysis
       const conv = await service.startConversation('student-1', 'Sarah', 'teacher-1');
-      mockOpenAIService.chat.mockResolvedValue({ message: 'Final analysis' });
+      mockGeminiService.chat.mockResolvedValue({ message: 'Final analysis' });
       await service.continueConversation(conv.conversationId, 'Message');
       const completed = await service.completeAnalysis(conv.conversationId, 'teacher-1');
 
@@ -254,12 +254,12 @@ describe('AnalysisService', () => {
     it('should return all analyses for a student', async () => {
       // Create 2 analyses for same student
       const conv1 = await service.startConversation('student-1', 'Sarah', 'teacher-1');
-      mockOpenAIService.chat.mockResolvedValue({ message: 'Analysis 1' });
+      mockGeminiService.chat.mockResolvedValue({ message: 'Analysis 1' });
       await service.continueConversation(conv1.conversationId, 'Message 1');
       await service.completeAnalysis(conv1.conversationId, 'teacher-1');
 
       const conv2 = await service.startConversation('student-1', 'Sarah', 'teacher-1');
-      mockOpenAIService.chat.mockResolvedValue({ message: 'Analysis 2' });
+      mockGeminiService.chat.mockResolvedValue({ message: 'Analysis 2' });
       await service.continueConversation(conv2.conversationId, 'Message 2');
       await service.completeAnalysis(conv2.conversationId, 'teacher-1');
 
@@ -273,7 +273,7 @@ describe('AnalysisService', () => {
     it('should return analyses sorted by date (newest first)', async () => {
       // Create 2 analyses
       const conv1 = await service.startConversation('student-1', 'Sarah', 'teacher-1');
-      mockOpenAIService.chat.mockResolvedValue({ message: 'Analysis 1' });
+      mockGeminiService.chat.mockResolvedValue({ message: 'Analysis 1' });
       await service.continueConversation(conv1.conversationId, 'Message 1');
       const result1 = await service.completeAnalysis(conv1.conversationId, 'teacher-1');
 
@@ -281,7 +281,7 @@ describe('AnalysisService', () => {
       await new Promise((resolve) => setTimeout(resolve, 10));
 
       const conv2 = await service.startConversation('student-1', 'Sarah', 'teacher-1');
-      mockOpenAIService.chat.mockResolvedValue({ message: 'Analysis 2' });
+      mockGeminiService.chat.mockResolvedValue({ message: 'Analysis 2' });
       await service.continueConversation(conv2.conversationId, 'Message 2');
       const result2 = await service.completeAnalysis(conv2.conversationId, 'teacher-1');
 
@@ -295,7 +295,7 @@ describe('AnalysisService', () => {
     it('should only return analyses for specified student', async () => {
       // Create analyses for different students
       const conv1 = await service.startConversation('student-1', 'Sarah', 'teacher-1');
-      mockOpenAIService.chat.mockResolvedValue({ message: 'Analysis' });
+      mockGeminiService.chat.mockResolvedValue({ message: 'Analysis' });
       await service.continueConversation(conv1.conversationId, 'Message');
       await service.completeAnalysis(conv1.conversationId, 'teacher-1');
 
@@ -319,14 +319,14 @@ describe('AnalysisService', () => {
     it('should return the most recent analysis', async () => {
       // Create 2 analyses
       const conv1 = await service.startConversation('student-1', 'Sarah', 'teacher-1');
-      mockOpenAIService.chat.mockResolvedValue({ message: 'Analysis 1' });
+      mockGeminiService.chat.mockResolvedValue({ message: 'Analysis 1' });
       await service.continueConversation(conv1.conversationId, 'Message 1');
       await service.completeAnalysis(conv1.conversationId, 'teacher-1');
 
       await new Promise((resolve) => setTimeout(resolve, 10));
 
       const conv2 = await service.startConversation('student-1', 'Sarah', 'teacher-1');
-      mockOpenAIService.chat.mockResolvedValue({ message: 'Analysis 2' });
+      mockGeminiService.chat.mockResolvedValue({ message: 'Analysis 2' });
       await service.continueConversation(conv2.conversationId, 'Message 2');
       const result2 = await service.completeAnalysis(conv2.conversationId, 'teacher-1');
 
@@ -343,7 +343,7 @@ describe('AnalysisService', () => {
     beforeEach(async () => {
       const result = await service.startConversation('student-1', 'Sarah', 'teacher-1');
       conversationId = result.conversationId;
-      mockOpenAIService.isConfigured.mockReturnValue(false);
+      mockGeminiService.isConfigured.mockReturnValue(false);
     });
 
     it('should return question templates in order', async () => {
@@ -370,7 +370,7 @@ describe('AnalysisService', () => {
   describe('Conversation State Management', () => {
     it('should maintain conversation state across multiple messages', async () => {
       const conv = await service.startConversation('student-1', 'Sarah', 'teacher-1');
-      mockOpenAIService.chat.mockResolvedValue({ message: 'Response' });
+      mockGeminiService.chat.mockResolvedValue({ message: 'Response' });
 
       await service.continueConversation(conv.conversationId, 'Message 1');
       const result = await service.continueConversation(conv.conversationId, 'Message 2');
@@ -387,12 +387,12 @@ describe('AnalysisService', () => {
 
     it('should trim user messages', async () => {
       const conv = await service.startConversation('student-1', 'Sarah', 'teacher-1');
-      mockOpenAIService.isConfigured.mockReturnValue(true);
-      mockOpenAIService.chat.mockResolvedValue({ message: 'Response' });
+      mockGeminiService.isConfigured.mockReturnValue(true);
+      mockGeminiService.chat.mockResolvedValue({ message: 'Response' });
 
       await service.continueConversation(conv.conversationId, '  Message with spaces  ');
 
-      expect(mockOpenAIService.chat).toHaveBeenCalledWith(
+      expect(mockGeminiService.chat).toHaveBeenCalledWith(
         expect.arrayContaining([expect.objectContaining({ content: 'Message with spaces' })])
       );
     });

@@ -8,7 +8,7 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 
-import { OpenAIService } from '../openai/openai.service';
+import { GeminiService } from '../gemini/gemini.service';
 import { PromptsService } from '../prompts/prompts.service';
 
 import { AnalysisResult, ConversationState } from './entities';
@@ -44,7 +44,7 @@ export class AnalysisService implements OnModuleInit {
   private readonly conversationTTL = 24 * 60 * 60 * 1000;
 
   constructor(
-    private readonly openaiService: OpenAIService,
+    private readonly geminiService: GeminiService,
     private readonly promptsService: PromptsService
   ) {}
 
@@ -130,26 +130,26 @@ export class AnalysisService implements OnModuleInit {
 
     let aiResponse: string;
 
-    // Check if OpenAI is configured
-    if (this.openaiService.isConfigured()) {
+    // Check if Gemini is configured
+    if (this.geminiService.isConfigured()) {
       try {
         // Truncate history to prevent token limit issues (keep system + last 15 messages)
         const truncatedMessages = this.truncateConversationHistory(conversation.messages, 15);
 
-        // Call OpenAI
-        const response = await this.openaiService.chat(truncatedMessages);
+        // Call Gemini
+        const response = await this.geminiService.chat(truncatedMessages);
         aiResponse = response.message;
 
-        this.logger.log(`OpenAI response for conversation ${conversationId}`);
+        this.logger.log(`Gemini response for conversation ${conversationId}`);
       } catch (error: any) {
-        this.logger.error(`OpenAI error in conversation ${conversationId}: ${error.message}`);
+        this.logger.error(`Gemini error in conversation ${conversationId}: ${error.message}`);
 
         // Fallback to template responses on error
         aiResponse = this.getTemplateResponse(conversation);
       }
     } else {
-      // Use template responses when OpenAI is not configured
-      this.logger.warn('OpenAI not configured, using template responses');
+      // Use template responses when Gemini is not configured
+      this.logger.warn('Gemini not configured, using template responses');
       aiResponse = this.getTemplateResponse(conversation);
     }
 

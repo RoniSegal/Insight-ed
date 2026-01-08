@@ -1,7 +1,7 @@
 /**
- * OpenAI Chat Interfaces
+ * Gemini Chat Interfaces
  *
- * Type definitions for OpenAI chat completions API integration.
+ * Type definitions for Google Gemini API integration.
  * These interfaces provide type safety for all chat-related operations.
  */
 
@@ -11,9 +11,9 @@
 export interface ChatMessage {
   /**
    * The role of the message author
-   * - 'system': Instructions to the AI (e.g., "You are an educational psychologist")
+   * - 'system': Instructions to the AI (mapped to system instruction in Gemini)
    * - 'user': Messages from the end user
-   * - 'assistant': AI-generated responses
+   * - 'assistant': AI-generated responses (mapped to 'model' role in Gemini)
    */
   role: 'system' | 'user' | 'assistant';
 
@@ -48,16 +48,16 @@ export interface ChatOptions {
   temperature?: number;
 
   /**
-   * The OpenAI model to use for this request.
+   * The Gemini model to use for this request.
    * Overrides the default configured model if provided.
    *
-   * @example 'gpt-4-turbo-preview'
+   * @example 'gemini-2.5-flash'
    */
   model?: string;
 }
 
 /**
- * Token usage information returned by OpenAI
+ * Token usage information returned by Gemini
  */
 export interface TokenUsage {
   /**

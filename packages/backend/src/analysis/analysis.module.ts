@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { OpenAIModule } from '../openai/openai.module';
+import { GeminiModule } from '../gemini/gemini.module';
 import { PromptsModule } from '../prompts/prompts.module';
 
 import { AnalysisController } from './analysis.controller';
@@ -16,13 +16,13 @@ import { AnalysisService } from './analysis.service';
  * - Retrieving saved analysis results
  *
  * Dependencies:
- * - OpenAIModule - For AI-powered conversation
+ * - GeminiModule - For AI-powered conversation
  * - PromptsModule - For system prompts and question templates
  *
  * @module AnalysisModule
  */
 @Module({
-  imports: [OpenAIModule, PromptsModule],
+  imports: [GeminiModule, PromptsModule],
   controllers: [AnalysisController],
   providers: [AnalysisService],
   exports: [AnalysisService],

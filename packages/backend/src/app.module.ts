@@ -5,7 +5,7 @@ import { AnalysisModule } from './analysis/analysis.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { OpenAIModule } from './openai/openai.module';
+import { GeminiModule } from './gemini/gemini.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { StudentsModule } from './students/students.module';
 
@@ -18,7 +18,7 @@ import { StudentsModule } from './students/students.module';
     }),
     PrismaModule, // Global database module
     AuthModule,
-    OpenAIModule,
+    GeminiModule,
     AnalysisModule,
     StudentsModule,
   ],
