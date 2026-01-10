@@ -57,7 +57,7 @@ function ResultsPageContent() {
 
         // Fetch analysis by ID
         const response: { analysis: AnalysisResult } = await ApiClient.get(
-          `/analysis/by-id/${analysisId}`
+          `/analysis/${analysisId}`
         );
 
         if (!response.analysis) {

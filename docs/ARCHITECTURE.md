@@ -1956,9 +1956,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 const response = await ai.models.generateContent({
   model: 'gemini-2.5-flash',
-  contents: [
-    { role: 'user', parts: [{ text: 'Student: John Doe, Grade 5...' }] }
-  ],
+  contents: [{ role: 'user', parts: [{ text: 'Student: John Doe, Grade 5...' }] }],
   config: {
     systemInstruction: 'You are an educational assessment expert...',
     temperature: 0.7,

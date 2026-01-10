@@ -16,12 +16,12 @@ The Gemini Module provides a service wrapper for the Google Gemini API, enabling
 
 Set the following environment variables:
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `GEMINI_API_KEY` | Your Google Gemini API key | Required |
-| `GEMINI_MODEL` | Model to use | `gemini-2.5-flash` |
-| `GEMINI_MAX_TOKENS` | Maximum tokens per request | `2000` |
-| `GEMINI_TEMPERATURE` | Randomness (0.0-2.0) | `0.7` |
+| Variable             | Description                | Default            |
+| -------------------- | -------------------------- | ------------------ |
+| `GEMINI_API_KEY`     | Your Google Gemini API key | Required           |
+| `GEMINI_MODEL`       | Model to use               | `gemini-2.5-flash` |
+| `GEMINI_MAX_TOKENS`  | Maximum tokens per request | `2000`             |
+| `GEMINI_TEMPERATURE` | Randomness (0.0-2.0)       | `0.7`              |
 
 ### Getting an API Key
 
@@ -96,11 +96,11 @@ interface ChatResponse {
 
 ### Role Mapping
 
-| Application Role | Gemini API |
-|-----------------|------------|
-| `system` | `systemInstruction` |
-| `user` | `user` |
-| `assistant` | `model` |
+| Application Role | Gemini API          |
+| ---------------- | ------------------- |
+| `system`         | `systemInstruction` |
+| `user`           | `user`              |
+| `assistant`      | `model`             |
 
 ## Features
 
@@ -123,8 +123,8 @@ After 10 consecutive failures, the circuit breaker opens for 60 seconds, prevent
 Every successful request logs token usage:
 
 ```
-[Nest] 12345 - GeminiService: Gemini API Call - Model: gemini-2.5-flash, 
-Prompt: 150 tokens, Completion: 80 tokens, Total: 230 tokens, 
+[Nest] 12345 - GeminiService: Gemini API Call - Model: gemini-2.5-flash,
+Prompt: 150 tokens, Completion: 80 tokens, Total: 230 tokens,
 Estimated Cost: $0.000047
 ```
 
@@ -132,22 +132,19 @@ Estimated Cost: $0.000047
 
 The module provides specific exception types:
 
-| Exception | HTTP Status | When |
-|-----------|-------------|------|
-| `GeminiConfigurationException` | 500 | API key not configured |
-| `GeminiAuthenticationException` | 401 | Invalid API key |
-| `GeminiRateLimitException` | 429 | Rate limit exceeded |
-| `GeminiServiceException` | 503 | Service unavailable |
-| `GeminiCircuitBreakerException` | 503 | Circuit breaker open |
-| `GeminiException` | 500 | Other errors |
+| Exception                       | HTTP Status | When                   |
+| ------------------------------- | ----------- | ---------------------- |
+| `GeminiConfigurationException`  | 500         | API key not configured |
+| `GeminiAuthenticationException` | 401         | Invalid API key        |
+| `GeminiRateLimitException`      | 429         | Rate limit exceeded    |
+| `GeminiServiceException`        | 503         | Service unavailable    |
+| `GeminiCircuitBreakerException` | 503         | Circuit breaker open   |
+| `GeminiException`               | 500         | Other errors           |
 
 ### Example Error Handling
 
 ```typescript
-import {
-  GeminiException,
-  GeminiRateLimitException,
-} from './gemini/exceptions/gemini.exception';
+import { GeminiException, GeminiRateLimitException } from './gemini/exceptions/gemini.exception';
 
 try {
   const response = await geminiService.chat(messages);
@@ -164,11 +161,11 @@ try {
 
 Recommended models for different use cases:
 
-| Use Case | Model |
-|----------|-------|
-| General tasks | `gemini-2.5-flash` |
-| Complex reasoning | `gemini-2.5-pro` |
-| Low latency | `gemini-2.5-flash-lite` |
+| Use Case          | Model                   |
+| ----------------- | ----------------------- |
+| General tasks     | `gemini-2.5-flash`      |
+| Complex reasoning | `gemini-2.5-pro`        |
+| Low latency       | `gemini-2.5-flash-lite` |
 
 See [Google's documentation](https://ai.google.dev/gemini-api/docs/models) for the full list of available models.
 

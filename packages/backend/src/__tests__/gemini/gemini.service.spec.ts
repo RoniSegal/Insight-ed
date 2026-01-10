@@ -607,9 +607,7 @@ describe('GeminiService', () => {
     }, 10000);
 
     it('should handle messages without system instruction', async () => {
-      const messagesWithoutSystem: ChatMessage[] = [
-        { role: 'user', content: 'Hello' },
-      ];
+      const messagesWithoutSystem: ChatMessage[] = [{ role: 'user', content: 'Hello' }];
 
       mockGeminiClient.models.generateContent.mockResolvedValue({
         text: 'Hi!',
@@ -774,7 +772,9 @@ describe('GeminiService', () => {
 
     it('should create GeminiServiceException with default message', () => {
       const exception = new GeminiServiceException();
-      expect(exception.message).toBe('Gemini service is temporarily unavailable. Please try again.');
+      expect(exception.message).toBe(
+        'Gemini service is temporarily unavailable. Please try again.'
+      );
       expect(exception.getStatus()).toBe(503);
       expect(exception.name).toBe('GeminiServiceException');
     });
@@ -798,7 +798,9 @@ describe('GeminiService', () => {
 
     it('should create GeminiCircuitBreakerException with default message', () => {
       const exception = new GeminiCircuitBreakerException();
-      expect(exception.message).toBe('Gemini service is temporarily unavailable due to repeated failures');
+      expect(exception.message).toBe(
+        'Gemini service is temporarily unavailable due to repeated failures'
+      );
       expect(exception.getStatus()).toBe(503);
       expect(exception.name).toBe('GeminiCircuitBreakerException');
     });
