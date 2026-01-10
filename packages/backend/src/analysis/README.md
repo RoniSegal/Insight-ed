@@ -29,7 +29,7 @@ The Analysis Module provides a complete backend implementation for the student a
 
 ### Dependencies
 
-- **OpenAIModule** - AI conversation via GPT models
+- **GeminiModule** - AI conversation via Google Gemini models
 - **PromptsModule** - System prompts and question templates
 - **AuthModule** - JWT authentication
 
@@ -262,7 +262,7 @@ All DTOs use `class-validator` for automatic validation:
 See `/packages/backend/src/analysis/__tests__/` for:
 
 - Integration tests for all endpoints
-- Mock OpenAI service
+- Mock Gemini service
 - Authorization tests
 - Error scenario tests
 - 85%+ code coverage

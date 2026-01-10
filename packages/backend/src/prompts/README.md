@@ -1,6 +1,6 @@
 # Prompts Module
 
-This module provides prompt management services for the student analysis system. It encapsulates all AI prompt logic used in ChatGPT-based student learning profile analysis.
+This module provides prompt management services for the student analysis system. It encapsulates all AI prompt logic used in Gemini-based student learning profile analysis.
 
 ## Overview
 
@@ -49,7 +49,7 @@ export class AnalysisService {
     // 4. Get analysis prompt for final synthesis
     const analysisPrompt = this.promptsService.getAnalysisPrompt();
 
-    // 5. Send to ChatGPT for final analysis...
+    // 5. Send to Gemini for final analysis...
   }
 }
 ```
@@ -161,7 +161,7 @@ npm test -- prompts.service.spec.ts --coverage
 **Before (Frontend file loading):**
 
 ```typescript
-// Old approach in frontend/src/app/api/lib/openai.ts
+// Old approach in frontend/src/app/api/lib/ai-provider.ts
 const promptPath = path.join(process.cwd(), 'context', 'chat-prompt-simple.txt');
 const systemPrompt = fs.readFileSync(promptPath, 'utf-8');
 ```
