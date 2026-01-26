@@ -1,3 +1,5 @@
+import { StructuredAnalysis } from './structured-analysis.entity';
+
 /**
  * Represents a saved analysis result
  * Stored in-memory for MVP, will move to database in future
@@ -9,8 +11,11 @@ export class AnalysisResult {
   /** Student ID this analysis is for */
   studentId: string;
 
-  /** The full analysis content in Hebrew (markdown format) */
-  analysis: string;
+  /** The structured analysis output */
+  structuredAnalysis: StructuredAnalysis;
+
+  /** Optional brief summary of the analysis */
+  briefSummary?: string;
 
   /** Optional conversation history */
   conversationHistory?: Array<{

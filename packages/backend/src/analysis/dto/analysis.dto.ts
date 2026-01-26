@@ -1,6 +1,84 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 /**
+ * DTO representing the structured analysis output
+ */
+export class StructuredAnalysisDto {
+  @ApiProperty({ description: 'Schema version', example: '1.0' })
+  schemaVersion: string;
+
+  @ApiProperty({ description: 'Overall summary of the analysis' })
+  summary: string;
+
+  @ApiProperty({
+    description: 'Student strengths',
+    type: 'object',
+    properties: {
+      academic: { type: 'array', items: { type: 'string' } },
+      behavioral: { type: 'array', items: { type: 'string' } },
+    },
+  })
+  strengths: {
+    academic: string[];
+    behavioral: string[];
+  };
+
+  @ApiProperty({
+    description: 'Student barriers/challenges',
+    type: 'object',
+    properties: {
+      academic: { type: 'array', items: { type: 'string' } },
+      behavioral: { type: 'array', items: { type: 'string' } },
+    },
+  })
+  barriers: {
+    academic: string[];
+    behavioral: string[];
+  };
+
+  @ApiProperty({
+    description: 'Recommendations for the student',
+    type: 'object',
+    properties: {
+      immediate: { type: 'array', items: { type: 'string' } },
+      longTerm: { type: 'array', items: { type: 'string' } },
+    },
+  })
+  recommendations: {
+    immediate: string[];
+    longTerm: string[];
+  };
+
+  @ApiProperty({
+    description: 'Learning style preferences',
+    type: 'object',
+    properties: {
+      preferences: { type: 'string' },
+    },
+  })
+  learningStyle: {
+    preferences: string;
+  };
+
+  @ApiProperty({
+    description: 'Goals and tracking metrics',
+    type: 'object',
+    properties: {
+      trackingMetrics: { type: 'array', items: { type: 'string' } },
+    },
+  })
+  goals: {
+    trackingMetrics: string[];
+  };
+
+  @ApiProperty({
+    description: 'Full text narrative of the analysis',
+    required: false,
+  })
+  fullText?: string;
+}
+
+/**
  * DTO representing a saved analysis result
  */
 export class AnalysisDto {
@@ -17,10 +95,16 @@ export class AnalysisDto {
   studentId: string;
 
   @ApiProperty({
-    description: 'The full analysis content in Hebrew (markdown format)',
-    example: '# ניתוח תלמיד: שרה כהן\n\n## נקודות חוזק...',
+    description: 'The structured analysis output',
+    type: StructuredAnalysisDto,
   })
-  analysis: string;
+  structuredAnalysis: StructuredAnalysisDto;
+
+  @ApiProperty({
+    description: 'Brief summary of the analysis',
+    required: false,
+  })
+  briefSummary?: string;
 
   @ApiProperty({
     description: 'Timestamp when the analysis was created',
